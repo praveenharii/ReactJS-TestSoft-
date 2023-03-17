@@ -38,6 +38,12 @@ handleSubmit(e){ /*submit function*/
 
             window.location.href="./dashboard";
             }
+            if (data.error === "User not exists") {
+                alert("User Not Exist");
+            }
+            if (data.status === "error") {
+                alert("Wrong Password, please try again..");
+            }
         });
 }
 
@@ -85,7 +91,7 @@ handleSubmit(e){ /*submit function*/
                     </button>
                 </div>
                 <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
+                    Forgot <a href="/forgot-password">password?</a>
                 </p>
             </form>
         )
