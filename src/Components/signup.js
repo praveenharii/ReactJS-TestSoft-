@@ -1,108 +1,74 @@
-import React, { Component } from 'react';
-import app from "./firebase_config";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import React, { useState } from 'react';
+// import { authentication } from "./firebase_config";
+// // const firebase = require("./firebase_config");
+// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+// import userEvent from '@testing-library/user-event';
 
 
-const auth = getAuth(app);
-export default class SignUp extends Component  {
-    constructor(props) {
-        super(props);
-        this.state={
-            fname: "",
-            lname: "",
-            email: "",
-            phoneNumber: "",
-            password: "",
-            verifyButton: false,
-            verifyOTP: false,
-            otp: "",
-            verified: false,
-            userType: "",
-            secretKey: "",    
-        };
-        this.handleSubmit=this.handleSubmit.bind(this); //binding function
-        this.onSignInSubmit=this.onSignInSubmit.bind(this);
-        this.verifyCode=this.verifyCode.bind(this);
 
-    }
 
-          
+
+//const countryCode = "+60";
+export default function SignUp() {
+            const [fname ,setFname] =  useState("");
+            const [lname ,setLname] =  useState("");
+            const [email ,setEmail] =  useState("");
+            //const [phoneNumber ,setPhoneNumber] =  useState("");
+            const [password ,setPassword] =  useState("");
+            // const [expandForm, setExpandForm] = useState(false);
+            // const [OTP,setOTP] = useState("");
+            const [userType, setUserType] = useState("");
+            const [secretKey, setSecretKey] = useState("");
+      
+// const generateRecaptcha = () => {
+//   window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+//             'size': 'invisible',
+//             'callback': (response) => {
+//               // reCAPTCHA solved, allow signInWithPhoneNumber.
+//             }
+//           },
+//           authentication
+//         );
+// }
            
-            
-    onCaptchaVerify(){
-       
-        window.recaptchaVerifier = new RecaptchaVerifier(
-            'recaptcha-container' ,
-        {
-        'size': 'invisible',
-         'callback': (response) => {
-            this.onSignInSubmit();
-         // reCAPTCHA solved, allow signInWithPhoneNumber.
-        // ...
-         },
-        
-        }, auth
-        );
-    }
+//     const requestOTP = (e) =>{
+//       e.preventDefault();
+//       if (phoneNumber.length >=10 ){
+//         setExpandForm(true);
+//         generateRecaptcha();
+//         let appVerifier =  window.recaptchaVerifier;
+//         signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
+//         .then(confirmationResult => {
+//           window.confirmationResult = confirmationResult
+//         }).catch((error) => {
+//           // Error; SMS not sent
+//           // ...
+//         // console.log(error);
+//         });
+//           }
+//         } 
+//     const verifyOTP = (e) => {
+//         let otp =  e.target.value;
+//         setOTP(otp);
 
-    onSignInSubmit(){
-        this.onCaptchaVerify();
-        const phoneNumber = "+60" + this.state.phoneNumber;
-        const appVerifier = window.recaptchaVerifier;
-        signInWithPhoneNumber(auth, phoneNumber, appVerifier)
-            .then((confirmationResult) => {
-                // SMS sent. Prompt user to type the code from the message, then sign the
-                // user in with confirmationResult.confirm(code).
-                window.confirmationResult = confirmationResult;
-                alert("OTP sended");
-                this.setState({ verifyOTP: true });
-                // ...
-            }).catch((error) => {
-                // Error; SMS not sent
-                // ...
-            });
-    }
+//         if(otp.length === 6){
+//           console.log(otp);
+//         }
+//     }       
+  
 
-    verifyCode(){
-        window.confirmationResult.confirm(this.state.otp).then((result) => {
-            // User signed in successfully.
-            const user = result.user;
-            console.log(user);
-            alert("Verification Done");
-            this.setState({
-                verified: true,
-                verifyOTP: false,
-            })
-            // ...
-        }).catch((error) => {
-            alert("Invalid OTP");
-            // User couldn't sign in (bad verification code?)
-            // ...
-        });
-    }
-
-    changeMobile(e) {
-        this.setState({ phoneNumber: e.target.value },function(){
-            if(this.state.phoneNumber.length===10){
-                this.setState({
-                    verifyButton: true,
-                });
-            }
-
-        });
-        
-    }
-
-    handleSubmit(e){
-        if(this.state.userType == "Admin" && this.state.secretKey != "secret"){
+    const handleSubmit = (e) => {
+       if (userType == "Admin" && secretKey != "Secret") {
             e.preventDefault();
             alert("Invalid Admin");
-        } else{
+          }
+          else{
             e.preventDefault();
+          
+          //  if (){ 
+        
             
-            if (this.state.verified){
-            const { fname, lname, email, phoneNumber, password, userType } = this.state;
-            console.log(fname, lname, email, phoneNumber, password, userType);
+            console.log(fname, lname, email, password, userType);
             fetch("http://localhost:5000/register", {
                 method: "POST",
                 crossDomain: true,
@@ -115,9 +81,8 @@ export default class SignUp extends Component  {
                     fname,
                     lname,
                     email,
-                    phoneNumber,
                     password,
-                    userType,
+                    userType,     
                 }),
             })
                 .then((res) => res.json())
@@ -130,95 +95,104 @@ export default class SignUp extends Component  {
                   }
 
                 });
-        }else{
-            alert("Please Verify Phone Number");
-        }      
-    }
-        }
+            //  }else{
+           // alert("Please Verify Phone Number");
+      } 
+    };
 
-       
+         return (
+           <div className="auth-wrapper">
+             <div className="auth-inner">
+               <form onSubmit={handleSubmit}>
+                 <h3>Sign Up</h3>
+                 <div id="recaptcha-container"></div>
 
+                 <div>
+                   Register As
+                   <input
+                     type="radio"
+                     name="UserType"
+                     value="Student"
+                     onChange={(e) => setUserType(e.target.value)}
+                     required
+                   />{" "}
+                   Student
+                   <input
+                     type="radio"
+                     name="UserType"
+                     value="Tutor"
+                     onChange={(e) => setUserType(e.target.value)}
+                     required
+                   />{" "}
+                   Tutor
+                   <input
+                     type="radio"
+                     name="UserType"
+                     value="Admin"
+                     onChange={(e) => setUserType(e.target.value)}
+                     required
+                   />{" "}
+                   Admin
+                 </div>
 
+                 {userType == "Admin" ? (
+                   <div className="mb-3">
+                     <label>Secret Key</label>
+                     <input
+                       type="text"
+                       className="form-control"
+                       placeholder="Secret Key"
+                       onChange={(e) => setSecretKey(e.target.value)}
+                     />
+                   </div>
+                 ) : null}
 
-    render() {
-        return (
-          <form onSubmit={this.handleSubmit}>
-            <h3>Sign Up</h3>
-            <div id="recaptcha-container"></div>
+                 <div className="mb-3">
+                   <label>First name</label>
+                   <input
+                     type="text"
+                     className="form-control"
+                     placeholder="First name"
+                     onChange={(e) => setFname(e.target.value)}
+                   />
+                 </div>
 
-            <div>
-              Register As
-              <input
-                type="radio"
-                name="UserType"
-                value="User"
-                onChange={(e) => this.setState({ userType: e.target.value })}
-              />{" "}
-              User
-              <input
-                type="radio"
-                name="UserType"
-                value="Admin"
-                onChange={(e) => this.setState({ userType: e.target.value })}
-              />{" "}
-              Admin
-            </div>
+                 <div className="mb-3">
+                   <label>Last name</label>
+                   <input
+                     type="text"
+                     className="form-control"
+                     placeholder="Last name"
+                     onChange={(e) => setLname(e.target.value)}
+                   />
+                 </div>
 
-            {this.state.userType == "Admin" ? (
-              <div className="mb-3">
-                <label>Secret Key</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Secret Key"
-                  onChange={(e) => this.setState({ secretKey: e.target.value })}
-                />
-              </div>
-            ) : null}
+                 <div className="mb-3">
+                   <label>Email address</label>
+                   <input
+                     type="email"
+                     className="form-control"
+                     placeholder="Enter email"
+                     onChange={(e) => setEmail(e.target.value)}
+                   />
+                 </div>
 
-            <div className="mb-3">
-              <label>First name</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="First name"
-                onChange={(e) => this.setState({ fname: e.target.value })}
-              />
-            </div>
-
-            <div className="mb-3">
-              <label>Last name</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Last name"
-                onChange={(e) => this.setState({ lname: e.target.value })}
-              />
-            </div>
-
-            <div className="mb-3">
-              <label>Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                onChange={(e) => this.setState({ email: e.target.value })}
-              />
-            </div>
-
-            <div className="mb-3">
+                 {/* <div className="mb-3">
               <label>Phone Number(01x-xxxxxxx)</label>
               <input
                 type="phoneNumber"
                 className="form-control"
                 placeholder="Enter Phone Number"
-                onChange={(e) => this.changeMobile(e)}
+                
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                
+             
               />
-              {this.state.verifyButton ? (
+              {expandForm === false? ( 
                 <input
                   type="button"
-                  value={this.state.verified ? "Verified" : "Verify"}
-                  onClick={this.onSignInSubmit}
+                  
+                  onClick={requestOTP}
                   style={{
                     backgroundColor: "#0163d2",
                     width: "100%",
@@ -226,23 +200,28 @@ export default class SignUp extends Component  {
                     color: "white",
                     border: "none",
                   }}
+                  value={OTP}
+                  
                 />
-              ) : null}
-            </div>
+             ):null }
+            </div> 
 
-            {this.state.verifyOTP ? (
+             {expandForm === true?(
               <div className="mb-3">
                 <label>OTP</label>
                 <input
                   type="number"
+                  value="OTP"
                   className="form-control"
-                  placeholder="OTP"
-                  onChange={(e) => this.setState({ otp: e.target.value })}
+                  placeholder="OTP" 
+                  onChange={verifyOTP}
+                 // value={}
+                  //onChange={(e) => setVerificationCode(e.target.value)}
                 />
                 <input
                   type="button"
                   value="OTP"
-                  onClick={this.verifyCode}
+                  //onClick={}
                   style={{
                     backgroundColor: "#0163d2",
                     width: "100%",
@@ -250,29 +229,41 @@ export default class SignUp extends Component  {
                     color: "white",
                     border: "none",
                   }}
+                 
                 />
               </div>
-            ) : null}
+            ): null } */}
 
-            <div className="mb-3">
-              <label>Password</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Enter password"
-                onChange={(e) =>  this.setState({ password: e.target.value })}
-              />
-            </div>
+                 <div className="mb-3">
+                   <label>Password</label>
+                   <input
+                     type="password"
+                     className="form-control"
+                     placeholder="Enter password"
+                     onChange={(e) => setPassword(e.target.value)}
+                   />
+                 </div>
 
-            <div className="d-grid">
-              <button type="submit" className="btn btn-primary">
-                Sign Up
-              </button>
-            </div>
-            <p className="forgot-password text-right">
-              Already registered <a href="/sign-in">sign in?</a>
-            </p>
-          </form>
-        );
-    }
-}
+                 <div className="d-grid">
+                   <button type="submit" className="btn btn-primary">
+                     Sign Up
+                   </button>
+                 </div>
+                 <p className="forgot-password text-right">
+                   Already registered <a href="/sign-in">sign in?</a>
+                 </p>
+               </form>
+             </div>
+           </div>
+         );     
+  }
+
+        
+
+       
+
+
+
+   
+       
+    
