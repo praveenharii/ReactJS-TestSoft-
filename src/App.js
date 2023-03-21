@@ -1,13 +1,16 @@
-import React from 'react'
+import React from 'react';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-import Login from './Components/login';
-import SignUp from './Components/signup';
-import Dashboard from './Components/dashboard';
-import ResetPassword from './Components/resetpassword';
-import ViewUsers from './Components/ViewUsers';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import Login from './Pages/login';
+import SignUp from './Pages/signup';
+import Dashboard from './Pages/dashboard';
+import ResetPassword from './Pages/resetpassword';
+import ViewUsers from './Pages/ViewUsers';
+
+
 
 
 function App() {
@@ -15,6 +18,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+       
         <Routes>
           <Route
             exact
@@ -40,6 +44,7 @@ export default App
 //             <Link className="navbar-brand" to={'/sign-in'}>
 //               TestSoft
 //             </Link>
+
 //             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
 //               <ul className="navbar-nav ml-auto">
 //                 <li className="nav-item">
@@ -57,6 +62,3 @@ export default App
 //           </div>
 //         </nav>
 
-{/* <div className="auth-wrapper ">
-          <div className="auth-inner"></div> 
-        */}

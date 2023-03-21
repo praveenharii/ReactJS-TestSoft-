@@ -1,0 +1,40 @@
+/* Set global font and background color */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: aqua;
+}
+
+/* Override default link color */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Set top padding for navbar to avoid overlap with content */
+.navbar {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/* Set bottom margin for navbar to avoid overlap with content */
+.container-fluid {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Set max height and scrollable for sidebar */
+.nav-sidebar {
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+}
+
+/* Set active link color in sidebar */
+.nav-sidebar .nav-link.active {
+    color: #fff;
+    background-color: #007bff;
+}
