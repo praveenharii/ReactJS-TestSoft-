@@ -1,5 +1,5 @@
-import React, {Link} from "react";
-
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Loginnavigation() {
   return (
@@ -8,56 +8,42 @@ export default function Loginnavigation() {
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="/sign-in">
+              <Link class="nav-link" to="/sign-in">
                 Login
-              </a>
+              </Link>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="/sign-up">
+              <Link class="nav-link" to="/sign-up">
                 Sign Up
-              </a>
+              </Link>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Link
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Link
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                Link
-              </a>
-            </li>
+          
           </ul>
         </div>
         <div class="mx-auto order-0">
-          <a class="navbar-brand mx-auto" href="/sign-in">
+          <Link class="navbar-brand mx-auto" to="/sign-in">
             TestSoft
-          </a>
-          <button
+          </Link>
+          {/* <button
             class="navbar-toggler"
             type="button"
             data-toggle="collapse"
             data-target=".dual-collapse2"
           >
             <span class="navbar-toggler-icon"></span>
-          </button>
+          </button> */}
         </div>
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="#">
                 Right
-              </a>
+              </Link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <Link class="nav-link" to="#">
                 Link
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -65,49 +51,3 @@ export default function Loginnavigation() {
     </>
   );
 }
-  // <nav className="navbar navbar-expand-lg navbar navbar-light fixed-top">
-  //   <div className="container">
-  //     <a className="navbar-brand" href={"/sign-in"}>
-  //       TestSoft
-  //     </a>
-
-  //     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-  //       <ul className="navbar-nav ml-auto">
-  //         <li className="nav-item left">
-  //           <a className="nav-link" href={"/sign-in"}>
-  //             Login
-  //           </a>
-  //         </li>
-  //         <li className="nav-item">
-  //           <a className="nav-link" href={"/sign-up"}>
-  //             Sign up
-  //           </a>
-  //         </li>
-  //       </ul>
-  //     </div>
-  //   </div>
-  // </nav>;
-
-
-//  <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-//           <div className="container">
-//             <Link className="navbar-brand" to={'/sign-in'}>
-//               TestSoft
-//             </Link>
-//             <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-//               <ul className="navbar-nav ml-auto">
-//                 <li className="nav-item">
-//                   <Link className="nav-link" to={'/sign-in'}>
-//                     Login
-//                   </Link>
-//                 </li>
-//                 <li className="nav-item">
-//                   <Link className="nav-link" to={'/sign-up'}>
-//                     Sign up
-//                   </Link>
-//                 </li>
-//               </ul>
-//             </div>
-//           </div>
-//         </nav>
-

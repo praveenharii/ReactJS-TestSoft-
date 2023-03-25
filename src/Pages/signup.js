@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 // import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 // import userEvent from '@testing-library/user-event';
 import Loginnavigation from "./Topnavbar/loginnavbar.js";
+import Form from "react-bootstrap/Form";
 
 
 
@@ -58,7 +59,7 @@ export default function SignUp() {
   
 
     const handleSubmit = (e) => {
-       if (userType == "Admin" && secretKey != "Secret") {
+       if (userType === "Admin" && secretKey !== "Secret") {
             e.preventDefault();
             alert("Invalid Admin");
           }
@@ -87,7 +88,7 @@ export default function SignUp() {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                  if(data.error != "User Exists"){
+                  if(data.error !== "User Exists"){
                     console.log(data, "userRegister");
                     alert("User Created Successfully");
                     }else{
@@ -101,85 +102,79 @@ export default function SignUp() {
     };
 
          return (
-          <>
-          <Loginnavigation />
-           <div className="auth-wrapper">
-             <div className="auth-inner">
-               <form onSubmit={handleSubmit}>
-                 <h3>Sign Up</h3>
-                 <div id="recaptcha-container"></div>
+           <>
+             <Loginnavigation />
+             <div className="auth-wrapper">
+               <div className="auth-inner">
+                 <form onSubmit={handleSubmit}>
+                   <h3>Sign Up</h3>
+                   <div id="recaptcha-container"></div>
 
-                 <div>
-                   Register As
-                   <input
-                     type="radio"
-                     name="UserType"
-                     value="Student"
-                     onChange={(e) => setUserType(e.target.value)}
-                     required
-                   />{" "}
-                   Student
-                   <input
-                     type="radio"
-                     name="UserType"
-                     value="Tutor"
-                     onChange={(e) => setUserType(e.target.value)}
-                     required
-                   />{" "}
-                   Tutor
-                   <input
-                     type="radio"
-                     name="UserType"
-                     value="Admin"
-                     onChange={(e) => setUserType(e.target.value)}
-                     required
-                   />{" "}
-                   Admin
-                 </div>
-
-                 {userType == "Admin" ? (
                    <div className="mb-3">
-                     <label>Secret Key</label>
+                     <label>Register As:</label>
+                     <br />
+                     <Form.Select
+                       className="form-control"
+                       size="sm"
+                       onChange={(e) => setUserType(e.target.value)}
+                       required
+                     >
+                       <option value="" disabled selected>
+                         Select User Type
+                       </option>
+                       <option value="Student">Student</option>
+                       <option value="Tutor">Tutor</option>
+                       <option value="Admin">Admin</option>
+                     </Form.Select>
+                     <br />
+                   </div>
+
+                   {userType === "Admin" ? (
+                     <div className="mb-3">
+                       <label>Secret Key</label>
+                       <input
+                         type="text"
+                         className="form-control"
+                         placeholder="Secret Key"
+                         onChange={(e) => setSecretKey(e.target.value)}
+                       />
+                     </div>
+                   ) : null}
+
+                   <div className="mb-3">
+                     <label>First name</label>
                      <input
                        type="text"
                        className="form-control"
-                       placeholder="Secret Key"
-                       onChange={(e) => setSecretKey(e.target.value)}
+                       placeholder="First name"
+                       onChange={(e) => setFname(e.target.value)}
+                       required
                      />
                    </div>
-                 ) : null}
 
-                 <div className="mb-3">
-                   <label>First name</label>
-                   <input
-                     type="text"
-                     className="form-control"
-                     placeholder="First name"
-                     onChange={(e) => setFname(e.target.value)}
-                   />
-                 </div>
+                   <div className="mb-3">
+                     <label>Last name</label>
+                     <input
+                       type="text"
+                       className="form-control"
+                       placeholder="Last name"
+                       onChange={(e) => setLname(e.target.value)}
+                       required
+                     />
+                   </div>
 
-                 <div className="mb-3">
-                   <label>Last name</label>
-                   <input
-                     type="text"
-                     className="form-control"
-                     placeholder="Last name"
-                     onChange={(e) => setLname(e.target.value)}
-                   />
-                 </div>
+                   <div className="mb-3">
+                     <label>Email address</label>
+                     <input
+                       type="email"
+                       className="form-control"
+                       placeholder="Enter email"
+                       onChange={(e) => setEmail(e.target.value)}
+                       required
+                     />
+                   </div>
 
-                 <div className="mb-3">
-                   <label>Email address</label>
-                   <input
-                     type="email"
-                     className="form-control"
-                     placeholder="Enter email"
-                     onChange={(e) => setEmail(e.target.value)}
-                   />
-                 </div>
-
-                 {/* <div className="mb-3">
+                   {/* <div className="mb-3">
               <label>Phone Number(01x-xxxxxxx)</label>
               <input
                 type="phoneNumber"
@@ -236,27 +231,28 @@ export default function SignUp() {
               </div>
             ): null } */}
 
-                 <div className="mb-3">
-                   <label>Password</label>
-                   <input
-                     type="password"
-                     className="form-control"
-                     placeholder="Enter password"
-                     onChange={(e) => setPassword(e.target.value)}
-                   />
-                 </div>
+                   <div className="mb-3">
+                     <label>Password</label>
+                     <input
+                       type="password"
+                       className="form-control"
+                       placeholder="Enter password"
+                       onChange={(e) => setPassword(e.target.value)}
+                       required
+                     />
+                   </div>
 
-                 <div className="d-grid">
-                   <button type="submit" className="btn btn-primary">
-                     Sign Up
-                   </button>
-                 </div>
-                 <p className="forgot-password text-right">
-                   Already registered <a href="/sign-in">sign in?</a>
-                 </p>
-               </form>
+                   <div className="d-grid">
+                     <button type="submit" className="btn btn-primary">
+                       Sign Up
+                     </button>
+                   </div>
+                   <p className="forgot-password text-right">
+                     Already registered <a href="/sign-in">sign in?</a>
+                   </p>
+                 </form>
+               </div>
              </div>
-           </div>
            </>
          );     
   }

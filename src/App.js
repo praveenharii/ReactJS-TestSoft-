@@ -9,6 +9,10 @@ import SignUp from './Pages/signup';
 import Dashboard from './Pages/dashboard';
 import ResetPassword from './Pages/resetpassword';
 import ViewUsers from './Pages/ViewUsers';
+import EditProfile from './Pages/editProfile';
+import CreateUser from './Pages/createUser';
+import CreateExamForm from './Exam/createExam'
+import ErrorPage from './Pages/ErrorPage'
 
 
 
@@ -18,7 +22,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-       
         <Routes>
           <Route
             exact
@@ -30,7 +33,11 @@ function App() {
           <Route path="/forgot-password" element={<ResetPassword />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/getAllUsers" element={<ViewUsers />} />
+          <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
+          <Route path="/dashboard/updateProfile/:id" element={<EditProfile />} />
+          <Route path="/createUser" element={<CreateUser />} />
+          <Route path="/createExam" element={<CreateExamForm />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>
     </Router>

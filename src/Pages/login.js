@@ -2,6 +2,7 @@ import React, { Component, useState, Link } from 'react'
 
 import Loginnavigation from './Topnavbar/loginnavbar.js';
 
+
 export default function Login()  {
     
         const [email ,setEmail] =  useState("");
@@ -48,11 +49,9 @@ export default function Login()  {
     
         return (
           <>
-          
             <Loginnavigation />
-            
+
             <div className="auth-wrapper">
-              
               <div className="auth-inner">
                 <form onSubmit={handleSubmit}>
                   <h3>Sign In</h3>
@@ -77,21 +76,11 @@ export default function Login()  {
                     />
                   </div>
 
-                  <div className="mb-3">
-                    <div className="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        className="custom-control-input"
-                        id="customCheck1"
-                      />
-                      <label
-                        className="custom-control-label"
-                        htmlFor="customCheck1"
-                      >
-                        Remember me
-                      </label>
-                    </div>
+                  <div class="mb-3 form-check">
+                   <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                    <label class="form-check-label" for="exampleCheck1">Remember Me</label>
                   </div>
+
 
                   <div className="d-grid">
                     <button type="submit" className="btn btn-primary">
