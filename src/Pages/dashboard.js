@@ -66,11 +66,8 @@ export default function Dashboard() {
                       }
                       
                      });
-                    //  .catch((error) => {
-                    //   console.log(error);
-                    //   navigate("/sign-in");
-                    //  })
-                     }
+                   
+                  }
                  }, [navigate]);
                  
                 

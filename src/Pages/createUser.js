@@ -57,7 +57,7 @@ export default function CreateUser() {
 
   return (
     <>
-      <Loginnavigation />
+      
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={handleSubmit}>

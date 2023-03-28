@@ -66,10 +66,10 @@ export default function ViewUsers() {
    <div className="auth-wrapper" style={{ height: "auto" }}>
      <div className="auth-inner" style={{ width: "auto" }}>
        <h3>Welcome Admin</h3>
-   
+
        <Link
          to={{
-           pathname: "/createUser"
+           pathname: "/dashboard/getAllUsers/createUser",
          }}
          className="btn btn-primary"
        >
@@ -88,7 +88,7 @@ export default function ViewUsers() {
            return (
              <tbody>
                <tr>
-                 <td>
+                 <td key={i}>
                    {i.fname} {i.lname}
                  </td>
                  <td>{i.email}</td>
@@ -105,8 +105,7 @@ export default function ViewUsers() {
            );
          })}
        </table>
-       
-       
+
        <button onClick={logOut} className="btn btn-primary">
          Log Out
        </button>

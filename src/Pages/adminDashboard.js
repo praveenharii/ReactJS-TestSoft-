@@ -1,18 +1,24 @@
 import React, { Component, useEffect, useState} from "react";
-import { Link, useLocation, Navigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
-  const location = useLocation();
-  const UserID= userData._id; 
+  const navigate = useNavigate();
+  const id= userData._id; 
+
   const logOut = () => {
     window.localStorage.clear();
     window.location.href = "./sign-in";
   };
 
   function editProfileCLick(){
-    Navigate("/testapp1/src/Pages/editProfile");
+    navigate(`/dashboard/updateProfile/${id}`,
+    {
+      state: {
+        id
+      }
+    });
   }
 
 
@@ -23,7 +29,7 @@ export default function AdminDashboard({ userData }) {
       <nav>
         <ul>
           <li>
-            <Link to="/getAllUsers">View Users</Link>
+            <Link to="/dashboard/getAllUsers">View Users</Link>
           </li>
           <li>
             Name<h1>{userData.fname}</h1>
@@ -31,11 +37,15 @@ export default function AdminDashboard({ userData }) {
             Email<h1>{userData.email}</h1>
             UserType<h1>{userData.userType}</h1>
             ID<h1>{userData._id}</h1>
-            <button type="button" onClick={editProfileCLick}> Edit Profile</button>
+            
+            <button type="button" onClick={editProfileCLick}>
+              {" "}
+              Edit Profile
+            </button>
             {/* <Link
               to={{
-                pathname: "/updateProfile",
-                state:   { _id:userData._id },
+                pathname: `/dashboard/updateProfile/${UserID}`,
+                state: { _id: userData._id },
               }}
               className="btn btn-primary"
             >

@@ -8,7 +8,16 @@ export default function EditProfile() {
         const [fname ,setFname] =  useState("");
         const [lname ,setLname] =  useState("");
         //const [email, setEmail] = useState("");
-        const {id} = useParams();
+        const  location  = useLocation();
+        const { id } = useParams();
+        console.log(id);
+        //const { id } = location;
+        //const id  = location.state;
+        //const {Id} = useParams(id);
+        //const userID = useLocation().state.ID;
+        //console.log(id["UserID"]);
+        //const ID = id["UserID"];
+        //console.log("User ID" , userID);
         const token = localStorage.getItem("token");
         const [password, setPassword] = useState("");
         // const location = useLocation();
@@ -77,7 +86,7 @@ const handleSubmit = (e) => {
               Dashboard
             </button>
             <h3>Update Profile</h3>
-
+            
             <div className="mb-3">
               <label>First name</label>
               <input
@@ -88,7 +97,6 @@ const handleSubmit = (e) => {
                 required
               />
             </div>
-
             <div className="mb-3">
               <label>Last name</label>
               <input
@@ -99,7 +107,7 @@ const handleSubmit = (e) => {
                 required
               />
             </div>
-{/* 
+            {/* 
             <div className="mb-3">
               <label>Email address</label>
               <input
@@ -110,7 +118,6 @@ const handleSubmit = (e) => {
                 required
               />
             </div> */}
-
             <div className="mb-3">
               <label>Password</label>
               <input
@@ -121,8 +128,6 @@ const handleSubmit = (e) => {
                 required
               />
             </div>
-            
-
             <div className="d-grid">
               <button type="submit" className="btn btn-primary">
                 Update
