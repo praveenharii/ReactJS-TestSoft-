@@ -13,6 +13,8 @@ import EditProfile from './Pages/editProfile';
 import CreateUser from './Pages/createUser';
 import CreateExamForm from './Exam/createExam'
 import ErrorPage from './Pages/ErrorPage'
+import ViewSubject from './Exam/viewSubjects';
+import ViewTest from "./Exam/ViewTest";
 
 
 
@@ -34,9 +36,14 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
-          <Route path="/dashboard/updateProfile/:id" element={<EditProfile />} />
+          <Route
+            path="/dashboard/updateProfile/:id"
+            element={<EditProfile />}
+          />
           <Route path="/createUser" element={<CreateUser />} />
           <Route path="/createExam" element={<CreateExamForm />} />
+          <Route path="/subjects" element={<ViewSubject />} />
+          <Route path="/subjects/:subject/tests" element={<ViewTest />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

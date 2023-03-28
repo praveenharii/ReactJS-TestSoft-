@@ -35,7 +35,7 @@ const CreateExamForm = () => {
    event.preventDefault();
    const examData = {
      subject: { name: subjectName },
-     test: { name: testName, date, timeLimit, questions },
+     test: { name: testName, date, timeLimit, questions, answer:"welcome" },
    };
    try {
      const response = await fetch("http://localhost:5000/createExam", {
@@ -46,7 +46,7 @@ const CreateExamForm = () => {
        body: JSON.stringify(examData),
      });
      const data = await response.json();
-     console.log(data.exam);
+     console.log(data.exam.subject.test.answer);
      // use the exam result data in your application
    } catch (error) {
      console.error(error);
