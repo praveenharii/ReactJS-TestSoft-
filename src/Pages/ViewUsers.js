@@ -9,9 +9,7 @@ import createUser from './createUser';
 export default function ViewUsers() {
      const [data, setData] = useState([]);
     //  const [userType, setUserType] = useState("");
-    
-
-
+  
      useEffect(() => {
        getAlluser();
     }, []);

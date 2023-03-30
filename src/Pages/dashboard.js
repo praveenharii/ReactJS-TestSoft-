@@ -19,8 +19,6 @@ export default function Dashboard() {
                const token = localStorage.getItem("token"); 
         
 
-            
-
                  useEffect(() => {
                     const updatedProfileData = JSON.parse(
                       localStorage.getItem("updatedProfileData")
@@ -60,7 +58,7 @@ export default function Dashboard() {
 
                      
                        if( data.data == "token expired") {
-                    alert("token expired login again");
+                    alert("token expired login again, since you have changed your password");
                     window.localStorage.clear();
                     window.location.href = "./sign-in";
                       }

@@ -1,26 +1,28 @@
 import React, { Component, useEffect, useState} from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ViewSubject from './../Exam/viewSubjects';
 
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
-  const navigate = useNavigate();
-  const id= userData._id; 
-
+   const navigate = useNavigate();
+   const id = userData._id; 
   const logOut = () => {
     window.localStorage.clear();
     window.location.href = "./sign-in";
   };
 
-  function editProfileCLick(){
-    navigate(`/dashboard/updateProfile/${id}`,
-    {
-      state: {
-        id
-      }
-    });
-  }
+    function editProfileCLick() {
+      navigate(`/dashboard/updateProfile/${id}`, {
+        state: {
+          id,
+        },
+      });
+    }
 
+    function ViewSubject(){
+      navigate("../subjects");
+    }
 
 
   return (
@@ -37,11 +39,15 @@ export default function AdminDashboard({ userData }) {
             Email<h1>{userData.email}</h1>
             UserType<h1>{userData.userType}</h1>
             ID<h1>{userData._id}</h1>
-            
             <button type="button" onClick={editProfileCLick}>
               {" "}
               Edit Profile
             </button>
+            <button type="button" onClick={ViewSubject}>
+              {" "}
+              View Subjects
+            </button>
+            
             {/* <Link
               to={{
                 pathname: `/dashboard/updateProfile/${UserID}`,
