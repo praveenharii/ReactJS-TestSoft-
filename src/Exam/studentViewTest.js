@@ -4,12 +4,14 @@ import { BsPlay } from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
 
 
-function SubjectTests() {
+export default function SubjectTests() {
    const [tests, setTests] = useState([]);
-   const location = useLocation();
-   const id = location.state.id;
+    const location = useLocation();
+    const  id  = location.state;
+    console.log(id);
    const navigate = useNavigate();
-   console.log(tests);
+   
+   //console.log(tests);
    useEffect(() => {
      async function fetchData() {
        const res = await fetch("http://localhost:5000/subTests");
@@ -20,12 +22,12 @@ function SubjectTests() {
    }, []);
 
 
-   function takeTest(subject, testid) {
-     console.log(subject, testid);
-     navigate(`/dashboard/SubjectTests/${subject}/${testid}`,{
-      state: {
-          id,
-        },
+   function takeTest(subjectname, taketestid) {
+     console.log(subjectname, taketestid);
+     navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`,{
+       state: {
+          id : id
+         }
      });
      
    }
@@ -66,4 +68,4 @@ function SubjectTests() {
   );
 }
 
-export default SubjectTests;
+

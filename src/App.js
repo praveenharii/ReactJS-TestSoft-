@@ -61,7 +61,7 @@ function App() {
             />
             <Route path="/dashboard/SubjectTests" element={<SubjectTests />} />
             <Route
-              path="/dashboard/SubjectTests/:subjectexam/:taketestid"
+              path="/dashboard/SubjectTests/:subjectname/:taketestid"
               element={<StudentTakeTest />}
             />
             <Route path="*" element={<ErrorPage />} />

@@ -22,8 +22,8 @@ export default function StudentDashboard({ userData }){
     function viewTest(){
       navigate("/dashboard/SubjectTests", {
         state: {
-          id,
-        },
+          id: id
+        }
       });
     }
 
