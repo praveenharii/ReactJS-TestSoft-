@@ -43,11 +43,14 @@ export default function CreateExamForm() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
       },
       body: JSON.stringify(data),
-    });
+    })
     const json = await response.json();
     console.log(json);
+    alert(json.status);
   };
 
   return (

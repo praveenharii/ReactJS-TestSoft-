@@ -11,10 +11,33 @@ export default function ViewTest() {
   const { subject } = useParams();
   let navigate = useNavigate();
 
-  //const { subject } = match.params;
+
+     useEffect(() => {
+       getAllTest();
+     }, []);
+
+    
+  const getAllTest = () => {
+    fetch(`http://localhost:5000/subjects/${subject}/tests`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          setData(data.data);
+        } else {
+          console.log(data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
    const deleteTest = (id, name) => {
      if (
        window.confirm(`Please Click Ok if you want to delete subject ${name}`)
+       
      ) {
        fetch("http://localhost:5000/deleteTest", {
          method: "DELETE",
@@ -31,31 +54,16 @@ export default function ViewTest() {
          .then((res) => res.json())
          .then((data) => {
            alert(data.data);
-           //getAllTest();
+           getAllTest();
            console.log(data);
          });
      } else {
      }
    }; 
 
+ 
 
 
-  useEffect(() => {
-    fetch(`http://localhost:5000/subjects/${subject}/tests`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          setData(data.data);
-        } else {
-          console.log(data);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [subject]);
 
  
 
@@ -68,7 +76,7 @@ export default function ViewTest() {
             <thead>
               <tr>
                 <th>Test Name</th>
-                <th>View Test</th>
+                <th>View Questions</th>
                 <th>Delete</th>
               </tr>
             </thead>

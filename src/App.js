@@ -15,10 +15,11 @@ import CreateExamForm from './Exam/createExam'
 import ErrorPage from './Pages/ErrorPage'
 import ViewSubject from './Exam/viewSubjects';
 import ViewTest from "./Exam/ViewTest";
-
+import ViewQuestions from './Exam/viewQuestions';
+import SubjectTests from './Exam/studentViewTest';
+import StudentTakeTest from './Exam/studentTakeTest';
 
 const Dashboard = lazy(() => import("./Pages/dashboard"));
-
 
 
 function App() {
@@ -54,6 +55,15 @@ function App() {
             <Route path="/createExam" element={<CreateExamForm />} />
             <Route path="/subjects" element={<ViewSubject />} />
             <Route path="/subjects/:subject/tests" element={<ViewTest />} />
+            <Route
+              path="/subjects/:subject/tests/:testid"
+              element={<ViewQuestions />}
+            />
+            <Route path="/dashboard/SubjectTests" element={<SubjectTests />} />
+            <Route
+              path="/dashboard/SubjectTests/:subjectexam/:taketestid"
+              element={<StudentTakeTest />}
+            />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Suspense>

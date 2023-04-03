@@ -64,7 +64,7 @@ export default function ViewSubject() {
             <thead>
               <tr>
                 <th>Subject Name</th>
-                <th>View Subject</th>
+                <th>View Test</th>
                 <th>Delete</th>
               </tr>
             </thead>

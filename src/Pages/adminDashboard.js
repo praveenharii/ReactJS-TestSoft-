@@ -24,46 +24,50 @@ export default function AdminDashboard({ userData }) {
       navigate("../subjects");
     }
 
+    function ViewUsers(){
+      navigate("/dashboard/getAllUsers");
+    }
+
+    function CreateExam(){
+      navigate("/createExam");
+    }
+
 
   return (
     <div>
-      <h1>Admin Dashboard</h1>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/dashboard/getAllUsers">View Users</Link>
-          </li>
-          <li>
-            Name<h1>{userData.fname}</h1>
-            Last<h1>{userData.lname}</h1>
-            Email<h1>{userData.email}</h1>
-            UserType<h1>{userData.userType}</h1>
-            ID<h1>{userData._id}</h1>
-            <button type="button" onClick={editProfileCLick}>
-              {" "}
-              Edit Profile
-            </button>
-            <button type="button" onClick={ViewSubject}>
-              {" "}
-              View Subjects
-            </button>
-            
-            {/* <Link
-              to={{
-                pathname: `/dashboard/updateProfile/${UserID}`,
-                state: { _id: userData._id },
-              }}
-              className="btn btn-primary"
-            >
-              Update Profile
-            </Link> */}
-          </li>
-          <span>Hi</span>
-        </ul>
-      </nav>
-      <button onClick={logOut} className="btn btn-primary">
-        Log Out
-      </button>
+      <div className="auth-wrapper" style={{ height: "auto" }}>
+        <div className="auth-inner" style={{ width: "auto" }}>
+          <h1>Admin Dashboard</h1>
+          <nav>
+            <ul>
+              Name<h1>{userData.fname}</h1>
+              Last<h1>{userData.lname}</h1>
+              Email<h1>{userData.email}</h1>
+              UserType<h1>{userData.userType}</h1>
+              ID<h1>{userData._id}</h1>
+              <button type="button" onClick={editProfileCLick}>
+                {" "}
+                Edit Profile
+              </button>
+              <button type="button" onClick={ViewSubject}>
+                {" "}
+                View Subjects
+              </button>
+              <button type="button" onClick={ViewUsers}>
+                {" "}
+                View Users
+              </button>
+              <button type="button" onClick={CreateExam}>
+                {" "}
+                Create Exam
+              </button>
+            </ul>
+          </nav>
+          <button onClick={logOut} className="btn btn-primary">
+            Log Out
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
