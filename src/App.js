@@ -18,6 +18,7 @@ import ViewTest from "./Exam/ViewTest";
 import ViewQuestions from './Exam/viewQuestions';
 import SubjectTests from './Exam/studentViewTest';
 import StudentTakeTest from './Exam/studentTakeTest';
+import AdminViewResults from "./Exam/adminViewResults";
 
 const Dashboard = lazy(() => import("./Pages/dashboard"));
 
@@ -63,6 +64,10 @@ function App() {
             <Route
               path="/dashboard/SubjectTests/:subjectname/:taketestid"
               element={<StudentTakeTest />}
+            />
+            <Route
+              path="/dashboard/viewAllStudentResults"
+              element={<AdminViewResults />}
             />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

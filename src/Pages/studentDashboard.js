@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function StudentDashboard({ userData }){
     const navigate = useNavigate();
     const id = userData._id;
+    console.log(id);
 
 
     const logOut = () =>{
@@ -14,7 +15,7 @@ export default function StudentDashboard({ userData }){
     function editProfileCLick() {
       navigate(`/dashboard/updateProfile/${id}`, {
         state: {
-          id,
+          userData: userData,
         },
       });
     }

@@ -4,12 +4,16 @@ import Dashboard from './dashboard';
   
 
 export default function EditProfile() {
+  const location = useLocation();
   let navigate = useNavigate();
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
+  const userData = location.state.userData;
+  const [fname, setFname] = useState(userData.fname);
+  const [lname, setLname] = useState(userData.lname);
   const [password, setPassword] = useState("");
   const { id } = useParams();
   const token = localStorage.getItem("token");
+  
+ 
   
   //const [email, setEmail] = useState("");
   //const location = useLocation();
@@ -83,6 +87,7 @@ export default function EditProfile() {
               type="text"
               className="form-control"
               placeholder="First name"
+              value={fname}
               onChange={(e) => setFname(e.target.value)}
               required
             />
@@ -94,6 +99,7 @@ export default function EditProfile() {
               type="text"
               className="form-control"
               placeholder="Last name"
+              value={lname}
               onChange={(e) => setLname(e.target.value)}
               required
             />

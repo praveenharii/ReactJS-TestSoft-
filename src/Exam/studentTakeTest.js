@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams , useLocation } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCheckCircle,
-  faTimesCircle,
-} from "@fortawesome/free-solid-svg-icons";
+
 import moment from "moment";
 import "moment-duration-format";
 
 
 export default function StudentTakeTest() {
       const location = useLocation();
-      const id = location.state.id;
+      const {id} = location.state;
       //console.log(id);
      
      
     const [test, setTest] = useState(null);
     const [userAnswers, setUserAnswers] = useState({});
-    const timeRemainingInMinutes = Math.floor(timeRemaining / 60);
     const [timeRemaining, setTimeRemaining] = useState(0);
     const { subjectname , taketestid } = useParams();
-    //console.log(subjectname, taketestid);
-    // console.log(id);
+    //const [submitted, setSubmitted] = useState(false);
+
+    const timeRemainingFormatted = moment
+    .duration(timeRemaining, "seconds")
+    .format("mm:ss", { trim: false });
+    
     
 
   useEffect(() => {
@@ -34,8 +33,11 @@ export default function StudentTakeTest() {
       .then((res) => res.json())
       .then((data) => {
         setTest(data.data);
-        setTimeRemaining(moment(data.data.timeLimit).diff(moment(), "seconds"));
+        setTimeRemaining(moment.duration(data.data.timeLimit, "minutes").asSeconds());
         console.log(data);
+        if ((data["status"]) = "ok"){
+          alert("Please complete the test before submitting!")
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -51,17 +53,18 @@ export default function StudentTakeTest() {
      return () => clearInterval(timer);
    }, []);
 
-   const handleAnswerSelect = (questionIndex, optionIndex) => {
+   const handleAnswerSelect = (questionIndex, selectedOption) => {
      setUserAnswers((prevAnswers) => ({
        ...prevAnswers,
-       [questionIndex]: optionIndex,
+       [questionIndex]: selectedOption,
      }));
    };
 
    const handleSubmitTest = async () => {
+    console.log(userAnswers);
      try {
        const response = await fetch(
-         `/subjects/${id}/${subjectname}/tests/${taketestid}/submit`,
+         `http://localhost:5000/${JSON.stringify(id)}/${subjectname}/tests/${taketestid}/submit`,
          {
            method: "POST",
            headers: {
@@ -74,6 +77,8 @@ export default function StudentTakeTest() {
        );
        const data = await response.json();
        console.log(data);
+       alert(data.message);
+       //setSubmitted(true);
      } catch (error) {
        console.error(error);
      }
@@ -89,10 +94,10 @@ export default function StudentTakeTest() {
         <div className="container">
           <h1>{test.name}</h1>
           <h5>
-            Time Remaining:{" "}
-            {moment
+            Time Remaining:{timeRemainingFormatted}
+            {/* {moment
               .duration(timeRemainingInMinutes, "minutes")
-              .format("hh:mm:ss", { trim: false })}
+              .format("hh:mm:ss", { trim: false })} */}
           </h5>
           <Table bordered hover>
             <thead>
@@ -112,11 +117,12 @@ export default function StudentTakeTest() {
                       <div key={optionIndex}>
                         <Button
                           variant={
-                            userAnswers[index] === optionIndex
+                            userAnswers[index] === option 
                               ? "primary"
                               : "outline-secondary"
                           }
-                          onClick={() => handleAnswerSelect(index, optionIndex)}
+                          onClick={() => handleAnswerSelect(index, option)}
+                          
                         >
                           {option}
                         </Button>
@@ -127,7 +133,11 @@ export default function StudentTakeTest() {
               ))}
             </tbody>
           </Table>
-          <Button variant="success" onClick={handleSubmitTest}>
+          <Button
+            variant="success"
+            onClick={handleSubmitTest}
+            
+          >
             Submit Test
           </Button>
         </div>
@@ -135,3 +145,6 @@ export default function StudentTakeTest() {
     </div>
   );
 }
+// && !submitted
+// disabled = { submitted };
+// disabled = { submitted };

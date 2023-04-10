@@ -16,7 +16,6 @@ export default function ViewUsers() {
   
      useEffect(() => {
       currentPage.current=1;
-      //  getAlluser();
        getPaginatedUsers();
     }, []);
 

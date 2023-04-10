@@ -16,6 +16,7 @@ export default function AdminDashboard({ userData }) {
       navigate(`/dashboard/updateProfile/${id}`, {
         state: {
           id,
+          userData: userData,
         },
       });
     }
@@ -30,6 +31,10 @@ export default function AdminDashboard({ userData }) {
 
     function CreateExam(){
       navigate("/createExam");
+    }
+
+    function ViewStudentResults() {
+      navigate("/dashboard/viewAllStudentResults");
     }
 
 
@@ -60,6 +65,10 @@ export default function AdminDashboard({ userData }) {
               <button type="button" onClick={CreateExam}>
                 {" "}
                 Create Exam
+              </button>
+              <button type="button" onClick={ViewStudentResults}>
+                {" "}
+                View All student results
               </button>
             </ul>
           </nav>
