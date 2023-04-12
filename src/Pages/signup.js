@@ -1,75 +1,83 @@
 import React, { useState } from 'react';
-// import { authentication } from "./firebase_config";
-// // const firebase = require("./firebase_config");
-// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-// import userEvent from '@testing-library/user-event';
+import { useNavigate } from "react-router-dom";
+import { auth } from "./firebase_config";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import Loginnavigation from "./Topnavbar/loginnavbar.js";
 import Form from "react-bootstrap/Form";
 
 
-
-
-//const countryCode = "+60";
 export default function SignUp() {
+            const navigate = useNavigate();
             const [fname ,setFname] =  useState("");
             const [lname ,setLname] =  useState("");
             const [email ,setEmail] =  useState("");
-            //const [phoneNumber ,setPhoneNumber] =  useState("");
+            const [phoneNumber ,setPhoneNumber] =  useState("");
             const [password ,setPassword] =  useState("");
-            // const [expandForm, setExpandForm] = useState(false);
-            // const [OTP,setOTP] = useState("");
+             //const [expandForm, setExpandForm] = useState(false);
+             const [otp,setOTP] = useState("");
             const [userType, setUserType] = useState("");
             const [secretKey, setSecretKey] = useState("");
+            const [verified,setVerified] = useState(false);
       
-// const generateRecaptcha = () => {
-//   window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-//             'size': 'invisible',
-//             'callback': (response) => {
-//               // reCAPTCHA solved, allow signInWithPhoneNumber.
-//             }
-//           },
-//           authentication
-//         );
-// }
+const generateRecaptcha = () => {
+  window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': (response) => {
+              console.log(response);
+            }
+          },        
+          auth
+        );
+}
            
-//     const requestOTP = (e) =>{
-//       e.preventDefault();
-//       if (phoneNumber.length >=10 ){
-//         setExpandForm(true);
-//         generateRecaptcha();
-//         let appVerifier =  window.recaptchaVerifier;
-//         signInWithPhoneNumber(authentication, phoneNumber, appVerifier)
-//         .then(confirmationResult => {
-//           window.confirmationResult = confirmationResult
-//         }).catch((error) => {
-//           // Error; SMS not sent
-//           // ...
-//         // console.log(error);
-//         });
-//           }
-//         } 
-//     const verifyOTP = (e) => {
-//         let otp =  e.target.value;
-//         setOTP(otp);
+    const requestOTP = (e) =>{
+      e.preventDefault();
+      if (phoneNumber.length >=10 ){
+        //setExpandForm(true);
+        const phoneNumberWithCountryCode = "+60" + phoneNumber;
+        generateRecaptcha();
+        let appVerifier =  window.recaptchaVerifier;
+        signInWithPhoneNumber(auth, phoneNumberWithCountryCode, appVerifier)
+          .then((confirmationResult) => {
+            window.confirmationResult = confirmationResult;
+          })
+          .catch((error) => {
+            // Error; SMS not sent
+            // ...
+             console.log(error);
+          });
+          }
+        } 
 
-//         if(otp.length === 6){
-//           console.log(otp);
-//         }
-//     }       
+    const verifyOTP = (otp) => {
+       if (otp.length === 6) {
+         window.confirmationResult
+           .confirm(otp)
+           .then((result) => {
+             console.log(result);
+             alert("verified Successfully");
+             setVerified(true);
+           })
+           .catch((error) => {
+             console.log(error);
+           });
+       }
+    }       
   
 
     const handleSubmit = (e) => {
-       if (userType === "Admin" && secretKey !== "Secret") {
+      
+       if (userType === "Tutor" && secretKey !== "Secret") {
             e.preventDefault();
-            alert("Invalid Admin");
+            alert("Invalid Tutor");
           }
           else{
             e.preventDefault();
           
-          //  if (){ 
+            // if (verified !== false){ 
         
             
-            console.log(fname, lname, email, password, userType);
+            console.log(fname, lname, email, password,phoneNumber, userType);
             fetch("http://localhost:5000/register", {
                 method: "POST",
                 crossDomain: true,
@@ -82,6 +90,7 @@ export default function SignUp() {
                     fname,
                     lname,
                     email,
+                    phoneNumber,
                     password,
                     userType,     
                 }),
@@ -91,13 +100,17 @@ export default function SignUp() {
                   if(data.error !== "User Exists"){
                     console.log(data, "userRegister");
                     alert("User Created Successfully");
+                    setTimeout(() => {
+                      navigate("/sign-in"); // Navigate to login page
+                    }, 10);
                     }else{
                     alert(data.error);
                   }
 
                 });
-            //  }else{
-           // alert("Please Verify Phone Number");
+            //   }else{
+            // alert("Please Verify Phone Number");
+            //   }
       } 
     };
 
@@ -129,7 +142,7 @@ export default function SignUp() {
                      <br />
                    </div>
 
-                   {userType === "Admin" ? (
+                   {userType === "Tutor" ? (
                      <div className="mb-3">
                        <label>Secret Key</label>
                        <input
@@ -174,22 +187,55 @@ export default function SignUp() {
                      />
                    </div>
 
-                   {/* <div className="mb-3">
-              <label>Phone Number(01x-xxxxxxx)</label>
-              <input
-                type="phoneNumber"
-                className="form-control"
-                placeholder="Enter Phone Number"
-                
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                
-             
-              />
-              {expandForm === false? ( 
+                   <div className="mb-3">
+                     <label>Phone Number(01xxxxxxxx)</label>
+                     <input
+                       type="phoneNumber"
+                       className="form-control"
+                       placeholder="Enter Phone Number"
+                       onChange={(e) => setPhoneNumber(e.target.value)}
+                     />
+                     <input
+                       type="button"
+                       value={"Request OTP"}
+                       onClick={requestOTP}
+                       style={{
+                         backgroundColor: "#0163d2",
+                         width: "100%",
+                         padding: 8,
+                         color: "white",
+                         border: "none",
+                       }}
+                     />
+                   </div>
+                   <div className="mb-3">
+                     <label>OTP</label>
+                     <input
+                       type="number"
+                       className="form-control"
+                       placeholder="OTP"
+                       onChange={(e) => setOTP(e.target.value)}
+                       // value={}
+                       //onChange={(e) => setVerificationCode(e.target.value)}
+                     />
+                     <input
+                       type="button"
+                       value="Verify"
+                       onClick={() => verifyOTP(otp)}
+                       style={{
+                         backgroundColor: "#0163d2",
+                         width: "100%",
+                         padding: 8,
+                         color: "white",
+                         border: "none",
+                       }}
+                     />
+                   </div>
+                   {/* {expandForm === false? ( 
                 <input
                   type="button"
-                  
-                  onClick={requestOTP}
+                 value={OTP || "Request OTP"}
+                  onClick={sendOTP}
                   style={{
                     backgroundColor: "#0163d2",
                     width: "100%",
@@ -197,12 +243,10 @@ export default function SignUp() {
                     color: "white",
                     border: "none",
                   }}
-                  value={OTP}
-                  
                 />
              ):null }
             </div> 
-
+            
              {expandForm === true?(
               <div className="mb-3">
                 <label>OTP</label>
@@ -211,7 +255,7 @@ export default function SignUp() {
                   value="OTP"
                   className="form-control"
                   placeholder="OTP" 
-                  onChange={verifyOTP}
+                  //onChange={verifyOTP}
                  // value={}
                   //onChange={(e) => setVerificationCode(e.target.value)}
                 />
@@ -229,7 +273,7 @@ export default function SignUp() {
                  
                 />
               </div>
-            ): null } */}
+             ): null } */}
 
                    <div className="mb-3">
                      <label>Password</label>
@@ -255,7 +299,7 @@ export default function SignUp() {
              </div>
            </>
          );     
-  }
+  };
 
         
 

@@ -88,3 +88,17 @@ html,
 .navbar-brand{
   color: #34557a;
 }
+
+@media screen and (max-width: 768px) {
+  .auth-inner {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+@media (min-width: 576px) {
+  .navbar {
+    font-size: 1.0rem;
+    /* Set a fixed font size for the navbar when viewport is >= 576px */
+  }
+}
