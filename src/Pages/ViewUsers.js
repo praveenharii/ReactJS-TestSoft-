@@ -120,6 +120,7 @@ export default function ViewUsers() {
              <th>Name</th>
              <th>Email</th>
              <th>User Type</th>
+             <th>Verification</th>
              <th>Delete</th>
            </tr>
          </thead>
@@ -132,6 +133,7 @@ export default function ViewUsers() {
                  </td>
                  <td>{i.email}</td>
                  <td>{i.userType}</td>
+                 <td>{i.status}</td>
                  <td>
                    <FontAwesomeIcon
                      center
@@ -143,8 +145,8 @@ export default function ViewUsers() {
              </tbody>
            );
          })}
-       </table> <br />
-
+       </table>{" "}
+       <br />
        <ReactPaginate
          breakLabel="..."
          nextLabel="next >"
@@ -162,13 +164,10 @@ export default function ViewUsers() {
          nextClassName="page-item"
          nextLinkClassName="page-link"
          activeClassName="active"
-         forcePage={currentPage.current-1}
+         forcePage={currentPage.current - 1}
        />
-       <input placeholder='Limit' onChange={e=>setLimit(e.target.value)}/>
-       <button onClick={changeLimit} >
-         Set limit
-       </button>
-
+       <input placeholder="Limit" onChange={(e) => setLimit(e.target.value)} />
+       <button onClick={changeLimit}>Set limit</button>
        <button onClick={logOut} className="btn btn-primary">
          Log Out
        </button>

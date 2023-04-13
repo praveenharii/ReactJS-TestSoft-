@@ -30,19 +30,29 @@ export default function Login()  {
         .then((res) => res.json())
         .then((data) => {
             console.log(data, "userRegister");
-            if(data.status==="ok"){
-                alert("Login Successfully");
-            window.localStorage.setItem("token", data.data ); /*storing token in nodejs(localStorage)*/
-            window.localStorage.setItem("loggedIn", true);// to allow user logged in when open another window
+            try {
+               if (data.status === "ok") {
+                 alert("Login Successfully");
+                 window.localStorage.setItem(
+                   "token",
+                   data.data
+                 ); /*storing token in nodejs(localStorage)*/
+                 window.localStorage.setItem("loggedIn", true); // to allow user logged in when open another window
 
-            window.location.href="./dashboard";
+                 window.location.href = "./dashboard";
+               }
+               if (data.error === "User not exists") {
+                 alert("User Not Exist");
+               }
+               if (data.status === "error") {
+                 alert("Wrong Password, please try again..");
+               }
+            } catch (error) {
+              alert(error);
             }
-            if (data.error === "User not exists") {
-                alert("User Not Exist");
-            }
-            if (data.status === "error") {
-                alert("Wrong Password, please try again..");
-            }
+            // else{
+            //   alert(data.error)
+            // }
         });
 }
 
