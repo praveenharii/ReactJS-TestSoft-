@@ -9,7 +9,7 @@ import "moment-duration-format";
 export default function StudentTakeTest() {
       const location = useLocation();
       const {id} = location.state;
-      //console.log(id);
+      console.log(id);
      
      
     const [test, setTest] = useState(null);
@@ -95,9 +95,7 @@ export default function StudentTakeTest() {
           <h1>{test.name}</h1>
           <h5>
             Time Remaining:{timeRemainingFormatted}
-            {/* {moment
-              .duration(timeRemainingInMinutes, "minutes")
-              .format("hh:mm:ss", { trim: false })} */}
+          
           </h5>
           <Table bordered hover>
             <thead>
@@ -145,6 +143,3 @@ export default function StudentTakeTest() {
     </div>
   );
 }
-// && !submitted
-// disabled = { submitted };
-// disabled = { submitted };

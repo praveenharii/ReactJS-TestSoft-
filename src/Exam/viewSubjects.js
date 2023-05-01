@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-import ViewTest from './ViewTest';
+
 
 export default function ViewSubject() {
   const [data, setData] = useState([]);
@@ -100,18 +100,5 @@ export default function ViewSubject() {
   );
 }
 
-// <ul>
-//             {data.map((i) => (
-//               <li key={i._id}>
-//                 <Link to={`/subjects/${i.name}/tests`}>{i.name}</Link>
-
-//                 <FontAwesomeIcon
-//                   center
-//                   icon={faTrash}
-//                   onClick={() => deleteSubject(i._id, i.name)}
-//                 />
-//               </li>
-//             ))}
-//           </ul>
 
 

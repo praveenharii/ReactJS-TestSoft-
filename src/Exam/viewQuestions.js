@@ -14,33 +14,7 @@ export default function ViewQuestions() {
   const { subject, testid } = useParams();
   
 
- 
 
-  // //const { subject } = match.params;
-  // const deleteQuestion = (id, question) => {
-  //   if (
-  //     window.confirm(`Please Click Ok if you want to delete this question ${question}`)
-  //   ) {
-  //     fetch("http://localhost:5000/deleteQuestion", {
-  //       method: "DELETE",
-  //       crossDomain: true,
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
-  //       body: JSON.stringify({
-  //         questionid: id,
-  //       }),
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         alert(data.data);
-  //         console.log(data);
-  //       });
-  //   } else {
-  //   }
-  // };
 
   useEffect(() => {
     fetch(`http://localhost:5000/subjects/${subject}/tests/${testid}`, {
@@ -121,24 +95,3 @@ export default function ViewQuestions() {
 
 
 
-{/* <table className="centered" style={{ width: 350 }}>
-            <tbody>
-              {data.questions.map((question, index) => (
-                <tr key={index}>
-                  <td>{question.question}</td>
-                  
-                 
-                </tr>
-              ))}
-            </tbody>
-          </table> */}
-
-
-
-//  <td>
-//                       <FontAwesomeIcon
-//                         center
-//                         icon={faTrash}
-//                         onClick={() => deleteTest(i._id, i.questionid)}
-//                       />
-//                     </td>

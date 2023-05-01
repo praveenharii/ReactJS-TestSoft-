@@ -4,7 +4,7 @@ import {faTrash} from  "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Link} from 'react-router-dom';
 import ReactPaginate from "react-paginate";
-
+import TopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 
 export default function ViewUsers() {
      const [data, setData] = useState([]);
@@ -95,83 +95,95 @@ export default function ViewUsers() {
 
 
  return (
-   <div className="auth-wrapper" style={{ height: "auto" }}>
-     <div className="auth-inner" style={{ width: "auto" }}>
-       <h3>Welcome Admin</h3>
-       <Link
-         to={{
-           pathname: "/dashboard",
-         }}
-         className="btn btn-primary"
-       >
-         Dashboard
-       </Link>
-       <Link
-         to={{
-           pathname: "/dashboard/getAllUsers/createUser",
-         }}
-         className="btn btn-primary"
-       >
-         createUser
-       </Link>
-       <table style={{ width: 500 }}>
-         <thead>
-           <tr>
-             <th>Name</th>
-             <th>Email</th>
-             <th>User Type</th>
-             <th>Verification</th>
-             <th>Delete</th>
-           </tr>
-         </thead>
-         {data.map((i) => {
-           return (
-             <tbody>
-               <tr>
-                 <td key={i}>
-                   {i.fname} {i.lname}
-                 </td>
-                 <td>{i.email}</td>
-                 <td>{i.userType}</td>
-                 <td>{i.status}</td>
-                 <td>
-                   <FontAwesomeIcon
-                     center
-                     icon={faTrash}
-                     onClick={() => deleteUser(i._id, i.fname)}
-                   />
-                 </td>
-               </tr>
-             </tbody>
-           );
-         })}
-       </table>{" "}
-       <br />
-       <ReactPaginate
-         breakLabel="..."
-         nextLabel="next >"
-         onPageChange={handlePageClick}
-         pageRangeDisplayed={5}
-         pageCount={pageCount}
-         previousLabel="< previous"
-         renderOnZeroPageCount={null}
-         marginPagesDisplayed={2}
-         containerClassName="pagination justify-content-center"
-         pageClassName="page-item"
-         pageLinkClassName="page-link"
-         previousClassName="page-item"
-         previousLinkClassName="page-link"
-         nextClassName="page-item"
-         nextLinkClassName="page-link"
-         activeClassName="active"
-         forcePage={currentPage.current - 1}
-       />
-       <input placeholder="Limit" onChange={(e) => setLimit(e.target.value)} />
-       <button onClick={changeLimit}>Set limit</button>
-       <button onClick={logOut} className="btn btn-primary">
-         Log Out
-       </button>
+   <>
+     <TopNavBar />
+     <br />
+     <div className="auth-wrapper" style={{ height: "auto" }}>
+       <div className="auth-inner" style={{ width: "620px" }}>
+         <h3>View All Users</h3>
+         <Link
+           to={{
+             pathname: "/dashboard/getAllUsers/createUser",
+           }}
+           className="btn btn-primary"
+         >
+           createUser
+         </Link>
+         <table style={{ width: 500 }}>
+           <thead>
+             <tr>
+               <th>Name</th>
+               <th>Email</th>
+               <th>UserType</th>
+               <th>Verification</th>
+               <th>Delete</th>
+             </tr>
+           </thead>
+           {data.map((i) => {
+             return (
+               <tbody>
+                 <tr>
+                   <td key={i}>
+                     {i.fname} {i.lname}
+                   </td>
+                   <td>{i.email}</td>
+                   <td>{i.userType}</td>
+                   <td>{i.status}</td>
+                   <td>
+                     <FontAwesomeIcon
+                       center
+                       icon={faTrash}
+                       onClick={() => deleteUser(i._id, i.fname)}
+                     />
+                   </td>
+                 </tr>
+               </tbody>
+             );
+           })}
+         </table>{" "}
+         <br />
+         <div class="input-group mb-3">
+           <input
+             type="text"
+             class="form-control"
+             placeholder="Limit To View Users"
+             aria-describedby="button-addon2"
+             onChange={(e) => setLimit(e.target.value)}
+           />
+           <button
+             class="btn btn-outline-secondary"
+             type="button"
+             id="button-addon2"
+             onClick={changeLimit}
+           >
+             Set limit
+           </button>
+         </div>
+         <br />
+        
+         <br />
+         <br />
+         <ReactPaginate
+           breakLabel="..."
+           nextLabel="next >"
+           onPageChange={handlePageClick}
+           pageRangeDisplayed={5}
+           pageCount={pageCount}
+           previousLabel="< previous"
+           renderOnZeroPageCount={null}
+           marginPagesDisplayed={2}
+           containerClassName="pagination justify-content-center"
+           pageClassName="page-item"
+           pageLinkClassName="page-link"
+           previousClassName="page-item"
+           previousLinkClassName="page-link"
+           nextClassName="page-item"
+           nextLinkClassName="page-link"
+           activeClassName="active"
+           forcePage={currentPage.current - 1}
+         />
+       </div>
      </div>
-   </div>
+   </>
  );
 }

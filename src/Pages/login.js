@@ -1,7 +1,7 @@
 import React, { Component, useState, Link } from 'react'
-
-import Loginnavigation from './Topnavbar/loginnavbar.js';
-
+//import "../index.css";
+import Loginnavigation from './Topsidenavbar/loginnavbar.js';
+import Footer from '../Components/Footer.js';
 
 export default function Login()  {
     
@@ -30,6 +30,7 @@ export default function Login()  {
         .then((res) => res.json())
         .then((data) => {
             console.log(data, "userRegister");
+            //alert(data.error);
             try {
                if (data.status === "ok") {
                  alert("Login Successfully");
@@ -47,14 +48,18 @@ export default function Login()  {
                if (data.status === "error") {
                  alert("Wrong Password, please try again..");
                }
+               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
+                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
+               }
             } catch (error) {
-              alert(error);
+              alert(data.error);
             }
             // else{
             //   alert(data.error)
             // }
         });
 }
+
 
     
         return (
@@ -87,10 +92,15 @@ export default function Login()  {
                   </div>
 
                   <div class="mb-3 form-check">
-                   <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                    <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="exampleCheck1"
+                    />
+                    <label class="form-check-label" for="exampleCheck1">
+                      Remember Me
+                    </label>
                   </div>
-
 
                   <div className="d-grid">
                     <button type="submit" className="btn btn-primary">
@@ -106,6 +116,7 @@ export default function Login()  {
                 </form>
               </div>
             </div>
+            <Footer />
           </>
         );
     }

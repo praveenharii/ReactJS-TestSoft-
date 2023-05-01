@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { useNavigate } from "react-router-dom";
+import TutorSideBar from './Topsidenavbar/Side-N-Topbar-Tutor';
 
 export default function tutorDashboard({userData}){
   const navigate = useNavigate();
@@ -22,37 +23,40 @@ export default function tutorDashboard({userData}){
   }
 
  function CreateExam() {
-   navigate("/createExam");
+   navigate("/dashboard/createExam");
  }
 
 
 
     
     return (
-      <div className="auth-wrapper">
-        <div className="auth-inner">
-          <div>
-            Name<h1>{userData.fname}</h1>
-            Email <h1>{userData.email}</h1>
-            <br />
-            <button type="button" onClick={editProfileCLick}>
-              {" "}
-              Edit Profile
-            </button>
-            <button type="button" onClick={ViewSubject}>
-              {" "}
-              View Subjects
-            </button>
-            <button type="button" onClick={CreateExam}>
-              {" "}
-              Create Exam
-            </button>
-            <button onClick={logOut} className="btn btn-primary">
-              Log Out
-            </button>
+      <>
+      <TutorSideBar userData={userData}/>
+        <div className="auth-wrapper">
+          <div className="auth-inner">
+            <div>
+              Name<h1>{userData.fname}</h1>
+              Email <h1>{userData.email}</h1>
+              <br />
+              <button type="button" onClick={editProfileCLick}>
+                {" "}
+                Edit Profile
+              </button>
+              <button type="button" onClick={ViewSubject}>
+                {" "}
+                View Subjects
+              </button>
+              <button type="button" onClick={CreateExam}>
+                {" "}
+                Create Exam
+              </button>
+              <button onClick={logOut} className="btn btn-primary">
+                Log Out
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
       //getting data displayed on Dashboard
  

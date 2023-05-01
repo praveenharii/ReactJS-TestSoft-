@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { authentication } from "./firebase_config";
-// // const firebase = require("./firebase_config");
-// import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-// import userEvent from '@testing-library/user-event';
-import Loginnavigation from "./Topnavbar/loginnavbar.js";
+import TopDashbar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 
-//const countryCode = "+60";
+
 export default function CreateUser() {
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [OTP,setOTP] = useState("");
   const [userType, setUserType] = useState("");
   let navigate = useNavigate();
   
@@ -57,7 +52,8 @@ export default function CreateUser() {
 
   return (
     <>
-      
+      <TopDashbar />
+      {/* <AdminSidebar userData={userData} /> */}
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={handleSubmit}>
@@ -73,7 +69,8 @@ export default function CreateUser() {
             <div id="recaptcha-container"></div>
 
             <div>
-              Create user As
+              Create user As:
+              <br />
               <input
                 type="radio"
                 name="UserType"
@@ -81,7 +78,7 @@ export default function CreateUser() {
                 onChange={(e) => setUserType(e.target.value)}
                 required
               />{" "}
-              Student
+              Student{" "}
               <input
                 type="radio"
                 name="UserType"
@@ -89,7 +86,7 @@ export default function CreateUser() {
                 onChange={(e) => setUserType(e.target.value)}
                 required
               />{" "}
-              Tutor
+              Tutor{" "}
               <input
                 type="radio"
                 name="UserType"
@@ -97,8 +94,10 @@ export default function CreateUser() {
                 onChange={(e) => setUserType(e.target.value)}
                 required
               />{" "}
-              Admin
+              Admin{" "}
             </div>
+
+            <br />
 
             <div className="mb-3">
               <label>First name</label>

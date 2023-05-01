@@ -1,16 +1,31 @@
 import React, { Component, useEffect, useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ViewSubject from './../Exam/viewSubjects';
-import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faPersonCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import AdminSidebar from './Topsidenavbar/Side-N-Topbar.js';
+import "./dashboard.css";
+import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
+import { 
+  MDBIcon,
+  MDBCollapse,
+  MDBRipple,
+  MDBCol,
+  MDBRow
+} from "mdb-react-ui-kit";
+import Footer from "../Components/Footer";
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
    const navigate = useNavigate();
    const id = userData._id; 
    const [data, setData] = useState([]);
-   
+   const [userNum, setUserNum] = useState([]);
+   console.log(userData);
   const logOut = () => {
     window.localStorage.clear();
     window.location.href = "./sign-in";
@@ -34,12 +49,28 @@ export default function AdminDashboard({ userData }) {
     }
 
     function CreateExam(){
-      navigate("/createExam");
+      navigate("/dashboard/createExam");
     }
 
     function ViewStudentResults() {
-      navigate("/dashboard/viewAllStudentResults");
+      navigate("/dashboard/viewAllStudentResults", {
+        state: {
+          id,
+          userData: userData,
+        },
+      });
     }
+
+    const getNumberOfUsers = () => {
+      fetch("http://localhost:5000/getNumbersOfUsers", {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((users) => {
+          console.log(users, "allUsers");
+          setUserNum(users);
+        });
+    };
 
     const getAllPendingUsers = () => {
       fetch("http://localhost:5000/getAllPendingUsers", {
@@ -103,86 +134,168 @@ export default function AdminDashboard({ userData }) {
 
     useEffect(() => {
       getAllPendingUsers();
+      getNumberOfUsers();
     }, []);
 
-  return (
-    <div>
-      <div className="auth-wrapper" style={{ height: "auto" }}>
-        <div className="auth-inner" style={{ width: "auto" }}>
-          <h1>Admin Dashboard</h1>
-          <table style={{ width: 500 }}>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>User Type</th>
-                <th>Status</th>
-                <th>Verify</th>
-                <th>Reject</th>
-              </tr>
-            </thead>
-            {data.map((i) => {
-              return (
-                <tbody>
-                  <tr>
-                    <td key={i}>
-                      {i.fname} {i.lname}
-                    </td>
-                    <td>{i.email}</td>
-                    <td>{i.userType}</td>
-                    <td>{i.status}</td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        onClick={() => verifyUser(i._id, i.fname, i.email)}
-                      />
-                    </td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faXmark}
-                        onClick={() => rejectUser(i._id, i.fname)}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
-          </table>{" "}
-          <br />
-          <nav>
-            <ul>
-              Name<h1>{userData.fname}</h1>
-              Last<h1>{userData.lname}</h1>
-              Email<h1>{userData.email}</h1>
-              UserType<h1>{userData.userType}</h1>
-              ID<h1>{userData._id}</h1>
-              <button type="button" onClick={editProfileCLick}>
-                {" "}
-                Edit Profile
-              </button>
-              <button type="button" onClick={ViewSubject}>
-                {" "}
-                View Subjects
-              </button>
-              <button type="button" onClick={ViewUsers}>
-                {" "}
-                View Users
-              </button>
-              <button type="button" onClick={CreateExam}>
-                {" "}
-                Create Exam
-              </button>
-              <button type="button" onClick={ViewStudentResults}>
-                {" "}
-                View All student results
-              </button>
-            </ul>
-          </nav>
-          <button onClick={logOut} className="btn btn-primary">
-            Log Out
-          </button>
+  
+   
+
+    return (
+      <>
+        <AdminSidebar userData={userData} />
+        {/* <DashTopbar /> */}
+        <div>
+          Second auto-column
+          <div>
+            <MDBRow className="g-2">
+              <MDBCol size="3">3 of 12</MDBCol>
+              <MDBCol size="5">
+                <div className="App">
+                  <div className="auth-wrapper" style={{ height: "auto" }}>
+                    <div className="auth-inner" style={{ width: "auto" }}>
+                      <h1>Admin Dashboard</h1>
+                      <div className="profile-wrapper">
+                        <div className="profile-inner">
+                          {userNum.map((user) => (
+                            <UserCountCard
+                              key={user._id}
+                              userType={user._id}
+                              count={user.count}
+                            />
+                          ))}
+                        </div>
+                      
+                      </div>
+                      <br />
+                      <h3>User Approval Status</h3>
+                      <Table bordered hover>
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>User Type</th>
+                            <th>Status</th>
+                            <th>Verify</th>
+                            <th>Reject</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.map((i, index) => {
+                            return (
+                              <tr key={i}>
+                                <td>{index + 1}</td>
+                                <td>
+                                  {i.fname} {i.lname}
+                                </td>
+                                <td>{i.email}</td>
+                                <td>{i.userType}</td>
+                                <td>{i.status}</td>
+                                <td>
+                                  <FontAwesomeIcon
+                                    type="button"
+                                    class="btn btn-success common-btn"
+                                    icon={faCheck}
+                                    onClick={() =>
+                                      verifyUser(i._id, i.fname, i.email)
+                                    }
+                                  />
+                                </td>
+                                <td>
+                                  <FontAwesomeIcon
+                                    type="button"
+                                    class="btn btn-danger common-btn"
+                                    icon={faPersonCircleXmark}
+                                    onClick={() => rejectUser(i._id, i.fname)}
+                                  />
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>{" "}
+                      <br />
+                      <nav>
+                        <ul>
+                          Name<h1>{userData.fname}</h1>
+                          Last<h1>{userData.lname}</h1>
+                          Email<h1>{userData.email}</h1>
+                          UserType<h1>{userData.userType}</h1>
+                          ID<h1>{userData._id}</h1>
+                          <button type="button" onClick={editProfileCLick}>
+                            {" "}
+                            Edit Profile
+                          </button>
+                          <button type="button" onClick={ViewSubject}>
+                            {" "}
+                            View Subjects
+                          </button>
+                          <button type="button" onClick={ViewUsers}>
+                            {" "}
+                            View Users
+                          </button>
+                          <button type="button" onClick={CreateExam}>
+                            {" "}
+                            Create Exam
+                          </button>
+                          <button type="button" onClick={ViewStudentResults}>
+                            {" "}
+                            View All student results
+                          </button>
+                        </ul>
+                      </nav>
+                      <button onClick={logOut} className="btn btn-primary">
+                        Log Out
+                      </button>
+                    </div>
+                  </div>
+                </div>
+            
+              </MDBCol>
+              {/* <MDBCol size="4">4 </MDBCol> */}
+            </MDBRow>
+          </div>
         </div>
-      </div>
+        <Footer />
+        {/* 
+        <MDBRow className="g-5">
+          <MDBCol sm="5" md="12">
+            .col-sm-6 .col-md-8
+          </MDBCol>
+          <MDBCol size="6" md="4">
+            .col-6 .col-md-5
+          </MDBCol>
+        </MDBRow> */}
+      </>
+    );
+}
+
+function UserCountCard({ userType, count }) {
+  const cardStyle = {
+    padding: "20px",
+    borderRadius: "20px",
+    boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+    textAlign: "center",
+    width: "calc(33.33% - 10px)",
+    background: `linear-gradient(to bottom, ${
+      userType === "Admin"
+        ? "#f44336"
+        : userType === "Tutor"
+        ? "#2196f3"
+        : userType === "Student"
+        ? "#4caf50"
+        : "#9e9e9e"
+    }, #312)`,
+    color: "#fff",
+    margin: "16px",
+    display: "inline-block",
+  };
+
+  return (
+    <div style={cardStyle}>
+      <h3>{userType}</h3>
+      <p>{count} Users</p>
     </div>
   );
 }
+

@@ -5,7 +5,7 @@ import './index.css';
 // import './bootstrap.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+//import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 
 
 

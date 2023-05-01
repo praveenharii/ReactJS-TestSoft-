@@ -58,7 +58,7 @@ export default function Dashboard() {
 
                      
                        if( data.data == "token expired") {
-                    alert("token expired login again, since you have changed your password");
+                    alert("Token Expired!!Login again..");
                     window.localStorage.clear();
                     window.location.href = "./sign-in";
                       }

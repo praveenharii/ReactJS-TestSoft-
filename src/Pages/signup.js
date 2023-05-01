@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { auth } from "./firebase_config";
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import Loginnavigation from "./Topnavbar/loginnavbar.js";
+import Loginnavigation from "./Topsidenavbar/loginnavbar.js";
 import Form from "react-bootstrap/Form";
-
+import Footer from '../Components/Footer';
 
 export default function SignUp() {
             const navigate = useNavigate();
@@ -45,6 +45,7 @@ const generateRecaptcha = () => {
             // Error; SMS not sent
             // ...
              console.log(error);
+             alert(error);
           });
           }
         } 
@@ -74,7 +75,7 @@ const generateRecaptcha = () => {
           else{
             e.preventDefault();
           
-            // if (verified !== false){ 
+             if (verified !== false){ 
         
             
             console.log(fname, lname, email, password,phoneNumber, userType);
@@ -108,16 +109,18 @@ const generateRecaptcha = () => {
                   }
 
                 });
-            //   }else{
-            // alert("Please Verify Phone Number");
-            //   }
+              }else{
+            alert("Please Verify Phone Number");
+              }
       } 
     };
 
          return (
            <>
              <Loginnavigation />
-             <div className="auth-wrapper">
+             <div />
+             <div />
+             <div className="auth-wrapper" style={{ paddingTop: "100px" }}>
                <div className="auth-inner">
                  <form onSubmit={handleSubmit}>
                    <h3>Sign Up</h3>
@@ -137,7 +140,7 @@ const generateRecaptcha = () => {
                        </option>
                        <option value="Student">Student</option>
                        <option value="Tutor">Tutor</option>
-                       <option value="Admin">Admin</option>
+                       {/* <option value="Admin">Admin</option> */}
                      </Form.Select>
                      <br />
                    </div>
@@ -288,7 +291,7 @@ const generateRecaptcha = () => {
 
                    <div className="d-grid">
                      <button type="submit" className="btn btn-primary">
-                       Sign Up
+                       Request Sign Up
                      </button>
                    </div>
                    <p className="forgot-password text-right">
@@ -297,6 +300,7 @@ const generateRecaptcha = () => {
                  </form>
                </div>
              </div>
+             <Footer />
            </>
          );     
   };
