@@ -59,7 +59,7 @@ const StudentSidebar = ({ userData }) => {
   }
 
   function ViewTestResults() {
-    navigate("/dashboard/createExam");
+    navigate("/dashboard/viewTestResults");
   }
 
  

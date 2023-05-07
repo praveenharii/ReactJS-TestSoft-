@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams , useLocation } from "react-router-dom";
+import { useNavigate, useParams , useLocation, Navigate } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 
 import moment from "moment";
@@ -9,19 +9,19 @@ import "moment-duration-format";
 export default function StudentTakeTest() {
       const location = useLocation();
       const {id} = location.state;
-      console.log(id);
-     
+      const navigate = useNavigate();
+      
+      
      
     const [test, setTest] = useState(null);
     const [userAnswers, setUserAnswers] = useState({});
     const [timeRemaining, setTimeRemaining] = useState(0);
     const { subjectname , taketestid } = useParams();
-    //const [submitted, setSubmitted] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
 
     const timeRemainingFormatted = moment
     .duration(timeRemaining, "seconds")
     .format("mm:ss", { trim: false });
-    
     
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function StudentTakeTest() {
         setTimeRemaining(moment.duration(data.data.timeLimit, "minutes").asSeconds());
         console.log(data);
         if ((data["status"]) = "ok"){
-          alert("Please complete the test before submitting!")
+         // alert("Please complete the test before submitting!")
         }
       })
       .catch((error) => {
@@ -78,11 +78,19 @@ export default function StudentTakeTest() {
        const data = await response.json();
        console.log(data);
        alert(data.message);
-       //setSubmitted(true);
+       setSubmitted(true);
      } catch (error) {
        console.error(error);
      }
    };
+
+   useEffect(() => {
+    if (submitted) {
+      navigate("/dashboard");
+   }
+  }, [submitted,navigate]);
+
+
 
    if (!test) {
      return <div>Loading...</div>;
