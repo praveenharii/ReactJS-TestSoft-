@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Table, Button } from "react-bootstrap";
 import {
   faTrash,
   faSquareArrowUpRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 export default function ViewTest() {
   const [data, setData] = useState([]);
@@ -68,45 +70,47 @@ export default function ViewTest() {
  
 
   return (
-    <div>
-      <div className="auth-wrapper" style={{ height: "auto" }}>
-        <div className="auth-inner" style={{ width: "auto" }}>
-          <h3>All Test:</h3>
-          <table class="centered" style={{ width: 350 }}>
-            <thead>
-              <tr>
-                <th>Test Name</th>
-                <th>View Questions</th>
-                <th>Delete</th>
+    <div className="auth-wrapper" style={{ height: "auto" }}>
+      <div className="auth-inner" style={{ width: "auto" }}>
+        <h3>All Tests:</h3>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Test Name</th>
+              <th>View Questions</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((test) => (
+              <tr key={test._id}>
+                <td>{test.name}</td>
+                <td>
+                  <MDBBtn
+                    onClick={() => {
+                      navigate(`/subjects/${subject}/tests/${test._id}`);
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faSquareArrowUpRight}
+                      className="me-2"
+                    />
+                    View Questions
+                  </MDBBtn>
+                </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => deleteTest(test._id, test.name)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="me-2" />
+                    Delete
+                  </Button>
+                </td>
               </tr>
-            </thead>
-            {data.map((i) => {
-              return (
-                <tbody>
-                  <tr>
-                    <td>{i.name}</td>
-                    <td>
-                      <FontAwesomeIcon
-                        icon={faSquareArrowUpRight}
-                        onClick={() => {
-                          navigate(`/subjects/${subject}/tests/${i._id}`);
-                        }}
-                      />
-                    </td>
-
-                    <td>
-                      <FontAwesomeIcon
-                        center
-                        icon={faTrash}
-                        onClick={() => deleteTest(i._id, i.name)}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </Table>
       </div>
     </div>
   );

@@ -12,6 +12,12 @@ import {
 import AppLogo from "../../images/TestSoftLogo.png";
 
 function NavScrollExample() {
+
+  const logOut = () => {
+    window.localStorage.clear();
+    window.location.href = "../sign-in";
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -57,7 +63,9 @@ function NavScrollExample() {
             />
             
           </Form> */}
-          <Button variant="danger">LogOut</Button>
+          <Button onClick={logOut} variant="danger">
+            LogOut
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>

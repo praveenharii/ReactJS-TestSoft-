@@ -19,7 +19,7 @@ import ViewQuestions from './Exam/viewQuestions';
 import SubjectTests from './Exam/studentViewTest';
 import StudentTakeTest from './Exam/studentTakeTest';
 import AdminViewResults from "./Exam/adminViewResults";
-
+import StudentViewResults from './Exam/studentViewResults';
 
 const Dashboard = lazy(() => import("./Pages/dashboard"));
 
@@ -52,72 +52,75 @@ function App() {
   
   return (
     <Router>
-      
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={isLoggedIn === "true" ? <Dashboard /> : <Login />}
+          />
+
+          <Route path="/sign-in" element={<Login />} />
+          <Route path="/forgot-password" element={<ResetPassword />} />
+          <Route path="/sign-up" element={<SignUp />} />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
+          </Route>
+
+          <Route
+            path="/dashboard/updateProfile/:id"
+            element={<EditProfile />}
+          />
+
+          <Route path="/" element={<ProtectedRoutes />}>
             <Route
-              exact
-              path="/"
-              element={isLoggedIn === "true" ? <Dashboard /> : <Login />}
+              path="/dashboard/getAllUsers/createUser"
+              element={<CreateUser />}
             />
+          </Route>
 
-            <Route path="/sign-in" element={<Login />} />
-            <Route path="/forgot-password" element={<ResetPassword />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            
-            <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="/dashboard/createExam" element={<CreateExamForm />} />
+          </Route>
 
-            <Route path="/" element={<ProtectedRoutes />}>
-              <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
-            </Route>
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="/subjects" element={<ViewSubject />} />
+          </Route>
 
-            <Route
-              path="/dashboard/updateProfile/:id"
-              element={<EditProfile />}
-            />
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route path="/subjects/:subject/tests" element={<ViewTest />} />
+          </Route>
 
-            <Route path="/" element={<ProtectedRoutes />}>
-              <Route
-                path="/dashboard/getAllUsers/createUser"
-                element={<CreateUser />}
-              />
-            </Route>
+          <Route
+            path="/subjects/:subject/tests/:testid"
+            element={<ViewQuestions />}
+          />
 
-            <Route path="/" element={<ProtectedRoutes />}>
-              <Route path="/dashboard/createExam" element={<CreateExamForm />} />
-            </Route>
-            
-            <Route path="/" element={<ProtectedRoutes />}>
-              <Route path="/subjects" element={<ViewSubject />} />
-            </Route>
+          <Route path="/dashboard/SubjectTests" element={<SubjectTests />} />
 
-            <Route path="/" element={<ProtectedRoutes />}>
-             <Route path="/subjects/:subject/tests" element={<ViewTest />} />
-            </Route>
+          <Route
+            path="/dashboard/SubjectTests/:subjectname/:taketestid"
+            element={<StudentTakeTest />}
+          />
 
-            <Route
-              path="/subjects/:subject/tests/:testid"
-              element={<ViewQuestions />}
-            />
-
-            <Route path="/dashboard/SubjectTests" element={<SubjectTests />} />
-
-            <Route
-              path="/dashboard/SubjectTests/:subjectname/:taketestid"
-              element={<StudentTakeTest />}
-            />
-
-            <Route path="/" element={<ProtectedRoutes />}>
+          <Route path="/" element={<ProtectedRoutes />}>
             <Route
               path="/dashboard/viewAllStudentResults"
               element={<AdminViewResults />}
             />
-            </Route>
+          </Route>
 
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </Suspense>
-      
+          <Route
+            path="/dashboard/viewTestResults"
+            element={<StudentViewResults />}
+          />
+
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -3,6 +3,7 @@ import React, { Component, useState, Link } from 'react'
 import Loginnavigation from './Topsidenavbar/loginnavbar.js';
 import Footer from '../Components/Footer.js';
 
+
 export default function Login()  {
     
         const [email ,setEmail] =  useState("");
@@ -34,6 +35,7 @@ export default function Login()  {
             try {
                if (data.status === "ok") {
                  alert("Login Successfully");
+                 
                  window.localStorage.setItem(
                    "token",
                    data.data
@@ -64,8 +66,7 @@ export default function Login()  {
     
         return (
           <>
-            <Loginnavigation />
-
+            <Loginnavigation />       
             <div className="auth-wrapper">
               <div className="auth-inner">
                 <form onSubmit={handleSubmit}>

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams , useLocation, Navigate } from "react-router-dom";
-import { Table, Button } from "react-bootstrap";
-
+import { Table, Button, Card, Container } from "react-bootstrap";
+import { MDBBtn } from "mdb-react-ui-kit";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import "moment-duration-format";
+import "./Styles/examPage.css";
 
 
 export default function StudentTakeTest() {
@@ -84,69 +87,80 @@ export default function StudentTakeTest() {
      }
    };
 
-   useEffect(() => {
-    if (submitted) {
-      navigate("/dashboard");
-   }
-  }, [submitted,navigate]);
+  //  useEffect(() => {
+  //   if (submitted) {
+  //     navigate("/dashboard");
+  //  }
+  // }, [submitted,navigate]);
 
+useEffect(() => {
+  const handleBeforeUnload = (event) => {
+    event.preventDefault();
+    event.returnValue = "";
+  };
 
+  window.addEventListener("beforeunload", handleBeforeUnload);
+
+  return () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+  };
+}, []);
+
+const handleNavigate = async (path) => {
+  if (window.confirm("Are you sure you want to leave? YOUR ANSWERS WILL BE SUBMITTED!!")) {
+    await handleSubmitTest();
+    navigate(path);
+  }
+};
 
    if (!test) {
      return <div>Loading...</div>;
    }
 
   return (
-    <div className="auth-wrapper" style={{ height: "auto" }}>
-      <div className="auth-inner" style={{ width: 900 }}>
-        <div className="container">
-          <h1>{test.name}</h1>
-          <h5>
-            Time Remaining:{timeRemainingFormatted}
-          
-          </h5>
-          <Table bordered hover>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Question</th>
-                <th>Options</th>
-              </tr>
-            </thead>
-            <tbody>
+    <div className="container-wrapper">
+      <div className="container-inner">
+        <Container>
+          <div className="exam-heading">
+            <div className="home-btn">
+              <MDBBtn onClick={() => handleNavigate("/dashboard")}>
+                <FontAwesomeIcon icon={faHome} className="me-2" />
+                Home
+              </MDBBtn>
+            </div>
+            <div className="time-remaining">
+              <h4>Time Remaining:</h4>
+              <p>{timeRemainingFormatted}</p>
+            </div>
+          </div>
+          <Card className="question-card">
+            <Card.Body>
               {test.questions.map((question, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{question.question}</td>
-                  <td>
+                <div key={index}>
+                  <h5>{`Q${index + 1}. ${question.question}`}</h5>
+                  <div className="options">
                     {question.options.map((option, optionIndex) => (
-                      <div key={optionIndex}>
-                        <Button
-                          variant={
-                            userAnswers[index] === option 
-                              ? "primary"
-                              : "outline-secondary"
-                          }
-                          onClick={() => handleAnswerSelect(index, option)}
-                          
-                        >
-                          {option}
-                        </Button>
+                      <div
+                        key={optionIndex}
+                        className={`option-button ${
+                          userAnswers[index] === option ? "selected" : ""
+                        }`}
+                        onClick={() => handleAnswerSelect(index, option)}
+                      >
+                        {option}
                       </div>
                     ))}
-                  </td>
-                </tr>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </Table>
-          <Button
-            variant="success"
-            onClick={handleSubmitTest}
-            
-          >
-            Submit Test
-          </Button>
-        </div>
+            </Card.Body>
+          </Card>
+          <div className="submit-btn">
+            <Button variant="success" onClick={handleSubmitTest}>
+              Submit Test
+            </Button>
+          </div>
+        </Container>
       </div>
     </div>
   );

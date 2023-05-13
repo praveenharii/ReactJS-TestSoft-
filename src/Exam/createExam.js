@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDBInput, MDBBtn } from "mdb-react-ui-kit";
 import { Form, Button } from "react-bootstrap";
-import { BsPlusCircle } from "react-icons/bs";
+import { BsPlusCircle, BsDashCircle } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import './Styles/createExamStyles.css';
@@ -34,6 +34,12 @@ export default function CreateExamForm() {
     setQuestions([...questions, { question: '', options: ['', '', '', ''], answer: '' }]);
   };
 
+  const handleDeleteQuestion = () => {
+    const updatedQuestions = [...questions];
+    updatedQuestions.pop();
+    setQuestions(updatedQuestions);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
@@ -58,63 +64,70 @@ export default function CreateExamForm() {
     <>
       <TopBar />
       <br />
-      <div className="auth-wrapper" style={{ height: "auto" }}>
-        <div className="auth-inner" style={{ width: 800 }}>
+      <div className="createExam-wrapper" style={{ height: "auto" }}>
+        <div className="createExam-inner">
           <div className="container">
             <h1>Create Exam</h1>
             <br />
-            <Form onSubmit={handleSubmit}>
-              <MDBInput
-                label="Subject Name"
-                type="text"
-                value={subjectName}
-                onChange={(event) => setSubjectName(event.target.value)}
-              />
-              <br />
-              <MDBInput
-                label="Test Name"
-                type="text"
-                value={testName}
-                onChange={(event) => setTestName(event.target.value)}
-              />
-              <br />
-              <MDBInput
-                autoFocus="true"
-                label="Date"
-                type="datetime-local"
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-              />
-              <br />
-              <MDBInput
-                label="Time Limit (minutes)"
-                type="number"
-                value={timeLimit}
-                onChange={(event) => setTimeLimit(event.target.value)}
-              />
-              <br />
-              <br />
-              {questions.map((question, index) => (
-                <div key={index}>
-                  <h4>Question {index + 1}:</h4>
+            <Form onSubmit={handleSubmit} className="exam-form">
+              <div className="form-group">
+                <label>Subject Name</label>
+                <MDBInput
+                  type="text"
+                  value={subjectName}
+                  onChange={(event) => setSubjectName(event.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <label>Test Name</label>
+                <MDBInput
+                  type="text"
+                  value={testName}
+                  onChange={(event) => setTestName(event.target.value)}
+                />
+              </div>
+              <div className="form-group">
+                <div className="date-time-group">
+                  <label>Date</label>
                   <MDBInput
-                    label="Question"
-                    type="text"
-                    name="question"
-                    value={question.question}
-                    onChange={(event) => handleInputChange(event, index)}
+                    type="datetime-local"
+                    value={date}
+                    onChange={(event) => setDate(event.target.value)}
                   />
-                  <br />
+                </div>
+                <div className="form-group">
+                  <label>Time Limit (minutes)</label>
+                  <MDBInput
+                    type="number"
+                    value={timeLimit}
+                    onChange={(event) => setTimeLimit(event.target.value)}
+                  />
+                </div>
+              </div>
+              {questions.map((question, index) => (
+                <div className="question-container" key={index}>
+                  <h4>Question {index + 1}:</h4>
+                  <div className="form-group">
+                    <label>Question</label>
+                    <MDBInput
+                      type="text"
+                      name="question"
+                      value={question.question}
+                      onChange={(event) => handleInputChange(event, index)}
+                    />
+                  </div>
                   {question.options.map((option, optionIndex) => (
                     <div className="option" key={optionIndex}>
-                      <MDBInput
-                        label={`Option ${optionIndex + 1}`}
-                        type="text"
-                        value={option}
-                        onChange={(event) =>
-                          handleOptionChange(event, index, optionIndex)
-                        }
-                      />
+                      <div className="form-group">
+                        <label>{`Option ${optionIndex + 1}`}</label>
+                        <MDBInput
+                          type="text"
+                          value={option}
+                          onChange={(event) =>
+                            handleOptionChange(event, index, optionIndex)
+                          }
+                        />
+                      </div>
                       {question.answer === option && (
                         <FontAwesomeIcon
                           icon={faCheckCircle}
@@ -123,8 +136,8 @@ export default function CreateExamForm() {
                       )}
                     </div>
                   ))}
-                  <Form.Group>
-                    <Form.Label>Answer:</Form.Label>
+                  <div className="form-group">
+                    <label>Answer:</label>
                     <Form.Control
                       size="lg"
                       as="select"
@@ -138,18 +151,25 @@ export default function CreateExamForm() {
                         </option>
                       ))}
                     </Form.Control>
-                  </Form.Group>
+                  </div>
                 </div>
               ))}
               <Button
                 variant="outline-secondary"
-                className="mb-3"
+                className="mb-3 add-question-btn"
                 onClick={handleAddQuestion}
               >
                 <BsPlusCircle className="me-2" />
                 Add Question
               </Button>
-              <br />
+              <Button
+                variant="outline-secondary"
+                className="mb-3 delete-question-btn"
+                onClick={handleDeleteQuestion}
+              >
+                <BsDashCircle className="me-2" />
+                Delete Question
+              </Button>
               <br />
               <MDBBtn color="primary" type="submit">
                 Create Exam

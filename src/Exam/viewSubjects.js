@@ -5,7 +5,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
-
+import { Table, Button } from "react-bootstrap";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 export default function ViewSubject() {
   const [data, setData] = useState([]);
@@ -60,7 +61,7 @@ export default function ViewSubject() {
       <div className="auth-wrapper" style={{ height: "auto" }}>
         <div className="auth-inner" style={{ width: "auto" }}>
           <h3>All Subjects:</h3>
-          <table class="centered" style={{ width: 350 }}>
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>Subject Name</th>
@@ -68,32 +69,36 @@ export default function ViewSubject() {
                 <th>Delete</th>
               </tr>
             </thead>
-            {data.map((i) => {
-              return (
-                <tbody>
-                  <tr>
-                    <td>{i.name}</td>
-                    <td>
+            <tbody>
+              {data.map((i) => (
+                <tr key={i._id}>
+                  <td>{i.name}</td>
+                  <td>
+                    <MDBBtn
+                      onClick={() => {
+                        navigate(`/subjects/${i.name}/tests`);
+                      }}
+                    >
                       <FontAwesomeIcon
                         icon={faSquareArrowUpRight}
-                        onClick={() => {
-                          navigate(`/subjects/${i.name}/tests`);
-                        }}
+                        className="me-2"
                       />
-                    </td>
-
-                    <td>
-                      <FontAwesomeIcon
-                        center
-                        icon={faTrash}
-                        onClick={() => deleteSubject(i._id, i.name)}
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              );
-            })}
-          </table>
+                      View Test
+                    </MDBBtn>
+                  </td>
+                  <td>
+                    <Button
+                      variant="danger"
+                      onClick={() => deleteSubject(i._id, i.name)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} className="me-2" />
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
       </div>
     </div>

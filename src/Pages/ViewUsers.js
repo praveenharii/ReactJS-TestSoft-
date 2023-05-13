@@ -5,6 +5,7 @@ import {FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Link} from 'react-router-dom';
 import ReactPaginate from "react-paginate";
 import TopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
+import { Table, Button } from "react-bootstrap";
 
 export default function ViewUsers() {
      const [data, setData] = useState([]);
@@ -61,7 +62,7 @@ export default function ViewUsers() {
                       getAlluser();
                      });
       }else{
-        
+        console.log("Error");
       }
      };
 
@@ -99,70 +100,59 @@ export default function ViewUsers() {
      <TopNavBar />
      <br />
      <div className="auth-wrapper" style={{ height: "auto" }}>
-       <div className="auth-inner" style={{ width: "620px" }}>
+       <div className="auth-inner" style={{ width: "720px" }}>
          <h3>View All Users</h3>
-         <Link
-           to={{
-             pathname: "/dashboard/getAllUsers/createUser",
-           }}
-           className="btn btn-primary"
-         >
-           createUser
-         </Link>
-         <table style={{ width: 500 }}>
+
+         <Table striped bordered hover responsive>
            <thead>
              <tr>
                <th>Name</th>
-               <th>Email</th>
-               <th>UserType</th>
+               <th>New User Email</th>
+               <th>User Type</th>
                <th>Verification</th>
-               <th>Delete</th>
+               <th>Delete User</th>
              </tr>
            </thead>
-           {data.map((i) => {
-             return (
-               <tbody>
-                 <tr>
-                   <td key={i}>
-                     {i.fname} {i.lname}
-                   </td>
-                   <td>{i.email}</td>
-                   <td>{i.userType}</td>
-                   <td>{i.status}</td>
-                   <td>
-                     <FontAwesomeIcon
-                       center
-                       icon={faTrash}
-                       onClick={() => deleteUser(i._id, i.fname)}
-                     />
-                   </td>
-                 </tr>
-               </tbody>
-             );
-           })}
-         </table>{" "}
+           <tbody>
+             {data.map((i) => (
+               <tr key={i._id}>
+                 <td>{`${i.fname} ${i.lname}`}</td>
+                 <td>{i.email}</td>
+                 <td>{i.userType}</td>
+                 <td>{i.status}</td>
+                 <td>
+                   <Button
+                     variant="danger"
+                     onClick={() => deleteUser(i._id, i.fname)}
+                   >                     
+                     Delete
+                   </Button>
+                 </td>
+               </tr>
+             ))}
+           </tbody>
+         </Table>
          <br />
-         <div class="input-group mb-3">
+         <div className="input-group mb-3">
            <input
              type="text"
-             class="form-control"
+             className="form-control"
              placeholder="Limit To View Users"
              aria-describedby="button-addon2"
+             value={limit}
              onChange={(e) => setLimit(e.target.value)}
            />
            <button
-             class="btn btn-outline-secondary"
+             className="btn btn-outline-secondary"
              type="button"
              id="button-addon2"
              onClick={changeLimit}
            >
-             Set limit
+             Set Limit
            </button>
          </div>
          <br />
-        
-         <br />
-         <br />
+         
          <ReactPaginate
            breakLabel="..."
            nextLabel="next >"

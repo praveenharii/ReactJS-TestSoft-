@@ -17,7 +17,7 @@ export default function Dashboard() {
                const [studentDashboard, setStudentDashboard] =useState(false);
                const navigate = useNavigate();
                const token = localStorage.getItem("token"); 
-        
+               const [loading, setLoading] = useState(true); 
 
                  useEffect(() => {
                     const updatedProfileData = JSON.parse(
@@ -55,7 +55,8 @@ export default function Dashboard() {
                        if (data.data.userType === "Student") {
                          setStudentDashboard(true);
                        }
-
+                       
+                         setLoading(false);
                      
                        if( data.data == "token expired") {
                     alert("Token Expired!!Login again..");
@@ -68,7 +69,10 @@ export default function Dashboard() {
                   }
                  }, [navigate]);
                  
-                
+                 if (loading) {
+                   return <div>Loading...</div>;
+                 }
+
                 return adminDashboard ? (
                   <AdminDashboard userData={userData} />
                 ) : (

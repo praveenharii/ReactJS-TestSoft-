@@ -1,0 +1,83 @@
+/* ExamPage.css */
+
+.container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container-inner {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+}
+
+.exam-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.time-remaining {
+    font-size: 24px;
+    color: #777;
+    margin-right: 20px;
+}
+
+.home-btn {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #777;
+}
+
+.question-card {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.question-card h5 {
+    margin-bottom: 10px;
+}
+
+.options {
+    margin-top: 10px;
+}
+
+.option-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.option-button:hover {
+    background-color: #ebebeb;
+}
+
+.option-button.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.option-button.selected:hover {
+    background-color: #0056b3;
+}
+
+.submit-btn {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
