@@ -11,8 +11,9 @@ import "./Styles/examPage.css";
 
 export default function StudentTakeTest() {
       const location = useLocation();
-      const {id} = location.state;
+      const id = location.state.id;
       const navigate = useNavigate();
+      console.log(id);
       
       
      
@@ -67,7 +68,7 @@ export default function StudentTakeTest() {
     console.log(userAnswers);
      try {
        const response = await fetch(
-         `http://localhost:5000/${JSON.stringify(id)}/${subjectname}/tests/${taketestid}/submit`,
+         `http://localhost:5000/${id}/${subjectname}/tests/${taketestid}/submit`,
          {
            method: "POST",
            headers: {

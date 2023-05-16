@@ -25,6 +25,7 @@ import {
   MDBCol,
   MDBRow,
 } from "mdb-react-ui-kit";
+import Button from "react-bootstrap/Button";
 
 
 const adminsidebar = ({userData}) => {
@@ -332,9 +333,9 @@ function CreateUser(){
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <button onClick={logOut} className="btn btn-primary">
+              <Button onClick={logOut} variant="danger">
                 Log Out
-              </button>
+              </Button>
             </MDBNavbarItem>
           </MDBNavbarNav>
         </MDBContainer>

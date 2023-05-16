@@ -10,14 +10,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AdminSidebar from './Topsidenavbar/Side-N-Topbar.js';
 import "./dashboard.css";
 import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
-import { 
+import {
   MDBIcon,
   MDBCollapse,
   MDBRipple,
   MDBCol,
-  MDBRow
+  MDBRow,
+  MDBContainer,
+  MDBCard,
+  MDBCardBody,
+  MDBCardImage,
+  MDBBtn,
 } from "mdb-react-ui-kit";
 import Footer from "../Components/Footer";
+
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
@@ -145,17 +151,21 @@ export default function AdminDashboard({ userData }) {
         <AdminSidebar userData={userData} />
         {/* <DashTopbar /> */}
         <div>
-          Second auto-column
-          <div>
+          <br />
+          <MDBContainer>
             <MDBRow className="g-2">
-              <MDBCol size="3">3 of 12</MDBCol>
-              <MDBCol size="5">
+              <MDBCol size="2"></MDBCol>
+              <MDBCol size="10">
                 <div className="App">
                   <div className="auth-wrapper" style={{ height: "auto" }}>
-                    <div className="auth-inner" style={{ width: "auto" }}>
-                      <h1>Admin Dashboard</h1>
-                      <div className="profile-wrapper">
-                        <div className="profile-inner">
+                    <div className="auth-inner" style={{ width: 1024 }}>
+                      <h1 className="lobster">Admin Dashboard</h1>
+                      <h2 className="mogra">Hi {userData.fname}</h2>
+                      <div className="totalUser-wrapper">
+                        <div
+                          className="totalUser-inner"
+                          style={{ width: "auto" }}
+                        >
                           {userNum.map((user) => (
                             <UserCountCard
                               key={user._id}
@@ -164,7 +174,6 @@ export default function AdminDashboard({ userData }) {
                             />
                           ))}
                         </div>
-                      
                       </div>
                       <br />
                       <h3>User Approval Status</h3>
@@ -215,48 +224,48 @@ export default function AdminDashboard({ userData }) {
                         </tbody>
                       </Table>{" "}
                       <br />
-                      <nav>
-                        <ul>
-                          Name<h1>{userData.fname}</h1>
-                          Last<h1>{userData.lname}</h1>
-                          Email<h1>{userData.email}</h1>
-                          UserType<h1>{userData.userType}</h1>
-                          ID<h1>{userData._id}</h1>
-                          <button type="button" onClick={editProfileCLick}>
-                            {" "}
-                            Edit Profile
-                          </button>
-                          <button type="button" onClick={ViewSubject}>
-                            {" "}
-                            View Subjects
-                          </button>
-                          <button type="button" onClick={ViewUsers}>
-                            {" "}
-                            View Users
-                          </button>
-                          <button type="button" onClick={CreateExam}>
-                            {" "}
-                            Create Exam
-                          </button>
-                          <button type="button" onClick={ViewStudentResults}>
-                            {" "}
-                            View All student results
-                          </button>
-                        </ul>
-                      </nav>
-                      <button onClick={logOut} className="btn btn-primary">
-                        Log Out
-                      </button>
                     </div>
                   </div>
                 </div>
-            
+                <Footer />
               </MDBCol>
-              {/* <MDBCol size="4">4 </MDBCol> */}
+              {/* <MDBCol size="auto" className="me-auto">
+                <div className="profileDetails-wrapper">
+                  <div className="profileDetails-inner">
+                    <MDBCard>
+                      <MDBCardBody className="text-center">
+                        <MDBCardImage
+                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                          alt="avatar"
+                          className="rounded-circle"
+                          style={{ width: "150px" }}
+                          fluid
+                        />
+                        {" "}
+                        <p className="text-muted mb-1">{userData.fname}</p>
+                        <p className="text-muted mb-4">
+                          Bay Area, San Francisco, CA
+                        </p>
+                        <div className="d-flex justify-content-center mb-2">
+                          <MDBBtn>Follow</MDBBtn>
+                          <MDBBtn outline className="ms-1">
+                            Message
+                          </MDBBtn>
+                        </div>
+                      </MDBCardBody>
+                    </MDBCard>
+                  </div>
+                </div>
+              </MDBCol> */}
+              {/* <MDBCol size="4">
+                <div className="profileDetails-wrapper">
+                  <div className="profileDetails-inner">HI</div>
+                </div>
+              </MDBCol> */}
             </MDBRow>
-          </div>
+          </MDBContainer>
         </div>
-        <Footer />
+
         {/* 
         <MDBRow className="g-5">
           <MDBCol sm="5" md="12">

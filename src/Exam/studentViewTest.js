@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function SubjectTests() {
    const [tests, setTests] = useState([]);
     const location = useLocation();
-    const  id  = location.state;
+    const  id  = location.state.id;
     console.log(id);
    const navigate = useNavigate();
    
@@ -24,12 +24,26 @@ export default function SubjectTests() {
 
    function takeTest(subjectname, taketestid) {
      console.log(subjectname, taketestid);
-     navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`,{
-       state: {
-          id : id
+     fetch(`http://localhost:5000/${id}/checkUserTakenTest/${taketestid}`, {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+     })
+       .then((response) => response.json())
+       .then((data) => {
+         console.log(data);
+         if (data.message === "You have already taken the test") {
+           alert(data.message);
+         } else {
+           navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
+             state: {
+               id: id,
+             },
+           });
          }
-     });
-     
+       })
+       .catch((error) => console.error(error));
    }
 
 

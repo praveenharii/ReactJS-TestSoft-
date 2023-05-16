@@ -50,3 +50,56 @@ body {
     /* Scrollable contents if viewport is shorter than content. */
 }
 
+.totalUser-wrapper {
+    display: flex;
+    justify-content: right;
+    flex-direction: row;
+    text-align: left;
+    background-color: #ffffff;
+    /* grid-template-columns: 20rem auto; */
+}
+
+.totalUser-inner {
+    display: flex;
+    margin: auto;
+    background: #545859;
+    box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+    padding: 10px 55px 10px 55px;
+    border-radius: 15px;
+    transition: all 0.3s;
+}
+
+.card-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 20px 0;
+}
+
+
+.profileDetails-wrapper {
+    position: absolute;
+        right: 0;
+        width: 420px;
+        height: 400px;
+        border: 3px solid blue;
+}
+
+.profileDetails-inner {
+    width: auto;
+    margin: auto;
+    background: #551111cb;
+    box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+    padding: 10px 25px 15px 25px;
+    border-radius: 15px;
+    transition: all 0.3s;
+
+}
+
+
+.chart-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}

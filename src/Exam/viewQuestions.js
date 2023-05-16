@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Table } from "react-bootstrap";
+import { Table,Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCheckCircle,
   faTimesCircle,
+  faEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import { BiRadioCircleMarked } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
+
 export default function ViewQuestions() {
   const [data, setData] = useState([]);
   const { subject, testid } = useParams();
@@ -42,7 +44,7 @@ export default function ViewQuestions() {
           <h3>{data.id}</h3>
           <h3>{data.name}</h3>
           <h3>{data.date}</h3>
-          <h3>{data.timeLimit}</h3>
+          <h3>Time Limit:{data.timeLimit}</h3>
           {data.questions ? (
             <Table bordered hover>
               <thead>
