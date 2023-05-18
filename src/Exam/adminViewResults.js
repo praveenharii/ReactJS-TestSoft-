@@ -17,7 +17,10 @@ export default function AdminViewResults() {
   const [resultsID, setResultsID] = useState(null);
   const [username, setUsername] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("");
-
+  console.log(data);
+  const filteredArray = data.filter((data) => data.score === 1);
+  console.log(filteredArray);
+  console.log(data.data);
   const handleClose = () => {
     setShow(false);
     setScore(null);

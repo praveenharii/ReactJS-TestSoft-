@@ -11,11 +11,19 @@ import { BiRadioCircleMarked } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
+
 export default function ViewQuestions() {
   const [data, setData] = useState([]);
   const { subject, testid } = useParams();
+  const navigate = useNavigate();
   
-
+  const handleNavigate = (data) => {
+    navigate(`/subjects/${data.name}/editQuestions/${data.id}`, {
+      state: {
+        data : data,
+      }
+    });
+  }
 
 
   useEffect(() => {
@@ -45,6 +53,7 @@ export default function ViewQuestions() {
           <h3>{data.name}</h3>
           <h3>{data.date}</h3>
           <h3>Time Limit:{data.timeLimit}</h3>
+          <Button onClick={() => handleNavigate(data)}>Edit Questions</Button>
           {data.questions ? (
             <Table bordered hover>
               <thead>

@@ -1,5 +1,4 @@
 import React, { Component, useState, Link } from 'react'
-//import "../index.css";
 import Loginnavigation from './Topsidenavbar/loginnavbar.js';
 import Footer from '../Components/Footer.js';
 
@@ -53,7 +52,8 @@ export default function Login()  {
                if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
                 alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
                }
-            } catch (error) {
+            } 
+            catch (error) {
               alert(data.error);
             }
             // else{

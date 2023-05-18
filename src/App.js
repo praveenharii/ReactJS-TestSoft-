@@ -20,6 +20,7 @@ import SubjectTests from './Exam/studentViewTest';
 import StudentTakeTest from './Exam/studentTakeTest';
 import AdminViewResults from "./Exam/adminViewResults";
 import StudentViewResults from './Exam/studentViewResults';
+import AdminEditTestQuestions from './Exam/adminEditQuestions';
 
 const Dashboard = lazy(() => import("./Pages/dashboard"));
 
@@ -110,6 +111,13 @@ function App() {
             <Route
               path="/dashboard/viewAllStudentResults"
               element={<AdminViewResults />}
+            />
+          </Route>
+
+          <Route path="/" element={<ProtectedRoutes />}>
+            <Route
+              path="/subjects/:testname/editQuestions/:testid"
+              element={<AdminEditTestQuestions />}
             />
           </Route>
 

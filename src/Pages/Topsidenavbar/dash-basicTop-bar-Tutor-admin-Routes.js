@@ -15,7 +15,7 @@ function NavScrollExample() {
 
   const logOut = () => {
     window.localStorage.clear();
-    window.location.href = "../sign-in";
+    window.location.assign("http://localhost:3000/");
   };
 
   return (
@@ -39,7 +39,20 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="/dashboard/getAllUsers">Manage Users</Nav.Link>
+            {/* <Nav.Link href="/dashboard/getAllUsers">Manage Users</Nav.Link> */}
+            <NavDropdown title="Manage Users" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="/dashboard/getAllUsers">
+                View Users
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="/dashboard/getAllUsers/createUser">
+                Create Users
+              </NavDropdown.Item>
+
+              {/* <NavDropdown.Item href="#action5">
+                Something else here
+              </NavDropdown.Item> */}
+            </NavDropdown>
             <NavDropdown title="Manage Exam" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/dashboard/createExam">
                 Create Exam
