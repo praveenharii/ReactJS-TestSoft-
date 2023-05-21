@@ -9,6 +9,7 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import ViewQuestions from './viewQuestions';
 
+
 export default function AdminViewResults() {
   const [data, setData] = useState([]);
   const [groupedData, setGroupedData] = useState({});
@@ -103,6 +104,53 @@ export default function AdminViewResults() {
     editScore(score, resultsID);
   };
 
+ const handleDownloadTest = async () => {
+   try {
+     const subjectName = "Biology";
+     const testName = "Test1";
+
+     const response = await fetch(
+       `http://localhost:5000/downloadResults/${subjectName}/${testName}`,
+       {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+       }
+     );
+
+     if (response.ok) {
+       const blob = await response.blob();
+
+       // Extract the filename from the response headers
+       const contentDispositionHeader = response.headers.get(
+         "Content-Disposition"
+       );
+       const filename = contentDispositionHeader
+         ? contentDispositionHeader.split("filename=")[1]
+         : "result.csv";
+
+       // Create a temporary anchor element
+       const link = document.createElement("a");
+       link.href = window.URL.createObjectURL(blob);
+       link.download = filename;
+
+       // Simulate a click on the anchor element to start the download
+       link.click();
+
+       // Clean up 
+       link.remove();
+
+       alert("Result downloaded successfully");
+     } else {
+       throw new Error("Failed to download the results");
+     }
+   } catch (error) {
+     console.error(error);
+     alert("Error occurred while downloading the results");
+   }
+ };
+
   return (
     <>
       <div>
@@ -113,7 +161,9 @@ export default function AdminViewResults() {
               <div className="auth-inner" style={{ width: "auto" }}>
                 <div>
                   <h3>Student Results</h3>
-                  <div className="small-text">Click one Subject To View All Student Results!!</div>
+                  <div className="small-text">
+                    Click one Subject To View All Student Results!!
+                  </div>
                   <Nav
                     variant="tabs"
                     activeKey={selectedSubject}
@@ -161,9 +211,9 @@ export default function AdminViewResults() {
                                 color="warning"
                                 margin="100px"
                                 onClick={() => {
-                                     setScore(result.percentageScore);
-                                     handleShow(result);
-                                   }}
+                                  setScore(result.percentageScore);
+                                  handleShow(result);
+                                }}
                               >
                                 Edit
                               </MDBBtn>
@@ -224,11 +274,20 @@ export default function AdminViewResults() {
                       </MDBTableBody>
                     </MDBTable>
                   )}
+                  <Button onClick={handleDownloadTest}>
+                    Click here to download Test
+                  </Button>
                 </div>
               </div>
             </div>
           </MDBCol>
-          <MDBCol size="2">2 of 12</MDBCol>
+          <MDBCol size="2">
+            <div className="auth-wrapper">
+              <div className="auth-inner" style={{ width: "auto" }}>
+                in progress
+              </div>
+            </div>
+          </MDBCol>
         </MDBRow>
       </div>
       {/* <Modal show={show} onHide={handleClose}>

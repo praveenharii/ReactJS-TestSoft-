@@ -126,28 +126,3 @@ td {
   color: gray;
   text-align: center;
 }
-
-
-
-/* .card {
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: calc(33.33% - 10px);
-}
-
-.card.blue {
-  background-color: #3498db;
-  color: #fff;
-}
-
-.card.green {
-  background-color: #2ecc71;
-  color: #fff;
-}
-
-.card.red {
-  background-color: #e74c3c;
-  color: #fff;
-} */

@@ -1,10 +1,8 @@
 import React , {useState} from 'react';
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import TopNavBar from './Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes'
-import {
-  MDBCol,
-  MDBRow,
-} from "mdb-react-ui-kit";  
+import { MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";  
+import { useEffect } from 'react';
 
 
 
@@ -13,167 +11,161 @@ export default function EditProfile() {
   const location = useLocation();
   let navigate = useNavigate();
   const userData = location.state.userData;
-  const [fname, setFname] = useState(userData.fname);
-  const [lname, setLname] = useState(userData.lname);
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
   //const [phoneNumber, setphoneNumber] = (userData.phoneNumber)
-  const [email, setEmail] = useState(userData.email);
-  console.log(userData);
-  const [password, setPassword] = useState("");
-  const [retypePassword, setRetypePassword] = useState("");
+  const [email, setEmail] = useState("");
+  //console.log(userData);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [retypeNewPassword, setRetypeNewPassword] = useState("");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
+  const [alert, setAlert] = useState(null);
   const { id } = useParams();
   const token = localStorage.getItem("token");
-  const phoneNumber = userData.phoneNumber
+  const [phoneNumber,setPhoneNumber] = useState("");
   const userType = userData.userType;
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [addressLine1, setAddressLine1] = useState("");
-  const [addressLine2, setAddressLine2] = useState("");
-  const [postcode, setPostcode] = useState("");
-  const [state, setState] = useState("");
-  const [area, setArea] = useState("");
+  
   const [education, setEducation] = useState("");
-  const [country, setCountry] = useState("");
-  const [region, setRegion] = useState("");
-  const [experience, setExperience] = useState("");
-  const [additionalDetails, setAdditionalDetails] = useState("");
-console.log(userData.phoneNumber);
-  const handleSaveProfile = () => {
-    // Handle saving profile data
-  };
+  const [changePassword, setChangePassword] = useState(false);
+  
+  //console.log(userData.phoneNumber);
+
+useEffect(() => {
+  setFname(userData.fname);
+  setLname(userData.lname);
+  setEmail(userData.email);
+  setPhoneNumber(userData.phoneNumber);
+}, [userData])
+
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    setNewPassword(e);
     setPasswordMatchError(false);
   };
 
   const handleRetypePasswordChange = (e) => {
-    setRetypePassword(e.target.value);
+    setRetypeNewPassword(e);
     setPasswordMatchError(false);
   };
- 
+
+  const checkCurrentPassword = (e) => {
+    e.preventDefault();
+     return fetch(
+       `http://localhost:5000/checkOldPassword/${email}/${oldPassword}`,
+       {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+           Accept: "application/json",
+         },
+       }
+     )
+       .then((res) => res.json())
+       .then((data) => {
+         return data.status;
+       })
+       .catch((error) => {
+         //console.error(error);
+         throw error;
+       });
+  };
+
+  const handleUpdateProfile = (e) => {
+    e.preventDefault();
+
+     if (newPassword !== retypeNewPassword) {
+       setPasswordMatchError(true);
+       return;
+     }
+
+     const regularExpression = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    
+
+      const requestBody = {
+        fname,
+        lname,
+        phoneNumber,
+      };
+
+      if (changePassword && !newPassword) {
+        setAlert("Password should not be empty!");
+        return;
+      }
+
+     if (changePassword && newPassword) {
+       
+       if (!regularExpression.test(newPassword)) {
+         setAlert(
+           "Password should be between 6 to 16 characters and contain at least one digit and one special character."
+         );
+         return;
+       }      
+       requestBody.newPassword = newPassword;
+     }
+     console.log(newPassword);
+     fetch(`http://localhost:5000/updateProfile/${id}`, {
+       /* sending login-user API*/
+       method: "POST",
+       crossDomain: true,
+       headers: {
+         "Content-Type": "application/json",
+         Accept: "application/json",
+         "Access-Control-Allow-Origin": "*",
+         Authorization: `Bearer ${token}`,
+       },
+       body: JSON.stringify(requestBody),
+     })
+       .then((res) => res.json())
+       .then((data) => {
+         //console.log(data, "userData");
+
+         if (data.data === "User Exists") {
+           setAlert("First name exists, try different..");
+         }
+         if (data.status === "ok") {
+           setAlert("Updated Successfully");
+           localStorage.setItem("token", data.token);
+           localStorage.setItem(
+             "updatedProfileData",
+             JSON.stringify(data.data)
+           );
+           //console.log(data.data);
+
+           navigate("/dashboard");
+         } else {
+           setAlert(data.err);
+         }
+       });
+
+  }
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (password !== retypePassword) {
-      setPasswordMatchError(true);
-      return;
+    if (changePassword) {
+      checkCurrentPassword(e)
+        .then((status) => {
+          if (status === "ok") {
+            handleUpdateProfile(e);
+          } else {
+            setAlert("Current password is incorrect.");
+          }
+        })
+        .catch((error) => {
+          //console.error(error);
+          setAlert("An error occurred while checking the current password.");
+        });
+    } else {
+      handleUpdateProfile(e);
     }
-
-    fetch(`http://localhost:5000/updateProfile/${id}`, {
-      /* sending login-user API*/
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        fname,
-        lname,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "userData");
-
-        if (data.data === "User Exists") {
-          alert("First name exists, try different..");
-        }
-        if (data.status === "ok") {
-          alert("Updated Successfully");
-          localStorage.setItem("token", data.token);
-          //window.location.href = "../Dashboard";
-          localStorage.setItem("updatedProfileData", JSON.stringify(data.data));
-          console.log(data.data);
-          
-          //navigate("/dashboard");
-        } else {
-          alert(data.err);
-        }
-      });
-      
   };
 
   return (
     <>
-      {/* <AdminSidebar userData={userData} /> */}
       <TopNavBar />
 
-      <div>
-        Second auto-column
-        <div>
-          <MDBRow className="g-2">
-            <MDBCol size="3">3 of 12</MDBCol>
-            <MDBCol size="5">
-              5 of 12
-              <div className="auth-inner">
-                <form onSubmit={handleSubmit}>
-                  <h3>Update Profile</h3>
-
-                  <div className="mb-3">
-                    <label>First name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="First name"
-                      value={fname}
-                      onChange={(e) => setFname(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="mb-3">
-                    <label>Last name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Last name"
-                      value={lname}
-                      onChange={(e) => setLname(e.target.value)}
-                      required
-                    />
-                  </div>
-                  {/* 
-            <div className="mb-3">
-              <label>Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div> */}
-
-                  <div className="mb-3">
-                    <label>Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Enter password"
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">
-                      Update
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </MDBCol>
-            <MDBCol size="4">4 of 12</MDBCol>
-          </MDBRow>
-        </div>
-      </div>
       <div className="container rounded bg-white mt-5 mb-5">
         <div className="row">
           <div className="col-md-3 border-right">
@@ -220,25 +212,14 @@ console.log(userData.phoneNumber);
                 </div>
               </div>
               <div className="row mt-3">
-                {/* <div className="col-md-12">
-                  <label className="labels">Mobile Number</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter phone number"
-                    value={phoneNumber}
-                    onChange={(e) => setphoneNumber(e.target.value)}
-                  />
-                </div> */}
-
                 <div className="col-md-12">
-                  <label className="labels">Email ID</label>
+                  <label className="labels">Phone Number</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Enter email ID"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter Phone Number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </div>
                 {userData.userType === "Student" && (
@@ -259,31 +240,58 @@ console.log(userData.phoneNumber);
                   </div>
                 )}
               </div>
-              <div className="row mt-3">
-                <div className="col-md-6">
-                  <label className="labels">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+
+              {changePassword && (
+                <div className="row mt-3">
+                  <div className="col-md-12">
+                    <label className="labels">Current Password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Current Password"
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">New Password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Password"
+                      value={newPassword}
+                      onChange={(e) => handlePasswordChange(e.target.value)}
+                      disabled={!changePassword}
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <label className="labels">Retype New Password</label>
+                    <input
+                      type="password"
+                      className="form-control"
+                      placeholder="Retype Password"
+                      value={retypeNewPassword}
+                      onChange={(e) =>
+                        handleRetypePasswordChange(e.target.value)
+                      }
+                      disabled={!changePassword}
+                    />
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <label className="labels">Retype Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Retype Password"
-                    onChange={(e) => setRetypePassword(e.target.value)}
-                  />
-                </div>
-              </div>
+              )}
+              <MDBBtn
+                className="btn btn-info mt-4 profile-button"
+                type="button"
+                onClick={() => setChangePassword(!changePassword)}
+              >
+                {changePassword ? "Cancel" : "Change Password"}
+              </MDBBtn>
               {passwordMatchError && (
                 <div className="alert alert-danger mt-3">
                   Passwords do not match. Please retype them correctly.
                 </div>
               )}
+              {alert && <div className="alert alert-danger mt-3">{alert}</div>}
               <div className="mt-5 text-center">
                 <button
                   className="btn btn-primary profile-button"
