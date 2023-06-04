@@ -27,6 +27,7 @@ export default function ViewTest() {
       .then((data) => {
         if (data.status === "ok") {
           setData(data.data);
+          console.log(data.data);
         } else {
           console.log(data);
         }
@@ -36,32 +37,30 @@ export default function ViewTest() {
       });
   };
 
-   const deleteTest = (id, name) => {
-     if (
-       window.confirm(`Please Click Ok if you want to delete subject ${name}`)
-       
-     ) {
-       fetch("http://localhost:5000/deleteTest", {
-         method: "DELETE",
-         crossDomain: true,
-         headers: {
-           "Content-Type": "application/json",
-           Accept: "application/json",
-           "Access-Control-Allow-Origin": "*",
-         },
-         body: JSON.stringify({
-           testid: id,
-         }),
-       })
-         .then((res) => res.json())
-         .then((data) => {
-           alert(data.data);
-           getAllTest();
-           console.log(data);
-         });
-     } else {
-     }
-   }; 
+  const deleteTest = (id, name) => {
+    if (
+      window.confirm(`Please click OK if you want to delete subject ${name}`)
+    ) {
+      fetch(`http://localhost:5000/deleteTest/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          alert(data.message);
+          getAllTest();
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error("Error deleting test:", error);
+        });
+    }
+  };
+
 
  
 
@@ -77,6 +76,9 @@ export default function ViewTest() {
           <thead>
             <tr>
               <th>Test Name</th>
+              <th>Created By</th>
+              <th>Date Created</th>
+              <th>Available Until</th>
               <th>View Questions</th>
               <th>Delete</th>
             </tr>
@@ -85,6 +87,9 @@ export default function ViewTest() {
             {data.map((test) => (
               <tr key={test._id}>
                 <td>{test.name}</td>
+                <td>{test.createdBy}</td>
+                <td>{new Date(test.createdAt).toLocaleString()}</td>
+                <td>{new Date(test.date).toLocaleString()}</td>
                 <td>
                   <MDBBtn
                     onClick={() => {

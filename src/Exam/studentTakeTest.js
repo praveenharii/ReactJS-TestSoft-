@@ -7,11 +7,13 @@ import { faHome } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import "moment-duration-format";
 import "./Styles/examPage.css";
-
+import jwt_decode from "jwt-decode";
 
 export default function StudentTakeTest() {
-      const location = useLocation();
-      const id = location.state.id;
+    let id = null;
+    const token = window.localStorage.getItem("token");
+    const decodedToken = jwt_decode(token);
+    id = decodedToken.userId;
       const navigate = useNavigate();
       console.log(id);
       
@@ -88,11 +90,11 @@ export default function StudentTakeTest() {
      }
    };
 
-  //  useEffect(() => {
-  //   if (submitted) {
-  //     navigate("/dashboard");
-  //  }
-  // }, [submitted,navigate]);
+   useEffect(() => {
+    if (submitted) {
+      navigate("/dashboard");
+   }
+  }, [submitted,navigate]);
 
 useEffect(() => {
   const handleBeforeUnload = (event) => {

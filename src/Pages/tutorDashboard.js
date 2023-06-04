@@ -19,9 +19,10 @@ export default function tutorDashboard({userData}){
  }
 
   function ViewSubject() {
-    navigate("../subjects");
+    navigate(`/subjects/${id}`);
   }
 
+  
  function CreateExam() {
    navigate("/dashboard/createExam");
  }

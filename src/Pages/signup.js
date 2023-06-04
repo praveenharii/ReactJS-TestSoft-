@@ -28,8 +28,7 @@ const generateRecaptcha = () => {
           },        
           auth
         );
-}
-           
+}         
     const requestOTP = (e) =>{
       e.preventDefault();
       if (phoneNumber.length >=10 ){

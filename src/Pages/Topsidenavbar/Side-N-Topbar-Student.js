@@ -22,8 +22,8 @@ import {
   MDBBadge,
   MDBInput,
   MDBCol,
-  MDBRow,
 } from "mdb-react-ui-kit";
+import Button from "react-bootstrap/Button";
 
 const StudentSidebar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -31,10 +31,30 @@ const StudentSidebar = ({ userData }) => {
   const id = userData._id;
   const toggleShow = () => setShowShow(!showShow);
 
-  const logOut = () => {
-    window.localStorage.clear();
-    window.location.href = "./sign-in";
-  };
+ const logOut = () => {
+   fetch("http://localhost:5000/logout", {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json",
+       token: localStorage.getItem("token"), // Send the token in the "token" header
+     },
+   })
+     .then((response) => response.json())
+     .then((data) => {
+       if (data.status === "ok") {
+         // Clear local storage and redirect to sign-in page
+         console.log("Logout Succesfully");
+         window.localStorage.clear();
+         window.location.href = "./sign-in";
+       } else {
+         // Handle any error response
+         console.log("Logout error:", data.error);
+       }
+     })
+     .catch((error) => {
+       console.log("Logout error:", error);
+     });
+ };
 
   const dashboard = () => {
     navigate("/dashboard");
@@ -54,6 +74,7 @@ const StudentSidebar = ({ userData }) => {
     navigate("/dashboard/SubjectTests", {
       state: {
         id: id,
+        userData: userData,
       },
     });
   }
@@ -236,9 +257,9 @@ const StudentSidebar = ({ userData }) => {
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <button onClick={logOut} className="btn btn-primary">
+              <Button onClick={logOut} variant="danger">
                 Log Out
-              </button>
+              </Button>
             </MDBNavbarItem>
           </MDBNavbarNav>
         </MDBContainer>

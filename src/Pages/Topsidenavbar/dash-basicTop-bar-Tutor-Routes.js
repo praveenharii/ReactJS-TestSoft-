@@ -5,11 +5,16 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import Dashboard from "./../dashboard";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
 
 function NavScrollExample() {
+ 
+  const logOut = () => {
+   window.localStorage.clear();
+   window.location.href = "./sign-in";
+ };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
@@ -31,7 +36,7 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="/dashboard/getAllUsers">Manage Users</Nav.Link>
+            <Nav.Link href="/dashboard/getAllUsers">View Users</Nav.Link>
             <NavDropdown title="Manage Exam" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/dashboard/createExam">
                 Create Exam
@@ -55,7 +60,9 @@ function NavScrollExample() {
             />
             
           </Form> */}
-          <Button variant="danger">LogOut</Button>
+          <Button onClick={logOut} variant="danger">
+            LogOut
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>

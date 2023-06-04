@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import "./Styles/createExamStyles.css";
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-import { MdCenterFocusStrong } from "./../../node_modules/react-icons/md/index.esm";
+import { MdCenterFocusStrong } from "react-icons/md/index.esm";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 
 export default function EditQuestions() {
+  const navigate=useNavigate();
   const location = useLocation();
   const data = location.state.data;
   const { testname , testid }= useParams();
@@ -96,6 +97,8 @@ export default function EditQuestions() {
         if (response.ok) {
           const data = await response.json();
           console.log(data);
+          alert(data.status);
+          navigate("/dashboard");
         } else {
           console.error("Error:", response.status);
         }
@@ -253,7 +256,7 @@ export default function EditQuestions() {
               </Button>
               <br />
               <MDBBtn color="primary" type="submit">
-                Create Exam
+                Update
               </MDBBtn>
             </Form>
           </div>

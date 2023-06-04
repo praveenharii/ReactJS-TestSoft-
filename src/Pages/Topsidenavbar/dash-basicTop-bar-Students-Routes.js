@@ -5,12 +5,48 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Dashboard from "./../dashboard";
+import { MDBNavbarBrand } from "mdb-react-ui-kit";
+import AppLogo from "../../images/TestSoftLogo.png";
+import { useNavigate } from "react-router-dom";
 
-function NavScrollExample() {
+function StudentTopbar({userData}) {
+   const navigate = useNavigate();
+  console.log(userData._id);
+  
+  function ViewAvailableTests() {
+    navigate("/dashboard/SubjectTests", {
+      state: {
+        userData: userData,
+      },
+    });
+  }
+
+  function ViewTestResults() {
+    navigate("/dashboard/viewTestResults", {
+      state: {
+        userData: userData,
+      },
+    });
+  }
+
+  const logOut = () => {
+    window.localStorage.clear();
+    window.location.href = "./sign-in";
+  };
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="/dashboad">Navbar scroll</Navbar.Brand>
+        <MDBNavbarBrand href="/">
+          <img
+            src={AppLogo}
+            height="50"
+            width="150"
+            alt=""
+            loading="lazy"
+            style={{ borderRadius: "10px" }}
+          />
+        </MDBNavbarBrand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -18,35 +54,28 @@ function NavScrollExample() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
+            <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+            <Nav.Link onClick={ViewAvailableTests}>Take Tests</Nav.Link>
+            <Nav.Link onClick={ViewTestResults}>View Results</Nav.Link>
+            {/* <Nav.Link href="/dashboard/getAllUsers">Manage Users</Nav.Link> */}
+            
           </Nav>
-          <Form className="d-flex">
+          {/* <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
               className="me-2"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
-          </Form>
+            
+          </Form> */}
+          <Button onClick={logOut} variant="danger">
+            LogOut
+          </Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
   );
 }
 
-export default NavScrollExample;
+export default StudentTopbar;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState }from "react";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Components/LoaderSpinner"
 // import AdminDashboard from './adminDashboard';
 // import StudentDashboard from "./studentDashboard";
 // import TutorDashboard from "./tutorDashboard";
 const AdminDashboard = React.lazy(() => import("./adminDashboard"));
 const TutorDashboard = React.lazy(() => import("./tutorDashboard"));
 const StudentDashboard = React.lazy(() => import("./studentDashboard"));
-
 
 
 
@@ -70,7 +70,7 @@ export default function Dashboard() {
                  }, [navigate]);
                  
                  if (loading) {
-                   return <div>Loading...</div>;
+                   return <Spinner />;
                  }
 
                 return adminDashboard ? (

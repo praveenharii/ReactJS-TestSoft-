@@ -15,9 +15,8 @@ function NavScrollExample() {
 
   const logOut = () => {
     window.localStorage.clear();
-    window.location.assign("http://localhost:3000/");
+    window.location.href = "./sign-in";
   };
-
   return (
     <Navbar bg="light" expand="lg">
       <Container fluid>

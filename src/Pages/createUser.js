@@ -11,11 +11,6 @@ export default function CreateUser() {
   const [userType, setUserType] = useState("");
   let navigate = useNavigate();
   
-
-
-
- 
-
   const handleSubmit = (e) => {
     
       e.preventDefault();
@@ -57,14 +52,7 @@ export default function CreateUser() {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={handleSubmit}>
-            <button
-              type="button"
-              onClick={() => {
-                navigate("/dashboard/getAllUsers");
-              }}
-            >
-              View Users
-            </button>
+           
             <h3>Create User</h3>
             <div id="recaptcha-container"></div>
 

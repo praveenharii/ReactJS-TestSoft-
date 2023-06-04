@@ -23,6 +23,7 @@ import {
   MDBCol,
   MDBRow,
 } from "mdb-react-ui-kit";
+import Button from "react-bootstrap/Button";
 
 const TutorSideBar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -31,8 +32,28 @@ const TutorSideBar = ({ userData }) => {
   const toggleShow = () => setShowShow(!showShow);
 
   const logOut = () => {
-    window.localStorage.clear();
-    window.location.href = "./sign-in";
+    fetch("http://localhost:5000/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"), // Send the token in the "token" header
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          // Clear local storage and redirect to sign-in page
+          console.log("Logout Succesfully");
+          window.localStorage.clear();
+          window.location.href = "./sign-in";
+        } else {
+          // Handle any error response
+          console.log("Logout error:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.log("Logout error:", error);
+      });
   };
 
   const dashboard = () => {
@@ -49,7 +70,7 @@ const TutorSideBar = ({ userData }) => {
   }
 
   function ViewSubject() {
-    navigate("../subjects");
+    navigate(`/subjects/${id}`);
   }
 
   function ViewUsers() {
@@ -61,7 +82,7 @@ const TutorSideBar = ({ userData }) => {
   }
 
   function ViewStudentResults() {
-    navigate("/dashboard/viewAllStudentResults");
+    navigate(`/dashboard/tutorViewStudentResults/${id}`);
   }
 
   function CreateUser() {
@@ -120,7 +141,6 @@ const TutorSideBar = ({ userData }) => {
                 View Users
               </MDBListGroupItem>
             </MDBRipple>
-
 
             <MDBRipple rippleTag="span">
               <MDBListGroupItem
@@ -317,9 +337,9 @@ const TutorSideBar = ({ userData }) => {
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <button onClick={logOut} className="btn btn-primary">
+              <Button onClick={logOut} variant="danger">
                 Log Out
-              </button>
+              </Button>
             </MDBNavbarItem>
           </MDBNavbarNav>
         </MDBContainer>

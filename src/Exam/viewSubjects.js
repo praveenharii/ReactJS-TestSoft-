@@ -47,7 +47,7 @@ export default function ViewSubject() {
       })
         .then((res) => res.json())
         .then((data) => {
-          alert(data.data);
+          alert(data.message);
           getAllSubject();
           console.log(data);
           

@@ -1,13 +1,23 @@
 
 import React, {useEffect, useState, useRef } from 'react';
-import {faTrash} from  "@fortawesome/free-solid-svg-icons";
+import {
+  faCheckCircle,
+  faTimesCircle,
+  faUserShield,
+} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {Link} from 'react-router-dom';
 import ReactPaginate from "react-paginate";
 import TopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-import { Table, Button } from "react-bootstrap";
+import TutorTopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
+import { Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import jwt_decode from "jwt-decode";
 
 export default function ViewUsers() {
+     let userType =null;
+     const token = window.localStorage.getItem("token");
+     const decodedToken = jwt_decode(token);
+     userType = decodedToken.userType;
      const [data, setData] = useState([]);
      const [limit, setLimit] = useState(5);
      const [pageCount, setPageCount] = useState(1);
@@ -17,7 +27,10 @@ export default function ViewUsers() {
   
      useEffect(() => {
       currentPage.current=1;
-       getPaginatedUsers();
+       
+      
+      const interval = setInterval(getPaginatedUsers, 3000);
+      return () => clearInterval(interval);
     }, []);
 
      
@@ -66,6 +79,10 @@ export default function ViewUsers() {
       }
      };
 
+      const makeRequestToDeleteUser = (id, name) => {
+        
+      };
+
 
      function handlePageClick(e){
       console.log(e);
@@ -97,10 +114,11 @@ export default function ViewUsers() {
 
  return (
    <>
-     <TopNavBar />
+     {userType === "Admin" ? <TopNavBar /> : <TutorTopNavBar />}
+
      <br />
      <div className="auth-wrapper" style={{ height: "auto" }}>
-       <div className="auth-inner" style={{ width: "720px" }}>
+       <div className="auth-inner" style={{ width: "900px" }}>
          <h3>View All Users</h3>
 
          <Table striped bordered hover responsive>
@@ -110,6 +128,7 @@ export default function ViewUsers() {
                <th>New User Email</th>
                <th>User Type</th>
                <th>Verification</th>
+               <th>Status</th>
                <th>Delete User</th>
              </tr>
            </thead>
@@ -119,14 +138,72 @@ export default function ViewUsers() {
                  <td>{`${i.fname} ${i.lname}`}</td>
                  <td>{i.email}</td>
                  <td>{i.userType}</td>
-                 <td>{i.status}</td>
                  <td>
-                   <Button
-                     variant="danger"
-                     onClick={() => deleteUser(i._id, i.fname)}
-                   >                     
-                     Delete
-                   </Button>
+                   {i.status === "verified" ? (
+                     <div>
+                       <FontAwesomeIcon
+                         icon={faUserShield}
+                         style={{ color: "green" }}
+                       />
+                       <span style={{ marginLeft: "5px" }}>Verified</span>
+                     </div>
+                   ) : (
+                     <div>
+                       <FontAwesomeIcon
+                         icon={faUserShield}
+                         style={{ color: "yellow" }}
+                       />
+                       <span style={{ marginLeft: "5px" }}>Pending</span>
+                     </div>
+                   )}
+                 </td>
+                 <td>
+                   {" "}
+                   {i.isOnline ? (
+                     <div>
+                       <FontAwesomeIcon
+                         icon={faCheckCircle}
+                         style={{ color: "green" }}
+                       />
+                       <span style={{ marginLeft: "5px" }}>Online</span>
+                     </div>
+                   ) : (
+                     <div>
+                       <FontAwesomeIcon
+                         icon={faTimesCircle}
+                         style={{ color: "red" }}
+                       />
+                       <span style={{ marginLeft: "5px" }}>Offline</span>
+                     </div>
+                   )}
+                 </td>
+                 <td>
+                   {userType !== "Tutor" ? (
+                     <td>
+                       <Button
+                         variant="danger"
+                         onClick={() => deleteUser(i._id, i.fname)}
+                       >
+                         Delete
+                       </Button>
+                     </td>
+                   ) : (
+                     <td>
+                       <OverlayTrigger
+                         placement="top"
+                         overlay={<Tooltip>Request admin to delete</Tooltip>}
+                       >
+                         <Button
+                           variant="danger"
+                           onClick={() =>
+                             makeRequestToDeleteUser(i._id, i.fname)
+                           }
+                         >
+                           Request
+                         </Button>
+                       </OverlayTrigger>
+                     </td>
+                   )}
                  </td>
                </tr>
              ))}
@@ -152,7 +229,7 @@ export default function ViewUsers() {
            </button>
          </div>
          <br />
-         
+
          <ReactPaginate
            breakLabel="..."
            nextLabel="next >"

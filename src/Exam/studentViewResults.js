@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Table } from "react-bootstrap";
-export default function StudentViewResults() {
+import StudentTopNavBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes";
+
+export default function StudentViewResults( userData ) {
     let userId = null;
     const token = window.localStorage.getItem('token');
     const decodedToken = jwt_decode(token);
     userId = decodedToken.userId;
     const [studentResults, setStudentResults] = useState([]);
+
     console.log(userId);
 
     useEffect(() => {
@@ -46,9 +49,15 @@ export default function StudentViewResults() {
 
   return (
     <>
+      <StudentTopNavBar userData={userData} />
+
       <div className="auth-wrapper">
         <div className="auth-inner" style={{ width: 800 }}>
-          <h1> Test Results</h1>
+          <h1>Taken Test Results</h1>
+          
+          <div className="text-success" style={{ fontSize: "12px" }}>
+            The passing marks is 40%.
+          </div>
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -59,6 +68,7 @@ export default function StudentViewResults() {
                 <th>Time</th>
                 <th>Score</th>
                 <th>Total Percentage</th>
+                <th>Grade</th>
               </tr>
             </thead>
             <tbody>
@@ -70,7 +80,16 @@ export default function StudentViewResults() {
                   <td>{new Date(result.date).toLocaleDateString()}</td>
                   <td>{new Date(result.date).toLocaleTimeString()}</td>
                   <td>{`${result.score}/${result.totalQuestions}`}</td>
-                  <td>{(result.percentageScore).toFixed(2)}</td>
+                  <td>{result.percentageScore.toFixed(2)}</td>
+                  {result.percentageScore >= 40 ? (
+                    <button type="button" className="btn btn-pass disabled">
+                      <strong>Pass</strong>
+                    </button>
+                  ) : (
+                    <button type="button" className="btn btn-fail disabled">
+                      <strong>Fail</strong>
+                    </button>
+                  )}
                 </tr>
               ))}
             </tbody>

@@ -1,9 +1,11 @@
 import React , {useState} from 'react';
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-import TopNavBar from './Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes'
+import AdminTopNavBar from './Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes'
+import StudentTopNavBar from './Topsidenavbar/dash-basicTop-bar-Students-Routes'
+import TutorTopNavBar  from './Topsidenavbar/dash-basicTop-bar-Tutor-Routes';
 import { MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";  
 import { useEffect } from 'react';
-
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 
 
@@ -25,11 +27,11 @@ export default function EditProfile() {
   const token = localStorage.getItem("token");
   const [phoneNumber,setPhoneNumber] = useState("");
   const userType = userData.userType;
-  
+  const [showPassword, setShowPassword] = useState(false);
   const [education, setEducation] = useState("");
   const [changePassword, setChangePassword] = useState(false);
   
-  //console.log(userData.phoneNumber);
+  console.log(userData.userType);
 
 useEffect(() => {
   setFname(userData.fname);
@@ -48,6 +50,11 @@ useEffect(() => {
     setRetypeNewPassword(e);
     setPasswordMatchError(false);
   };
+
+  const toggleShowPassword = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
 
   const checkCurrentPassword = (e) => {
     e.preventDefault();
@@ -164,8 +171,13 @@ useEffect(() => {
 
   return (
     <>
-      <TopNavBar />
-
+      {userData.userType === "Student" ? (
+        <StudentTopNavBar userData={userData} />
+      ) : userData.userType === "Admin" ? (
+        <AdminTopNavBar />
+      ) : userData.userType === "Tutor" ? (
+        <TutorTopNavBar />
+      ) : null}
       <div className="container rounded bg-white mt-5 mb-5">
         <div className="row">
           <div className="col-md-3 border-right">
@@ -245,37 +257,66 @@ useEffect(() => {
                 <div className="row mt-3">
                   <div className="col-md-12">
                     <label className="labels">Current Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Current Password"
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
+                    <div className="input-group mb-3">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        placeholder="Current Password"
+                        value={oldPassword}
+                        onChange={(e) => setOldPassword(e.target.value)}
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-tertiary"
+                          type="button"
+                          onClick={toggleShowPassword}
+                        >
+                          {showPassword ? <BsEyeSlash /> : <BsEye />}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-md-6">
                     <label className="labels">New Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      value={newPassword}
-                      onChange={(e) => handlePasswordChange(e.target.value)}
-                      disabled={!changePassword}
-                    />
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        placeholder="Password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-tertiary"
+                          type="button"
+                          onClick={toggleShowPassword}
+                        >
+                          {showPassword ? <BsEyeSlash /> : <BsEye />}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="col-md-6">
                     <label className="labels">Retype New Password</label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Retype Password"
-                      value={retypeNewPassword}
-                      onChange={(e) =>
-                        handleRetypePasswordChange(e.target.value)
-                      }
-                      disabled={!changePassword}
-                    />
+                    <div className="input-group">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        className="form-control"
+                        placeholder="Retype Password"
+                        value={retypeNewPassword}
+                        onChange={(e) => setRetypeNewPassword(e.target.value)}
+                      />
+                      <div className="input-group-append">
+                        <button
+                          className="btn btn-tertiary"
+                          type="button"
+                          onClick={toggleShowPassword}
+                        >
+                          {showPassword ? <BsEyeSlash /> : <BsEye />}
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

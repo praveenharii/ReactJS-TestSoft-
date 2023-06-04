@@ -126,3 +126,29 @@ td {
   color: gray;
   text-align: center;
 }
+
+.custom-card {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .col-4 {
+    flex: 0 0 33.33%;
+    /* Adjust the percentage as needed */
+    max-width: 33.33%;
+    /* Adjust the percentage as needed */
+  }
+}
+
+
+.btn-pass {
+  background-color: green !important;
+    color: black !important;
+  width: 70px;
+}
+
+.btn-fail {
+background-color: red !important;
+  color: black !important;
+  width:70px;
+}

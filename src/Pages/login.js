@@ -52,9 +52,12 @@ export default function Login()  {
                if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
                 alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
                }
+               else{
+                alert(data.error);
+               }
             } 
             catch (error) {
-              alert(data.error);
+              alert(error);
             }
             // else{
             //   alert(data.error)

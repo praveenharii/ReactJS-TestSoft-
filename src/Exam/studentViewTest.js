@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import { BsPlay } from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import StudentTopNavBar from '../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes'
 
 export default function SubjectTests() {
    const [tests, setTests] = useState([]);
     const location = useLocation();
+    const userData = location.state.userData;
     const  id  = location.state.id;
+    console.log(userData);
     console.log(id);
    const navigate = useNavigate();
    
@@ -23,62 +25,77 @@ export default function SubjectTests() {
 
 
    function takeTest(subjectname, taketestid) {
+    //  console.log(subjectname, taketestid);
+    //  fetch(`http://localhost:5000/${id}/checkUserTakenTest/${taketestid}`, {
+    //    method: "POST",
+    //    headers: {
+    //      "Content-Type": "application/json",
+    //    },
+    //  })
+    //    .then((response) => response.json())
+    //    .then((data) => {
+    //      console.log(data);
+    //      if (data.message === "You have already taken the test") {
+    //        alert(data.message);
+    //      } else {
+    //        navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
+    //          state: {
+    //            id: id,
+    //          },
+    //        });
+    //      }
+    //    })
+    //    .catch((error) => console.error(error));
      console.log(subjectname, taketestid);
-     fetch(`http://localhost:5000/${id}/checkUserTakenTest/${taketestid}`, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
+     navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
+       state: {
+         id,
        },
-     })
-       .then((response) => response.json())
-       .then((data) => {
-         console.log(data);
-         if (data.message === "You have already taken the test") {
-           alert(data.message);
-         } else {
-           navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
-             state: {
-               id: id,
-             },
-           });
-         }
-       })
-       .catch((error) => console.error(error));
+     });
+     
    }
 
 
   return (
-    <div className="auth-wrapper" style={{ height: "auto" }}>
-      <div className="auth-inner" style={{ width: "auto" }}>
-        <h2>All Tests:</h2>
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Subject</th>
-              <th>Name</th>
-              <th>Date</th>
-              <th>Time Limit</th>
-              <th>Take Exam</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tests.map((test) => (
-              <tr key={test._id}>
-                <td>{test.subject}</td>
-                <td>{test.name}</td>
-                <td>{new Date(test.date).toISOString().slice(0, 10)}</td>
-                <td>{test.timeLimit} min</td>
-                <td>
-                  <button className="btn btn-primary" type="button" onClick={() => takeTest(test.subject, test._id)}>
-                    <BsPlay /> Take Test
-                  </button>
-                </td>
+    <>
+      <StudentTopNavBar userData={userData}/>
+      <br />
+      <div className="auth-wrapper" style={{ height: "auto" }}>
+        <div className="auth-inner" style={{ width: "auto" }}>
+          <h2>All Tests:</h2>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Time Limit</th>
+                <th>Take Exam</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {tests.map((test) => (
+                <tr key={test._id}>
+                  <td>{test.subject}</td>
+                  <td>{test.name}</td>
+                  <td>{new Date(test.date).toISOString().slice(0, 10)}</td>
+                  <td>{test.timeLimit} min</td>
+                  <td>
+                    <button
+                      className="btn btn-primary"
+                      type="button"
+                      onClick={() => takeTest(test.subject, test._id)}
+                    >
+                      <BsPlay /> Take Test
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

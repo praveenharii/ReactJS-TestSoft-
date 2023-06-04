@@ -1,6 +1,6 @@
 import React, {lazy , Suspense} from 'react';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate, Outlet } from 'react-router';
 import jwt_decode from 'jwt-decode';
@@ -16,12 +16,16 @@ import ErrorPage from './Pages/ErrorPage'
 import ViewSubject from './Exam/viewSubjects';
 import ViewTest from "./Exam/ViewTest";
 import ViewQuestions from './Exam/viewQuestions';
-import SubjectTests from './Exam/studentViewTest';
+import TutorEditTestQuestions from './Exam/tutorEditQuestions';
+import AdminViewTestsList from "./Exam/viewResults-Subject-Test";
+import AdminViewAllStudentResults from './Exam/viewResults-Test-allStudentResults';
+import TutorViewSubjectsAndTests from './Exam/tutorViewSubjects-Test';
+import TutorViewStudentResults from './Exam/tutorViewResults-Subject-Test';
 import StudentTakeTest from './Exam/studentTakeTest';
-import AdminViewResults from "./Exam/adminViewResults";
 import StudentViewResults from './Exam/studentViewResults';
-import AdminEditTestQuestions from './Exam/adminEditQuestions';
-
+import SubjectTests from './Exam/studentViewTest';
+import Spinner from './Components/LoaderSpinner';
+import { Alert } from 'react-bootstrap';
 const Dashboard = lazy(() => import("./Pages/dashboard"));
 
 
@@ -38,7 +42,15 @@ function App() {
   }
 }
 
-   
+   setInterval(async () => {
+     try {
+       await axios.get("http://localhost:5000/ping"); // Send a request to the server to keep the connection active
+     } catch (error) {
+       // Handle error
+       alert("Internet Connection Cut")
+       console.log("Internet connection cut");
+     }
+   }, 5000);
 
   const ProtectedRoutes = () => {
     const { isLoggedIn, userType } = useAuth();
@@ -50,10 +62,20 @@ function App() {
     );
   };
 
+  const TutorProtectedRoutes = () => {
+    const { isLoggedIn, userType } = useAuth();
+    const allowedUserTypes = ["Tutor"];
+    return isLoggedIn && allowedUserTypes.includes(userType) ? (
+      <Outlet />
+    ) : (
+      <Navigate to="/" />
+    );
+  };
+
   
   return (
     <Router>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Spinner />}>
         <Routes>
           <Route
             exact
@@ -92,6 +114,13 @@ function App() {
           </Route>
 
           <Route path="/" element={<ProtectedRoutes />}>
+            <Route
+              path="/subjects/:id"
+              element={<TutorViewSubjectsAndTests />}
+            />
+          </Route>
+
+          <Route path="/" element={<ProtectedRoutes />}>
             <Route path="/subjects/:subject/tests" element={<ViewTest />} />
           </Route>
 
@@ -107,23 +136,31 @@ function App() {
             element={<StudentTakeTest />}
           />
 
-          <Route path="/" element={<ProtectedRoutes />}>
-            <Route
-              path="/dashboard/viewAllStudentResults"
-              element={<AdminViewResults />}
-            />
-          </Route>
 
           <Route path="/" element={<ProtectedRoutes />}>
             <Route
               path="/subjects/:testname/editQuestions/:testid"
-              element={<AdminEditTestQuestions />}
+              element={<TutorEditTestQuestions />}
             />
           </Route>
 
           <Route
             path="/dashboard/viewTestResults"
             element={<StudentViewResults />}
+          />
+
+          <Route
+            path="/dashboard/viewResultsTestsLists"
+            element={<AdminViewTestsList />}
+          />
+          <Route
+            path="/dashboard/viewResultsTestsLists/:subject/:testId"
+            element={<AdminViewAllStudentResults />}
+          />
+
+          <Route
+            path="/dashboard/tutorViewStudentResults/:userId"
+            element={<TutorViewStudentResults />}
           />
 
           <Route path="*" element={<ErrorPage />} />

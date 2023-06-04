@@ -6,15 +6,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import './Styles/createExamStyles.css';
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
+import jwt_decode from "jwt-decode";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
-
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function CreateExamForm() {
+  const navigate = useNavigate();
+  let userId = null;
+  const token = window.localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  userId = decodedToken.userId;
   const [subjectName, setSubjectName] = useState('');
   const [testName, setTestName] = useState('');
   const [date, setDate] = useState('');
   const [timeLimit, setTimeLimit] = useState('');
   const [questions, setQuestions] = useState([{ question: '', options: ['', '', '', ''], answer: '' }]);
+  console.log(userId);
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
@@ -40,25 +47,44 @@ export default function CreateExamForm() {
     setQuestions(updatedQuestions);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-   
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const data = {
       subject: { name: subjectName },
       test: { name: testName, date, timeLimit, questions },
     };
-    const response = await fetch("http://localhost:5000/createExam", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(data),
-    })
-    const json = await response.json();
-    console.log(json);
-    alert(json.status);
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/createExam/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+     const json = await response.json();
+
+     if (
+       json.status === "New Test Created" ||
+       json.status === "New Test and Subject Created"
+     ) {
+       alert(json.status);
+       navigate("/dashboard");
+     } else {
+       throw new Error(json.message);
+     }
+    } catch (error) {
+      console.error(error);
+      alert(error);
+      // Handle error case here
+    }
   };
 
   return (
