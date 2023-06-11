@@ -10,6 +10,7 @@ import {
 import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 
 export default function tutorViewResultsSubjectTest() {
   let userId = null;
@@ -91,6 +92,8 @@ export default function tutorViewResultsSubjectTest() {
 
  return (
    <>
+    <TutorTopbar />
+      <br />
      <div>
        <MDBRow className="g-2">
          <MDBCol size="2">2 of 12</MDBCol>

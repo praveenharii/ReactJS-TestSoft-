@@ -10,13 +10,21 @@ import {
 import { BiRadioCircleMarked } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-
+import jwt_decode from "jwt-decode";
+import AdminTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
+import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
+import './Styles/tutorViewQuestions.css'
 
 export default function ViewQuestions() {
   const [data, setData] = useState([]);
   const { subject, testid } = useParams();
   const navigate = useNavigate();
-  
+  let userType = null;
+  const token = window.localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  userType = decodedToken.userType;
+  console.log(userType);
+
   const handleNavigate = (data) => {
     navigate(`/subjects/${data.name}/editQuestions/${data.id}`, {
       state: {
@@ -46,16 +54,18 @@ export default function ViewQuestions() {
 
   return (
     <div>
-      <div className="auth-wrapper" style={{ height: "auto" }}>
-        <div className="auth-inner" style={{ width: "auto" }}>
+      {userType === "Admin" ? <AdminTopbar /> : <TutorTopbar />}
+      <br />
+      <div className="display-wrapper" style={{ height: "auto" }}>
+        <div className="display-inner" style={{ width: "auto" }}>
           <h3>All Questions:</h3>
-          <h3>{data.id}</h3>
-          <h3>{data.name}</h3>
-          <h3>{data.date}</h3>
-          <h3>Time Limit:{data.timeLimit}</h3>
-          <Button onClick={() => handleNavigate(data)}>Edit Questions</Button>
+          <h4>Test ID: {data.id}</h4>
+          <h4>Test Name: {data.name}</h4>
+          <h4>Date: {data.date}</h4>
+          <h4>Time Limit: {data.timeLimit}</h4>
+
           {data.questions ? (
-            <Table bordered hover>
+            <Table bordered hover responsive>
               <thead>
                 <tr>
                   <th>#</th>
@@ -71,8 +81,8 @@ export default function ViewQuestions() {
                     <td>{question.question}</td>
                     <td>
                       {question.options.map((option, optionIndex) => (
-                        <div key={optionIndex}>
-                          <BiRadioCircleMarked />
+                        <div key={optionIndex} className="option">
+                          <BiRadioCircleMarked className="radio-icon" />
                           {option}
                         </div>
                       ))}
@@ -81,12 +91,12 @@ export default function ViewQuestions() {
                       {question.options.indexOf(question.answer) !== -1 ? (
                         <FontAwesomeIcon
                           icon={faCheckCircle}
-                          className="text-success"
+                          className="text-success answer-icon"
                         />
                       ) : (
                         <FontAwesomeIcon
                           icon={faTimesCircle}
-                          className="text-danger"
+                          className="text-danger answer-icon"
                         />
                       )}
                       {question.answer}
@@ -94,6 +104,9 @@ export default function ViewQuestions() {
                   </tr>
                 ))}
               </tbody>
+              <Button onClick={() => handleNavigate(data)}>
+                Edit Questions
+              </Button>
             </Table>
           ) : (
             <p>No questions found.</p>

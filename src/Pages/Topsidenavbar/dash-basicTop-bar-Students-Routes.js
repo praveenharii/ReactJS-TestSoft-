@@ -31,8 +31,28 @@ function StudentTopbar({userData}) {
   }
 
   const logOut = () => {
-    window.localStorage.clear();
-    window.location.href = "./sign-in";
+    fetch("http://localhost:5000/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          console.log("Logout Succesfully");
+          window.localStorage.clear();
+          const signInPath = "/sign-in"; // Update this with your actual sign-in page path
+          const redirectURL = window.location.origin + signInPath;
+          window.location.href = redirectURL;
+        } else {
+          console.log("Logout error:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.log("Logout error:", error);
+      });
   };
   return (
     <Navbar bg="light" expand="lg">

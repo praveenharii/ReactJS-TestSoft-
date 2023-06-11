@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 import { MDBBtn } from "mdb-react-ui-kit";
+import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
 
 export default function ViewSubject() {
   const [data, setData] = useState([]);
@@ -58,6 +59,7 @@ export default function ViewSubject() {
 
   return (
     <div>
+      <Topbar /><br />
       <div className="auth-wrapper" style={{ height: "auto" }}>
         <div className="auth-inner" style={{ width: "auto" }}>
           <h3>All Subjects:</h3>

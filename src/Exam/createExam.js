@@ -5,7 +5,7 @@ import { BsPlusCircle, BsDashCircle } from "react-icons/bs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import './Styles/createExamStyles.css';
-import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
+import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,6 +20,7 @@ export default function CreateExamForm() {
   const [testName, setTestName] = useState('');
   const [date, setDate] = useState('');
   const [timeLimit, setTimeLimit] = useState('');
+  const [testPassword, settestPassword] = useState('');
   const [questions, setQuestions] = useState([{ question: '', options: ['', '', '', ''], answer: '' }]);
   console.log(userId);
 
@@ -52,7 +53,7 @@ export default function CreateExamForm() {
 
     const data = {
       subject: { name: subjectName },
-      test: { name: testName, date, timeLimit, questions },
+      test: { name: testName, date, timeLimit, testPassword, questions },
     };
 
     try {
@@ -99,11 +100,22 @@ export default function CreateExamForm() {
             <Form onSubmit={handleSubmit} className="exam-form">
               <div className="form-group">
                 <label>Subject Name</label>
-                <MDBInput
-                  type="text"
+                <select
+                  className="form-control"
                   value={subjectName}
                   onChange={(event) => setSubjectName(event.target.value)}
-                />
+                >
+                  <option value="">Select a subject</option>
+                  <option value="Bahasa Melayu">Bahasa Melayu</option>
+                  <option value="English">English</option>
+                  <option value="Math">Math</option>
+                  <option value="Add Maths">Add Maths</option>
+                  <option value="Science">Science</option>
+                  <option value="Sejarah">Sejarah</option>
+                  <option value="Biology">Biology</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Physics">Physics</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>Test Name</label>
@@ -128,6 +140,14 @@ export default function CreateExamForm() {
                     type="number"
                     value={timeLimit}
                     onChange={(event) => setTimeLimit(event.target.value)}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Test Password</label>
+                  <MDBInput
+                    type="password"
+                    value={testPassword}
+                    onChange={(event) => settestPassword(event.target.value)}
                   />
                 </div>
               </div>

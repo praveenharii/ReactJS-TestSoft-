@@ -12,6 +12,7 @@ import TopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import TutorTopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import { Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
+import { MDBSpinner } from "mdb-react-ui-kit";
 
 export default function ViewUsers() {
      let userType =null;
@@ -22,6 +23,9 @@ export default function ViewUsers() {
      const [limit, setLimit] = useState(5);
      const [pageCount, setPageCount] = useState(1);
      const currentPage = useRef();
+     const [loading, setLoading] = useState(true);
+     const [searchQuery, setSearchQuery] = useState("");
+     const [searchResults, setSearchResults] = useState([]);
      
     //  const [userType, setUserType] = useState("");
   
@@ -47,12 +51,7 @@ export default function ViewUsers() {
      });
     }
 
-   
-
-     const logOut = () => {
-       window.localStorage.clear();
-       window.location.href = "../sign-in";
-     };
+  
 
      const deleteUser = (id,name) => {
       if(window.confirm(`Please Click Ok if you want to delete user ${name}`)){
@@ -80,7 +79,28 @@ export default function ViewUsers() {
      };
 
       const makeRequestToDeleteUser = (id, name) => {
-        
+        if (
+          window.confirm(`Please Click Ok if you want to Request Admin to delete user ${name}, admin will be notified by email.`)
+        ) {
+          fetch("http://localhost:5000/deleteUserRequest", {
+            method: "POST",
+            crossDomain: true,
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+            body: JSON.stringify({
+              userid: id,
+            }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              alert(data.data);
+            });
+        } else {
+          console.log("Error");
+        }
       };
 
 
@@ -96,6 +116,7 @@ export default function ViewUsers() {
      }
 
      function getPaginatedUsers(){
+      //setLoading(true);
         fetch(
           `http://localhost:5000/paginatedUsers?page=${currentPage.current}&limit=${limit}`,
           {
@@ -105,12 +126,25 @@ export default function ViewUsers() {
           .then((res) => res.json())
           .then((data) => {
             console.log(data, "userData");
-            setPageCount(data.pageCount)
-            setData(data.result)
+            setPageCount(data.pageCount);
+            setData(data.result);
+            setLoading(false);
           });
      }
 
+     const handleSearch = () => {
+       fetch(`http://localhost:5000/searchUsers?email=${searchQuery}`)
+         .then((res) => res.json())
+         .then((data) => {
+           setSearchResults(data);
+         });
+     };
 
+     useEffect(() => {
+       if (searchQuery === "") {
+         setSearchResults([]);
+       }
+     }, [searchQuery]);
 
  return (
    <>
@@ -120,7 +154,24 @@ export default function ViewUsers() {
      <div className="auth-wrapper" style={{ height: "auto" }}>
        <div className="auth-inner" style={{ width: "900px" }}>
          <h3>View All Users</h3>
-
+         <div className="input-group mb-3">
+           <input
+             type="text"
+             className="form-control"
+             placeholder="Search by Email"
+             aria-describedby="button-addon2"
+             value={searchQuery}
+             onChange={(e) => setSearchQuery(e.target.value)}
+           />
+           <button
+             className="btn btn-outline-secondary"
+             type="button"
+             id="button-addon2"
+             onClick={handleSearch}
+           >
+             Search
+           </button>
+         </div>
          <Table striped bordered hover responsive>
            <thead>
              <tr>
@@ -132,82 +183,102 @@ export default function ViewUsers() {
                <th>Delete User</th>
              </tr>
            </thead>
-           <tbody>
-             {data.map((i) => (
-               <tr key={i._id}>
-                 <td>{`${i.fname} ${i.lname}`}</td>
-                 <td>{i.email}</td>
-                 <td>{i.userType}</td>
-                 <td>
-                   {i.status === "verified" ? (
-                     <div>
-                       <FontAwesomeIcon
-                         icon={faUserShield}
-                         style={{ color: "green" }}
-                       />
-                       <span style={{ marginLeft: "5px" }}>Verified</span>
-                     </div>
-                   ) : (
-                     <div>
-                       <FontAwesomeIcon
-                         icon={faUserShield}
-                         style={{ color: "yellow" }}
-                       />
-                       <span style={{ marginLeft: "5px" }}>Pending</span>
-                     </div>
-                   )}
-                 </td>
-                 <td>
-                   {" "}
-                   {i.isOnline ? (
-                     <div>
-                       <FontAwesomeIcon
-                         icon={faCheckCircle}
-                         style={{ color: "green" }}
-                       />
-                       <span style={{ marginLeft: "5px" }}>Online</span>
-                     </div>
-                   ) : (
-                     <div>
-                       <FontAwesomeIcon
-                         icon={faTimesCircle}
-                         style={{ color: "red" }}
-                       />
-                       <span style={{ marginLeft: "5px" }}>Offline</span>
-                     </div>
-                   )}
-                 </td>
-                 <td>
-                   {userType !== "Tutor" ? (
-                     <td>
-                       <Button
-                         variant="danger"
-                         onClick={() => deleteUser(i._id, i.fname)}
-                       >
-                         Delete
-                       </Button>
-                     </td>
-                   ) : (
-                     <td>
-                       <OverlayTrigger
-                         placement="top"
-                         overlay={<Tooltip>Request admin to delete</Tooltip>}
-                       >
-                         <Button
-                           variant="danger"
-                           onClick={() =>
-                             makeRequestToDeleteUser(i._id, i.fname)
-                           }
-                         >
-                           Request
-                         </Button>
-                       </OverlayTrigger>
-                     </td>
-                   )}
+           {loading ? (
+             <tbody>
+               <tr>
+                 <td colSpan="6">
+                   <div
+                     style={{
+                       display: "flex",
+                       justifyContent: "center",
+                       alignItems: "center",
+                       height: "200px",
+                     }}
+                   >
+                     <MDBSpinner type="border" color="secondary">
+                       <span className="visually-hidden">Loading...</span>
+                     </MDBSpinner>
+                   </div>
                  </td>
                </tr>
-             ))}
-           </tbody>
+             </tbody>
+           ) : (
+             <tbody>
+               {(searchResults.length > 0 ? searchResults : data).map((i) => (
+                 <tr key={i._id}>
+                   <td>{`${i.fname} ${i.lname}`}</td>
+                   <td>{i.email}</td>
+                   <td>{i.userType}</td>
+                   <td>
+                     {i.status === "verified" ? (
+                       <div>
+                         <FontAwesomeIcon
+                           icon={faUserShield}
+                           style={{ color: "green" }}
+                         />
+                         <span style={{ marginLeft: "5px" }}>Verified</span>
+                       </div>
+                     ) : (
+                       <div>
+                         <FontAwesomeIcon
+                           icon={faUserShield}
+                           style={{ color: "yellow" }}
+                         />
+                         <span style={{ marginLeft: "5px" }}>Pending</span>
+                       </div>
+                     )}
+                   </td>
+                   <td>
+                     {i.isOnline ? (
+                       <div>
+                         <FontAwesomeIcon
+                           icon={faCheckCircle}
+                           style={{ color: "green" }}
+                         />
+                         <span style={{ marginLeft: "5px" }}>Online</span>
+                       </div>
+                     ) : (
+                       <div>
+                         <FontAwesomeIcon
+                           icon={faTimesCircle}
+                           style={{ color: "red" }}
+                         />
+                         <span style={{ marginLeft: "5px" }}>Offline</span>
+                       </div>
+                     )}
+                   </td>
+                   <td>
+                     {userType !== "Tutor" ? (
+                       <td>
+                         <Button
+                           variant="danger"
+                           onClick={() => deleteUser(i._id, i.fname)}
+                         >
+                           Delete
+                         </Button>
+                       </td>
+                     ) : (
+                       <td>
+                         <OverlayTrigger
+                           placement="top"
+                           overlay={<Tooltip>Request admin to delete</Tooltip>}
+                         >
+                           <Button
+                             variant="danger"
+                             onClick={() =>
+                               makeRequestToDeleteUser(i._id, i.fname)
+                             }
+                           >
+                             Request
+                           </Button>
+                         </OverlayTrigger>
+                       </td>
+                     )}
+                   </td>
+                 </tr>
+               ))}
+             </tbody>
+           )}
          </Table>
          <br />
          <div className="input-group mb-3">

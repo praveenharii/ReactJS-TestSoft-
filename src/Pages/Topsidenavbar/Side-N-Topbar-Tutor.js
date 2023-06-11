@@ -36,18 +36,17 @@ const TutorSideBar = ({ userData }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        token: localStorage.getItem("token"), // Send the token in the "token" header
+        token: localStorage.getItem("token"),
       },
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-          // Clear local storage and redirect to sign-in page
+
           console.log("Logout Succesfully");
           window.localStorage.clear();
           window.location.href = "./sign-in";
         } else {
-          // Handle any error response
           console.log("Logout error:", data.error);
         }
       })

@@ -5,6 +5,7 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import Loginnavigation from "./Topsidenavbar/loginnavbar.js";
 import Form from "react-bootstrap/Form";
 import Footer from '../Components/Footer';
+import { Container, Card, Button } from "react-bootstrap";
 
 export default function SignUp() {
             const navigate = useNavigate();
@@ -217,8 +218,6 @@ const generateRecaptcha = () => {
                        className="form-control"
                        placeholder="OTP"
                        onChange={(e) => setOTP(e.target.value)}
-                       // value={}
-                       //onChange={(e) => setVerificationCode(e.target.value)}
                      />
                      <input
                        type="button"
@@ -232,50 +231,7 @@ const generateRecaptcha = () => {
                          border: "none",
                        }}
                      />
-                   </div>
-                   {/* {expandForm === false? ( 
-                <input
-                  type="button"
-                 value={OTP || "Request OTP"}
-                  onClick={sendOTP}
-                  style={{
-                    backgroundColor: "#0163d2",
-                    width: "100%",
-                    padding: 8,
-                    color: "white",
-                    border: "none",
-                  }}
-                />
-             ):null }
-            </div> 
-            
-             {expandForm === true?(
-              <div className="mb-3">
-                <label>OTP</label>
-                <input
-                  type="number"
-                  value="OTP"
-                  className="form-control"
-                  placeholder="OTP" 
-                  //onChange={verifyOTP}
-                 // value={}
-                  //onChange={(e) => setVerificationCode(e.target.value)}
-                />
-                <input
-                  type="button"
-                  value="OTP"
-                  //onClick={}
-                  style={{
-                    backgroundColor: "#0163d2",
-                    width: "100%",
-                    padding: 8,
-                    color: "white",
-                    border: "none",
-                  }}
-                 
-                />
-              </div>
-             ): null } */}
+                   </div>             
 
                    <div className="mb-3">
                      <label>Password</label>

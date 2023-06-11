@@ -5,12 +5,19 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background-color: #2f8be8;
 }
 
 .container-inner {
     width: 100%;
+    margin: auto;
     max-width: 900px;
     padding: 20px;
+    padding: 40px 55px 45px 55px;
+    box-shadow: 0px 150px 150px rgba(34, 35, 58, 0.2);
+    border-radius: 15px;
+    background: #ffffff;
+    transition: all 1.0s;
 }
 
 .exam-heading {
@@ -38,6 +45,10 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .question-card h5 {

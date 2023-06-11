@@ -14,6 +14,7 @@ import {
   faTrash,
   faSquareArrowUpRight,
 } from "@fortawesome/free-solid-svg-icons";
+import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 
 export default function TutorViewSubjects() {
   const [data, setData] = useState([]);
@@ -77,6 +78,8 @@ export default function TutorViewSubjects() {
 
   return (
     <div>
+      <TutorTopbar />
+      <br />
       <MDBRow className="g-2">
         <MDBCol size="2">2 of 12</MDBCol>
         <MDBCol size="8">

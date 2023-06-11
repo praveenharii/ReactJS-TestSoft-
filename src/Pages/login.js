@@ -29,7 +29,7 @@ export default function Login()  {
     })
         .then((res) => res.json())
         .then((data) => {
-            console.log(data, "userRegister");
+            //console.log(data, "userRegister");
             //alert(data.error);
             try {
                if (data.status === "ok") {
@@ -52,8 +52,21 @@ export default function Login()  {
                if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
                 alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
                }
-               else{
-                alert(data.error);
+               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
+                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
+               }
+               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
+                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
+               }
+               if (
+                 data.error ===
+                 "You are already logged in from another tab or browser."
+               ) {
+                 alert(
+                   "You are already logged in from another tab or browser."
+                 );
+               } else {
+                 //alert(data.error);
                }
             } 
             catch (error) {

@@ -16,6 +16,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+import TutorTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 
 export default function AdminViewResultsSubjectAndTest() {
   let { subject, testId } = useParams();
@@ -119,6 +120,8 @@ export default function AdminViewResultsSubjectAndTest() {
 
   return (
     <>
+      <TutorTopBar />
+      <br />
       <div>
         <MDBModal
           animation
