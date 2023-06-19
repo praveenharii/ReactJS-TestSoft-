@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TopDashbar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const baseUrl = require("../config");
 
 export default function CreateUser() {
   const [fname, setFname] = useState("");
@@ -17,7 +19,7 @@ export default function CreateUser() {
     
 
       console.log(fname, lname, email, password, userType);
-      fetch("http://localhost:5000/createUser", {
+      fetch(`${baseUrl}/createUser`, {
         method: "POST",
         crossDomain: true,
         headers: {
@@ -37,7 +39,13 @@ export default function CreateUser() {
         .then((data) => {
           if (data.error !== "User Exists") {
             console.log(data, "userRegister");
-            alert("User Created Successfully");
+            toast("User Created Successfully", {
+              type: "success",
+              autoClose: 5000,
+            });
+             setTimeout(() => {
+              navigate('/dashboard');
+             }, 5000);
           } else {
             alert(data.error);
           }
@@ -49,10 +57,10 @@ export default function CreateUser() {
     <>
       <TopDashbar />
       {/* <AdminSidebar userData={userData} /> */}
+      <ToastContainer />
       <div className="auth-wrapper">
         <div className="auth-inner">
           <form onSubmit={handleSubmit}>
-           
             <h3>Create User</h3>
             <div id="recaptcha-container"></div>
 

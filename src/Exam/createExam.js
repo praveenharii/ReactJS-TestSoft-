@@ -9,7 +9,7 @@ import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
 import { useNavigate, useLocation } from "react-router-dom";
-
+const baseUrl = require("../config");
 export default function CreateExamForm() {
   const navigate = useNavigate();
   let userId = null;
@@ -51,24 +51,33 @@ export default function CreateExamForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      !testName ||
+      !date ||
+      !timeLimit ||
+      questions.some(
+        (q) => !q.question || !q.answer || q.options.some((o) => !o)
+      )
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     const data = {
       subject: { name: subjectName },
       test: { name: testName, date, timeLimit, testPassword, questions },
     };
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/createExam/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${baseUrl}/createExam/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(data),
+      });
 
      const json = await response.json();
 

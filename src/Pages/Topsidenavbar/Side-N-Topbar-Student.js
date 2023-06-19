@@ -22,8 +22,10 @@ import {
   MDBBadge,
   MDBInput,
   MDBCol,
+  MDBBtn,
 } from "mdb-react-ui-kit";
 import Button from "react-bootstrap/Button";
+const baseUrl = require("../../config");
 
 const StudentSidebar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -32,7 +34,7 @@ const StudentSidebar = ({ userData }) => {
   const toggleShow = () => setShowShow(!showShow);
 
  const logOut = () => {
-   fetch("http://localhost:5000/logout", {
+   fetch(`${baseUrl}/logout`, {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
@@ -74,7 +76,6 @@ const StudentSidebar = ({ userData }) => {
     navigate("/dashboard/SubjectTests", {
       state: {
         id: id,
-        userData: userData,
       },
     });
   }
@@ -157,38 +158,20 @@ const StudentSidebar = ({ userData }) => {
 
       <MDBNavbar expand="lg" light style={{ backgroundColor: "#B6C0E5" }}>
         <MDBContainer fluid>
-          <MDBNavbarNav className="d-flex flex-row align-items-center w-auto">
-            <MDBNavbarToggler
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={toggleShow}
-            >
-              <MDBIcon icon="bars" fas />
-            </MDBNavbarToggler>
-            <MDBNavbarBrand href="/">
-              <img
-                src={AppLogo}
-                height="50"
-                width="150"
-                alt=""
-                loading="lazy"
-                style={{ borderRadius: "10px" }}
-              />
-            </MDBNavbarBrand>
-
-            <MDBCollapse navbar>
-              <MDBNavbarItem
-                className="d-flex align-items-center"
-                style={{ border: "1px solid black" }}
-              >
-                <MDBInput
-                  label='Search (ctrl + "/" to focus)'
-                  id="form1"
-                  type="text"
-                />
-                <MDBIcon fas icon="search mx-2" />
-              </MDBNavbarItem>
-            </MDBCollapse>
+          <MDBNavbarBrand href="/">
+            <img
+              src={AppLogo}
+              height="50"
+              width="150"
+              alt=""
+              loading="lazy"
+              style={{ borderRadius: "10px" }}
+            />
+          </MDBNavbarBrand>
+          <MDBNavbarNav className="d-flex justify-content-center align-items-center w-100">
+            <div className="text-center">
+              <h1 className="lobster">Student Dashboard</h1>
+            </div>
           </MDBNavbarNav>
           <MDBNavbarNav className="d-flex flex-row justify-content-end w-auto">
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
@@ -206,40 +189,23 @@ const StudentSidebar = ({ userData }) => {
 
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
-                    <div href="#">Some news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Another news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Something else here</div>
+                    <div onClick={ViewAvailableTests}>View Your Tests</div>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-            </MDBNavbarItem>
-
-            <MDBNavbarItem className="me-3 me-lg-0">
-              <MDBNavbarLink href="#">
-                <MDBIcon fas icon="fill-drip" />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem className="me-3 me-lg-0">
-              <MDBNavbarLink href="#">
-                <MDBIcon fab icon="github" />
-              </MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
               <MDBDropdown>
                 <MDBDropdownToggle
                   tag="a"
-                  href="#!"
+                  onClick={editProfileCLick}
                   className="hidden-arrow nav-link"
                 >
                   <img
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg"
+                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                     className="rounded-circle"
-                    height="22"
+                    height="45"
                     alt=""
                     loading="lazy"
                   />
@@ -257,9 +223,13 @@ const StudentSidebar = ({ userData }) => {
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <Button onClick={logOut} variant="danger">
+              <MDBBtn
+                onClick={logOut}
+                color="danger"
+                style={{ width: "100px", marginLeft:"10px" }}
+              >
                 Log Out
-              </Button>
+              </MDBBtn>
             </MDBNavbarItem>
           </MDBNavbarNav>
         </MDBContainer>

@@ -1,95 +1,94 @@
-import React, { Component, useState, Link } from 'react'
+import React, {  useState  } from 'react'
 import Loginnavigation from './Topsidenavbar/loginnavbar.js';
-import Footer from '../Components/Footer.js';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import '../App.css'
+const baseUrl = require("../config");
 
 export default function Login()  {
-    
         const [email ,setEmail] =  useState("");
         const [password ,setPassword] =  useState("");
-    
+        const [alert, setAlert] = useState(null);
+        const [successLogin, setSuccessLogin] = useState(null);
 
-   function handleSubmit(e){ /*submit function*/
+   function handleSubmit(e){
     e.preventDefault();
     
     console.log( email, password);
     
-    fetch("http://localhost:5000/login-user", { /* sending login-user API*/
-        method: "POST",
-        crossDomain: true,
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ /*passing email and password*/
-            email,
-            password,
-        }),
+    fetch(`${baseUrl}/login-user`, {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
     })
-        .then((res) => res.json())
-        .then((data) => {
-            //console.log(data, "userRegister");
-            //alert(data.error);
-            try {
-               if (data.status === "ok") {
-                 alert("Login Successfully");
-                 
-                 window.localStorage.setItem(
-                   "token",
-                   data.data
-                 ); /*storing token in nodejs(localStorage)*/
-                 window.localStorage.setItem("loggedIn", true); // to allow user logged in when open another window
+      .then((res) => res.json())
+      .then((data) => {
+        try {
+          if (data.status === "ok") {
+            toast("Successfully Logged In", {
+              type: "success",
+              autoClose: 5000,
+            });
+            setSuccessLogin("Login Successfully");
+            window.localStorage.setItem(
+              "token",
+              data.data
+            ); /*storing token in nodejs(localStorage)*/
+            window.localStorage.setItem("loggedIn", true); 
 
-                 window.location.href = "./dashboard";
-               }
-               if (data.error === "User not exists") {
-                 alert("User Not Exist");
-               }
-               if (data.status === "error") {
-                 alert("Wrong Password, please try again..");
-               }
-               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
-                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
-               }
-               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
-                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
-               }
-               if (data.error === "You are not a verified, please wait for admin to accept your Sign Up request!!!"){
-                alert("You are not a verified, please wait for admin to accept your Sign Up request!!!");
-               }
-               if (
-                 data.error ===
-                 "You are already logged in from another tab or browser."
-               ) {
-                 alert(
-                   "You are already logged in from another tab or browser."
-                 );
-               } else {
-                 //alert(data.error);
-               }
-            } 
-            catch (error) {
-              alert(error);
-            }
-            // else{
-            //   alert(data.error)
-            // }
-        });
+             setTimeout(() => {
+               window.location.href = "./dashboard";
+             }, 5000);
+          }
+          if (data.error === "User not exists") {
+            setAlert("User Not Exist");
+          }
+          if (data.status === "error") {
+            setAlert("Wrong Password, please try again..");
+          }
+          if (
+            data.error ===
+            "You are not a verified, please wait for admin to accept your Sign Up request!!!"
+          ) {
+            setAlert(
+              "You are not a verified, please wait for admin to accept your Sign Up request!!!"
+            );
+          }      
+          if (
+            data.error ===
+            "You are already logged in from another tab or browser."
+          ) {
+            setAlert("You are already logged in from another tab or browser.");
+          } else {
+            //alert(data.error);
+          }
+        } catch (error) {
+          setAlert(error);
+        }
+
+      });
 }
 
 
     
         return (
           <>
-            <Loginnavigation />       
-            <div className="auth-wrapper">
-              <div className="auth-inner">
-                <form onSubmit={handleSubmit}>
-                  <h3>Sign In</h3>
-
-                  <div className="mb-3">
-                    <label>Email address</label>
+            <Loginnavigation />
+            <div className="signup-container">
+              <ToastContainer />
+              <div className="signup-card">
+                <h2 className="signup-title">Sign In now</h2>
+                <form className="signup-form" onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="EmailAddress">Email Address</label>
                     <input
                       type="email"
                       className="form-control"
@@ -97,35 +96,46 @@ export default function Login()  {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-
-                  <div className="mb-3">
-                    <label>Password</label>
+                  <div className="form-group">
+                    <label htmlFor="password">Password</label>
                     <input
                       type="password"
+                      id="password"
                       className="form-control"
                       placeholder="Enter password"
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
 
-                  <div class="mb-3 form-check">
+                  <div className="form-group form-check">
                     <input
                       type="checkbox"
-                      class="form-check-input"
-                      id="exampleCheck1"
+                      id="newsletter"
+                      className="form-check-input"
                     />
-                    <label class="form-check-label" for="exampleCheck1">
+                    <label htmlFor="newsletter" className="form-check-label">
                       Remember Me
                     </label>
                   </div>
-
-                  <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">
-                      Submit
-                    </button>
-                  </div>
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Sign In
+                  </button>
+                  {alert && (
+                    <div className="d-grid">
+                      <button type="alert" className="alert alert-danger mt-3">
+                        {alert}
+                      </button>
+                    </div>
+                  )}
+                  {successLogin && (
+                    <div className="d-grid">
+                      <button type="alert" className="alert alert-success mt-3">
+                        {successLogin}
+                      </button>
+                    </div>
+                  )}
                   <p className="forgot-password text-right">
-                    Forgot <a href="/forgot-password">password?</a>
+                    Click here to <a href="/forgot-password">Forgot Password</a>
                   </p>
                   <p className="forgot-password text-right">
                     Click here to <a href="/sign-up">Sign Up</a>
@@ -133,7 +143,6 @@ export default function Login()  {
                 </form>
               </div>
             </div>
-            <Footer />
           </>
         );
     }

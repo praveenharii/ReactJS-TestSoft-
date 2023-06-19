@@ -11,7 +11,7 @@ import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
-
+const baseUrl = require("../config");
 export default function tutorViewResultsSubjectTest() {
   let userId = null;
   const token = window.localStorage.getItem("token");
@@ -20,21 +20,38 @@ export default function tutorViewResultsSubjectTest() {
   const [data, setData] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("");
   let navigate = useNavigate();
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     viewTest();
   }, []);
 
   const viewTest = async () => {
-    fetch(`http://localhost:5000/getSubjectAndTestNames/${userId}`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data.data);
+    try {
+      const response = await fetch(
+        `${baseUrl}/getSubjectAndTestNames/${userId}`,
+        {
+          method: "GET",
+        }
+      );
+      const data = await response.json();
+      console.log(data.data);
+      if (data.data && data.data.length > 0) {
         setData(data.data);
         setSelectedSubject(data.data[0].subject); // Set the first subject as the initially selected subject
-      });
+      }
+       if (data.data.length <= 0) {
+         setError(true);
+       }
+       else{
+        console.error(error);
+        //setError(true);
+       }
+    } catch (error) {
+      console.error(error);
+      setError(true);
+      // Handle the error here, such as showing an error message to the user
+    }
   };
 
   const handleSelectSubject = (subject) => {
@@ -49,7 +66,7 @@ export default function tutorViewResultsSubjectTest() {
   const handleDownloadTest = async (subjectName, testName) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/downloadResults/${subjectName}/${testName}`,
+        `${baseUrl}/downloadResults/${subjectName}/${testName}`,
         {
           method: "POST",
           headers: {
@@ -92,29 +109,35 @@ export default function tutorViewResultsSubjectTest() {
 
  return (
    <>
-    <TutorTopbar />
-      <br />
+     <TutorTopbar />
+     <br />
      <div>
        <MDBRow className="g-2">
-         <MDBCol size="2">2 of 12</MDBCol>
+         <MDBCol size="2"></MDBCol>
          <MDBCol size="8">
            <div className="auth-wrapper" style={{ height: "auto" }}>
              <div className="auth-inner" style={{ width: "auto" }}>
                <div>
                  <h3>List Of Tests</h3>
-                 <Nav
-                   variant="tabs"
-                   activeKey={selectedSubject}
-                   onSelect={handleSelectSubject}
-                 >
-                   {data.map((subject, index) => (
-                     <Nav.Item key={index}>
-                       <Nav.Link eventKey={subject.subject}>
-                         {subject.subject} Tests
-                       </Nav.Link>
-                     </Nav.Item>
-                   ))}
-                 </Nav>
+                 {error ? (
+                   <div className="alert alert-danger mt-3">
+                     No Students has taken Test yet.
+                   </div>
+                 ) : (
+                   <Nav
+                     variant="tabs"
+                     activeKey={selectedSubject}
+                     onSelect={handleSelectSubject}
+                   >
+                     {data.map((subject, index) => (
+                       <Nav.Item key={index}>
+                         <Nav.Link eventKey={subject.subject}>
+                           {subject.subject} Tests
+                         </Nav.Link>
+                       </Nav.Item>
+                     ))}
+                   </Nav>
+                 )}
                </div>
                <div>
                  {data.map((subject) => {

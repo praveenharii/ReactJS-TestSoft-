@@ -7,7 +7,7 @@ import Spinner from "../Components/LoaderSpinner"
 const AdminDashboard = React.lazy(() => import("./adminDashboard"));
 const TutorDashboard = React.lazy(() => import("./tutorDashboard"));
 const StudentDashboard = React.lazy(() => import("./studentDashboard"));
-
+const baseUrl = require("../config");
 
 
 export default function Dashboard() {
@@ -27,7 +27,7 @@ export default function Dashboard() {
                      setUserData(updatedProfileData);
                      localStorage.removeItem("updatedProfileData");
                    } else {     
-                   fetch("http://localhost:5000/userData", {
+                   fetch(`${baseUrl}/userData`, {
                      method: "POST",
                      crossDomain: true,
                      headers: {
@@ -55,15 +55,14 @@ export default function Dashboard() {
                        if (data.data.userType === "Student") {
                          setStudentDashboard(true);
                        }
-                       
-                         setLoading(false);
-                     
-                       if( data.data == "token expired") {
-                    alert("Token Expired!!Login again..");
-                    window.localStorage.clear();
-                    window.location.href = "./sign-in";
-                      }
-                      
+
+                       setLoading(false);
+
+                       if (data.data == "token expired") {
+                         alert("Token Expired!!Login again..");
+                         window.localStorage.clear();
+                         window.location.href = "./sign-in";
+                       }
                      });
                    
                   }

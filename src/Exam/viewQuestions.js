@@ -14,7 +14,8 @@ import jwt_decode from "jwt-decode";
 import AdminTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import './Styles/tutorViewQuestions.css'
-
+import { AlignMiddle } from "react-bootstrap-icons";
+const baseUrl = require("../config");
 export default function ViewQuestions() {
   const [data, setData] = useState([]);
   const { subject, testid } = useParams();
@@ -35,7 +36,7 @@ export default function ViewQuestions() {
 
 
   useEffect(() => {
-    fetch(`http://localhost:5000/subjects/${subject}/tests/${testid}`, {
+    fetch(`${baseUrl}/subjects/${subject}/tests/${testid}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -57,13 +58,14 @@ export default function ViewQuestions() {
       {userType === "Admin" ? <AdminTopbar /> : <TutorTopbar />}
       <br />
       <div className="display-wrapper" style={{ height: "auto" }}>
-        <div className="display-inner" style={{ width: "auto" }}>
-          <h3>All Questions:</h3>
-          <h4>Test ID: {data.id}</h4>
+        <div className="display-inner">
+          <h3 className="align-middle">All Questions:</h3>
+          <br />
           <h4>Test Name: {data.name}</h4>
-          <h4>Date: {data.date}</h4>
-          <h4>Time Limit: {data.timeLimit}</h4>
-
+          <h4>Date: {data.date && data.date.substring(0, 10)} </h4>
+          <h4>Time: {data.date && data.date.substring(11, 16)} Hrs</h4>
+          <h4>Time Limit: {data.timeLimit} Minutes</h4>
+          <br />
           {data.questions ? (
             <Table bordered hover responsive>
               <thead>
@@ -104,9 +106,11 @@ export default function ViewQuestions() {
                   </tr>
                 ))}
               </tbody>
-              <Button onClick={() => handleNavigate(data)}>
-                Edit Questions
-              </Button>
+              {userType !== "Admin" ? (
+                <Button onClick={() => handleNavigate(data)}>
+                  Edit Questions
+                </Button>
+              ) : null}
             </Table>
           ) : (
             <p>No questions found.</p>

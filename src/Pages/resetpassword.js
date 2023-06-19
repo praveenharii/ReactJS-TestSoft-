@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-
+const baseUrl = require("../config");
 export default class ResetPassword extends Component {
     constructor(props) {
         super(props);
@@ -15,25 +15,24 @@ export default class ResetPassword extends Component {
         console.log(email);
         
         /* sending login-user API*/
-        fetch("http://localhost:5000/forgot-password", { 
-            method: "POST",
-            crossDomain: true,
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-                "Access-Control-Allow-Origin": "*",
-            },
-            body: JSON.stringify({ /*passing email*/
-                email,
-            }),
+        fetch(`${baseUrl}/forgot-password`, {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            /*passing email*/
+            email,
+          }),
         })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data, "userRegister");
-                alert(data.status);
-                
-                
-            });
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data, "userRegister");
+            alert(data.status);
+          });
     }
 
     render() {

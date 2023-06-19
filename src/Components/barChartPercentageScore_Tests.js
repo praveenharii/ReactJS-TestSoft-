@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Bar,
 } from "recharts";
-
+const baseUrl = require("../config");
 export default function BarChartPercentageScoreTests({ userId }) {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [studentResults, setStudentResults] = useState([]);
@@ -21,16 +21,13 @@ export default function BarChartPercentageScoreTests({ userId }) {
   useEffect(() => {
     const fetchStudentResults = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/getStudentResults`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userId }),
-          }
-        );
+        const response = await fetch(`${baseUrl}/getStudentResults`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        });
 
         const data = await response.json();
 
@@ -65,6 +62,7 @@ export default function BarChartPercentageScoreTests({ userId }) {
 
   return (
     <div>
+      <h3>Tests Results</h3>
       <Nav
         variant="tabs"
         activeKey={selectedSubject}
@@ -77,7 +75,7 @@ export default function BarChartPercentageScoreTests({ userId }) {
         ))}
       </Nav>
       <BarChart
-        width={500}
+        width={900}
         height={300}
         data={filteredData}
         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

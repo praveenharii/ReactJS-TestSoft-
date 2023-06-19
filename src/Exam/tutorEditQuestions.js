@@ -8,7 +8,7 @@ import "./Styles/createExamStyles.css";
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import { MdCenterFocusStrong } from "react-icons/md/index.esm";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-
+const baseUrl = require("../config");
 
 export default function EditQuestions() {
   const navigate=useNavigate();
@@ -16,11 +16,11 @@ export default function EditQuestions() {
   const data = location.state.data;
   const { testname , testid }= useParams();
   console.log(testname, testid)
-  console.log(data.id); // Output: Test1
+  console.log(data.id); 
 
-  console.log(data.questions[0].question); // Output: Is naren okay or not
-  console.log(data.questions[1].answer); // Output: maybe
-    //const [subjectName, setSubjectName] = useState();
+  console.log(data.questions[0].question); 
+  console.log(data.questions[1].answer); 
+
     const [testName, setTestName] = useState("");
     const [date, setDate] = useState("");
     const [timeLimit, setTimeLimit] = useState(0);
@@ -37,7 +37,7 @@ export default function EditQuestions() {
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
-      const formattedDate = date.toISOString().slice(0, 16); // Format as "yyyy-MM-ddTHH:mm"
+      const formattedDate = date.toISOString().slice(0, 16);
       return formattedDate;
     };
   
@@ -71,6 +71,19 @@ export default function EditQuestions() {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
+
+      if (
+        !testName ||
+        !date ||
+        !timeLimit ||
+        questions.some(
+          (q) => !q.question || !q.answer || q.options.some((o) => !o)
+        )
+      ) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      
       const updatedData = {
         test: {
           name: testName,
@@ -83,7 +96,7 @@ export default function EditQuestions() {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/updateQuestions/${testname}/${testid}`,
+          `${baseUrl}/updateQuestions/${testname}/${testid}`,
           {
             method: "POST",
             headers: {
@@ -108,42 +121,6 @@ export default function EditQuestions() {
       }
     };
 
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();    
-    //     const updatedData = {      
-    //        test: {
-    //          name: testName,
-    //          date: date,
-    //          timeLimit: timeLimit,
-    //          questions: questions,          
-    //      }
-    //     }
-    //     try {
-    //         fetch(
-    //           `http://localhost:5000/updateQuestions/${testname}/${testid}`,
-    //           {
-    //             method: "POST",
-    //             headers: {
-    //               "Content-Type": "application/json",
-    //               Accept: "application/json",
-    //               "Access-Control-Allow-Origin": "*",
-    //             },
-    //             body: JSON.stringify(updatedData),
-    //           }
-    //         )
-    //           .then((res) => res.json())
-    //           .then((data) => {
-    //             // Handle the response data
-    //             console.log(data);
-    //           })
-    //           .catch((error) => {
-    //             // Handle the error
-    //             console.error(error);
-    //           });
-    //     } catch (error) {
-            
-    //     }
-    // };
  
   return (
     <>

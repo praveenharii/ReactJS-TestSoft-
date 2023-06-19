@@ -13,14 +13,14 @@ import TutorTopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import { Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import { MDBSpinner } from "mdb-react-ui-kit";
-
+const baseUrl = require("../config");
 export default function ViewUsers() {
      let userType =null;
      const token = window.localStorage.getItem("token");
      const decodedToken = jwt_decode(token);
      userType = decodedToken.userType;
      const [data, setData] = useState([]);
-     const [limit, setLimit] = useState(5);
+     const [limit, setLimit] = useState(10);
      const [pageCount, setPageCount] = useState(1);
      const currentPage = useRef();
      const [loading, setLoading] = useState(true);
@@ -40,39 +40,38 @@ export default function ViewUsers() {
      
 
     const getAlluser = () =>{
-      fetch("http://localhost:5000/getAllUsers", {
-                     method: "GET",
-                   })
-                   .then((res) => res.json())
-                   .then((data) => {
-                    console.log(data, "userData");
-                    setData(data.data);
-                    //setUserType(data.data.userType);
-     });
+      fetch(`${baseUrl}/getAllUsers`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data, "userData");
+          setData(data.data);
+          //setUserType(data.data.userType);
+        });
     }
 
   
 
      const deleteUser = (id,name) => {
       if(window.confirm(`Please Click Ok if you want to delete user ${name}`)){
-        fetch("http://localhost:5000/deleteUser", {
-        method: "DELETE",
-                     crossDomain: true,
-                     headers: {
-                       "Content-Type": "application/json",
-                       Accept: "application/json",
-                       "Access-Control-Allow-Origin": "*",
-                     },
-                     body: JSON.stringify({
-                       userid: id,
-                       
-                     }),
-                   })
-                     .then((res) => res.json())
-                     .then((data) => {
-                      alert(data.data);
-                      getAlluser();
-                     });
+        fetch(`${baseUrl}/deleteUser`, {
+          method: "DELETE",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            userid: id,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data.data);
+            getAlluser();
+          });
       }else{
         console.log("Error");
       }
@@ -82,7 +81,7 @@ export default function ViewUsers() {
         if (
           window.confirm(`Please Click Ok if you want to Request Admin to delete user ${name}, admin will be notified by email.`)
         ) {
-          fetch("http://localhost:5000/deleteUserRequest", {
+          fetch(`${baseUrl}/deleteUserRequest`, {
             method: "POST",
             crossDomain: true,
             headers: {
@@ -118,7 +117,7 @@ export default function ViewUsers() {
      function getPaginatedUsers(){
       //setLoading(true);
         fetch(
-          `http://localhost:5000/paginatedUsers?page=${currentPage.current}&limit=${limit}`,
+          `${baseUrl}/paginatedUsers?page=${currentPage.current}&limit=${limit}`,
           {
             method: "GET",
           }
@@ -133,7 +132,7 @@ export default function ViewUsers() {
      }
 
      const handleSearch = () => {
-       fetch(`http://localhost:5000/searchUsers?email=${searchQuery}`)
+       fetch(`${baseUrl}/searchUsers?email=${searchQuery}`)
          .then((res) => res.json())
          .then((data) => {
            setSearchResults(data);
@@ -177,6 +176,7 @@ export default function ViewUsers() {
              <tr>
                <th>Name</th>
                <th>New User Email</th>
+               <th>Phone Number</th>
                <th>User Type</th>
                <th>Verification</th>
                <th>Status</th>
@@ -208,6 +208,7 @@ export default function ViewUsers() {
                  <tr key={i._id}>
                    <td>{`${i.fname} ${i.lname}`}</td>
                    <td>{i.email}</td>
+                   <td>{i.phoneNumber}</td>
                    <td>{i.userType}</td>
                    <td>
                      {i.status === "verified" ? (
@@ -305,7 +306,7 @@ export default function ViewUsers() {
            breakLabel="..."
            nextLabel="next >"
            onPageChange={handlePageClick}
-           pageRangeDisplayed={5}
+           pageRangeDisplayed={10}
            pageCount={pageCount}
            previousLabel="< previous"
            renderOnZeroPageCount={null}

@@ -40,3 +40,91 @@
     transform: rotate(360deg);
   }
 }
+
+.SignUpBackround{
+display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  background: linear-gradient(to top, #2f8be8, white);
+}
+.visually-hidden {
+  position: absolute;
+  overflow: visible;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url('https://mdbootstrap.com/img/new/textures/full/171.jpg');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.signin-card {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+.signin-form .form-group {
+  border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+.signin-form .form-control {
+margin-bottom: 10px;
+}
+
+.signup-card {
+  width: 400px;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup-title {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.signup-form .form-group {
+  margin-bottom: 20px;
+}
+
+.signup-form .form-control {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  width: 100%;
+}
+
+.signup-or {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.signup-social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.signup-social-icons button {
+  margin: 0 5px;
+}
+
+/* Additional styles can be added as needed */

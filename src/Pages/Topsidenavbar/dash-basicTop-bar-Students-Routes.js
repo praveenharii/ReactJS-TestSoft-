@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
+import jwt_decode from "jwt-decode";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
@@ -9,29 +9,28 @@ import Dashboard from "./../dashboard";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
 import { useNavigate } from "react-router-dom";
-
-function StudentTopbar({userData}) {
+const baseUrl = require("../../config");
+function StudentTopbar() {
    const navigate = useNavigate();
-  console.log(userData._id);
+  let id = null;
+  const token = window.localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  id = decodedToken.userId;
   
   function ViewAvailableTests() {
     navigate("/dashboard/SubjectTests", {
       state: {
-        userData: userData,
+        id: id,
       },
     });
   }
 
   function ViewTestResults() {
-    navigate("/dashboard/viewTestResults", {
-      state: {
-        userData: userData,
-      },
-    });
+    navigate("/dashboard/viewTestResults");
   }
 
   const logOut = () => {
-    fetch("http://localhost:5000/logout", {
+    fetch(`${baseUrl}/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

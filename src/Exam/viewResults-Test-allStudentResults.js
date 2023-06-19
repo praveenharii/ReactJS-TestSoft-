@@ -17,7 +17,7 @@ import {
   MDBModalFooter,
 } from "mdb-react-ui-kit";
 import TutorTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
-
+const baseUrl = require("../config");
 export default function AdminViewResultsSubjectAndTest() {
   let { subject, testId } = useParams();
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ export default function AdminViewResultsSubjectAndTest() {
   const [alertModal, setAlertModal] = useState(false);
 
   const viewAllStudentResults = () => {
-    fetch(`http://localhost:5000/getResults/${subject}/${testId}`)
+    fetch(`${baseUrl}/getResults/${subject}/${testId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.error === "No results found") {
@@ -77,7 +77,7 @@ export default function AdminViewResultsSubjectAndTest() {
 
   const editScore = async (score, selectedResultID) => {
     console.log(score, selectedResultID);
-    fetch(`http://localhost:5000/editStudentScore/${selectedResultID}`, {
+    fetch(`${baseUrl}/editStudentScore/${selectedResultID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export default function AdminViewResultsSubjectAndTest() {
   const deleteResult = async (selectedResultID) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/deleteStudentResult/${selectedResultID}`,
+        `${baseUrl}/deleteStudentResult/${selectedResultID}`,
         {
           method: "DELETE",
           headers: {

@@ -1,21 +1,28 @@
 import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
+import jwt_decode from "jwt-decode";
+const baseUrl = require("../../config");
 
 function NavScrollExample() {
- 
+  let id = null;
+  const token = window.localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  id = decodedToken.userId;
+  const navigate = useNavigate();
+
   const logOut = () => {
-  fetch("http://localhost:5000/logout", {
+  fetch(`${baseUrl}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      token: localStorage.getItem("token"), 
+      token: localStorage.getItem("token"),
     },
   })
     .then((response) => response.json())
@@ -23,9 +30,9 @@ function NavScrollExample() {
       if (data.status === "ok") {
         console.log("Logout Succesfully");
         window.localStorage.clear();
-         const signInPath = "/sign-in"; // Update this with your actual sign-in page path
-         const redirectURL = window.location.origin + signInPath;
-         window.location.href = redirectURL;
+        const signInPath = "/sign-in"; // Update this with your actual sign-in page path
+        const redirectURL = window.location.origin + signInPath;
+        window.location.href = redirectURL;
       } else {
         console.log("Logout error:", data.error);
       }
@@ -34,6 +41,10 @@ function NavScrollExample() {
       console.log("Logout error:", error);
     });
  };
+
+ function ViewSubject() {
+   navigate(`/subjects/${id}`);
+ }
 
   return (
     <Navbar bg="light" expand="lg">
@@ -62,7 +73,7 @@ function NavScrollExample() {
                 Create Exam
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="/subjects">
+              <NavDropdown.Item onClick={ViewSubject}>
                 View Subjects
               </NavDropdown.Item>
 

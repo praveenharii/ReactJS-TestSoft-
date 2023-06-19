@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MDBBtn } from "mdb-react-ui-kit";
 import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-
+const baseUrl = require("../config");
 export default function ViewTest() {
   const [data, setData] = useState([]);
   const { subject } = useParams();
@@ -21,7 +21,7 @@ export default function ViewTest() {
 
     
   const getAllTest = () => {
-    fetch(`http://localhost:5000/subjects/${subject}/tests`, {
+    fetch(`${baseUrl}/subjects/${subject}/tests`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -42,7 +42,7 @@ export default function ViewTest() {
     if (
       window.confirm(`Please click OK if you want to delete subject ${name}`)
     ) {
-      fetch(`http://localhost:5000/deleteTest/${id}`, {
+      fetch(`${baseUrl}/deleteTest/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -63,11 +63,21 @@ export default function ViewTest() {
   };
 
 
- 
+  const isTestAvailable = (availableUntil) => {
+    const currentDate = new Date();
+    const availableUntilDate = new Date(availableUntil);
+    return availableUntilDate > currentDate ? (
+      <button type="button" class="btn btn-success btn-rounded">
+        Available
+      </button>
+    ) : (
+      <button type="button" class="btn btn-warning btn-rounded">
+        Unavailable
+      </button>
+    );
+  };
 
 
-
- 
 
   return (
     <>
@@ -81,8 +91,9 @@ export default function ViewTest() {
               <tr>
                 <th>Test Name</th>
                 <th>Created By</th>
-                <th>Date Created</th>
-                <th>Available Until</th>
+                <th>Date Created(MM/DD/YY)</th>
+                <th>Available Until(MM/DD/YY)</th>
+                <th>Status</th>
                 <th>View Questions</th>
                 <th>Delete</th>
               </tr>
@@ -94,6 +105,7 @@ export default function ViewTest() {
                   <td>{test.createdBy}</td>
                   <td>{new Date(test.createdAt).toLocaleString()}</td>
                   <td>{new Date(test.date).toLocaleString()}</td>
+                  <td>{isTestAvailable(test.date)}</td>
                   <td>
                     <MDBBtn
                       onClick={() => {

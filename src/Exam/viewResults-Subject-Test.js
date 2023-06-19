@@ -9,7 +9,8 @@ import {
 } from "mdb-react-ui-kit";
 import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
-
+import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
+const baseUrl = require("../config");
 export default function viewResultsSubjectTest() {
   const [data, setData] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -20,7 +21,7 @@ export default function viewResultsSubjectTest() {
   }, []);
 
   const viewTest = async () => {
-    fetch("http://localhost:5000/getSubjectAndTestNames", {
+    fetch(`${baseUrl}/getSubjectAndTestNames`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -45,7 +46,7 @@ const handleDownloadTest = async (subjectName, testName) => {
 
 
     const response = await fetch(
-      `http://localhost:5000/downloadResults/${subjectName}/${testName}`,
+      `${baseUrl}/downloadResults/${subjectName}/${testName}`,
       {
         method: "POST",
         headers: {
@@ -89,9 +90,11 @@ const handleDownloadTest = async (subjectName, testName) => {
 
   return (
     <>
+      <Topbar />
+      <br />
       <div>
         <MDBRow className="g-2">
-          <MDBCol size="2">2 of 12</MDBCol>
+          <MDBCol size="2"></MDBCol>
           <MDBCol size="8">
             <div className="auth-wrapper" style={{ height: "auto" }}>
               <div className="auth-inner" style={{ width: "auto" }}>

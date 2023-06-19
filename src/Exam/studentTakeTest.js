@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { Table, Button, Card, Container } from "react-bootstrap";
-import { MDBBtn } from "mdb-react-ui-kit";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate, useParams } from "react-router-dom";
+import { Button, Card, Container } from "react-bootstrap";
 import moment from "moment";
 import "moment-duration-format";
 import "./Styles/examPage.css";
 import jwt_decode from "jwt-decode";
-
+import Badge from "react-bootstrap/Badge";
+import Stack from "react-bootstrap/Stack";
+import Spinner from "../Components/Spinner"
+const baseUrl = require("../config");
 
 
 export default function StudentTakeTest() {
@@ -24,14 +24,16 @@ export default function StudentTakeTest() {
   const [timeRemaining, setTimeRemaining] = useState(0);
   const { subjectname, taketestid } = useParams();
   const [submitted, setSubmitted] = useState(false);
-
   const timeRemainingFormatted = moment
-    .duration(timeRemaining, "seconds")
-    .format("mm:ss", { trim: false });
+  .duration(timeRemaining, "seconds")
+  .format("mm:ss", { trim: false });
+  
+  console.log(timeRemaining);
+
 
   useEffect(() => {
     console.log("Fetching test data...");
-    fetch(`http://localhost:5000/studentViewTest/${taketestid}`, {
+    fetch(`${baseUrl}/studentViewTest/${taketestid}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -42,7 +44,7 @@ export default function StudentTakeTest() {
         );
         console.log(data);
         if (data["status"] === "ok") {
-          // alert("Please complete the test before submitting!")
+           //alert("Reminder: Do not Refresh the page or else your test will be submitted.")
         }
       })
       .catch((error) => {
@@ -58,6 +60,8 @@ export default function StudentTakeTest() {
     return () => clearInterval(timer);
   }, []);
 
+
+
   const handleAnswerSelect = (questionIndex, selectedOption) => {
     setUserAnswers((prevAnswers) => ({
       ...prevAnswers,
@@ -69,7 +73,7 @@ export default function StudentTakeTest() {
     console.log(userAnswers);
     try {
       const response = await fetch(
-        `http://localhost:5000/${id}/${subjectname}/tests/${taketestid}/submit`,
+        `${baseUrl}/${id}/${subjectname}/tests/${taketestid}/submit`,
         {
           method: "POST",
           headers: {
@@ -84,29 +88,20 @@ export default function StudentTakeTest() {
       console.log(data);
       alert(data.message);
       setSubmitted(true);
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    if (submitted) {
-      navigate("/dashboard");
+    const totalSeconds = timeRemaining * 60; // Convert minutes to seconds
+
+    if (totalSeconds <= 0 && timeRemaining << 0) {
+      handleSubmitTest();
     }
-  }, [submitted, navigate]);
+  }, [timeRemaining]);
 
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = "";
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, []);
 
   useEffect(() => {
     const handleBackButton = () => {
@@ -119,8 +114,6 @@ export default function StudentTakeTest() {
       }
     };
     
-
-
     window.history.pushState(null, null, window.location.pathname);
     window.addEventListener("popstate", handleBackButton);
 
@@ -133,7 +126,13 @@ export default function StudentTakeTest() {
     const handleBeforeUnload = (event) => {
       event.preventDefault();
       event.returnValue = "";
-      handleSubmitTest();
+      if (
+        window.confirm(
+          "Are you sure you want to Refresh? YOUR ANSWERS WILL BE SUBMITTED!!"
+        )
+      ) {
+        handleSubmitTest();
+      }
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -144,56 +143,74 @@ export default function StudentTakeTest() {
   }, []);
 
   if (!test) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner />
+      </div>
+    );
   }
 
   return (
     <div className="container-wrapper">
       <div className="container-inner">
-        
-          <Container>
-            <div className="exam-heading">
-              <div className="home-btn">
-                {/* <MDBBtn onClick={() => navigate("/dashboard")}>
-                  <FontAwesomeIcon icon={faHome} className="me-2" />
-                  Home
-                </MDBBtn> */}
-              </div>
-              <div className="time-remaining">
-                <h4>Time Remaining:</h4>
-                <p>{timeRemainingFormatted}</p>
-              </div>
+        <Container>
+          <h1>{test.name}</h1>
+          <div className="exam-heading">
+            <br />
+            <Stack direction="vertical" gap={2}>
+              <Badge bg="primary">Goodluck!</Badge>
+              <Badge bg="success">
+                Submit your test once you have completed.
+              </Badge>
+              <Badge bg="danger">
+                Do not refresh the page!Or else your test will be submitted!!
+              </Badge>
+              <Badge bg="warning" text="dark">
+                Do not navigate to other pages! Your test will auto submit if
+                you try to navigate.
+              </Badge>
+            </Stack>
+            <div className="time-remaining p-4">
+              <Card>
+                <Card.Body>
+                  Time Remaining:
+                  <p>{timeRemainingFormatted}</p>
+                </Card.Body>
+              </Card>
             </div>
-            <Card className="question-card">
-              <Card.Body>
-                {test.questions.map((question, index) => (
-                  <div key={index}>
-                    <h5>{`Q${index + 1}. ${question.question}`}</h5>
-                    <div className="options">
-                      {question.options.map((option, optionIndex) => (
-                        <div
-                          key={optionIndex}
-                          className={`option-button ${
-                            userAnswers[index] === option ? "selected" : ""
-                          }`}
-                          onClick={() => handleAnswerSelect(index, option)}
-                        >
-                          {option}
-                        </div>
-                      ))}
-                    </div>
+          </div>
+          <h3>All questions:</h3>
+          <Card className="question-card">
+            <Card.Body>
+              {test.questions.map((question, index) => (
+                <div key={index} className="unselectable">
+                  <h5>{`Q${index + 1}. ${question.question}`}</h5>
+                  <div className="options">
+                    {question.options.map((option, optionIndex) => (
+                      <div
+                        key={optionIndex}
+                        className={`option-button ${
+                          userAnswers[index] === option ? "selected" : ""
+                        }`}
+                        onClick={() => handleAnswerSelect(index, option)}
+                      >
+                        {option}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </Card.Body>
-            </Card>
-            <div className="submit-btn">
-              <Button variant="success" onClick={handleSubmitTest}>
-                Submit Test
-              </Button>
-            </div>
-          </Container>
-     
+                </div>
+              ))}
+            </Card.Body>
+          </Card>
+          <div className="submit-btn">
+            <Button variant="success" onClick={handleSubmitTest}>
+              Submit Test
+            </Button>
+          </div>
+        </Container>
       </div>
     </div>
   );
 }
+
+

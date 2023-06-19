@@ -6,7 +6,7 @@ import TutorTopNavBar  from './Topsidenavbar/dash-basicTop-bar-Tutor-Routes';
 import { MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";  
 import { useEffect } from 'react';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-
+const baseUrl = require("../config");
 
 
 export default function EditProfile() {
@@ -22,7 +22,7 @@ export default function EditProfile() {
   const [newPassword, setNewPassword] = useState("");
   const [retypeNewPassword, setRetypeNewPassword] = useState("");
   const [passwordMatchError, setPasswordMatchError] = useState(false);
-  const [alert, setAlert] = useState(null);
+  const [Alert, setAlert] = useState(null);
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const [phoneNumber,setPhoneNumber] = useState("");
@@ -31,7 +31,6 @@ export default function EditProfile() {
   const [education, setEducation] = useState("");
   const [changePassword, setChangePassword] = useState(false);
   
-  console.log(userData.userType);
 
 useEffect(() => {
   setFname(userData.fname);
@@ -58,16 +57,13 @@ useEffect(() => {
 
   const checkCurrentPassword = (e) => {
     e.preventDefault();
-     return fetch(
-       `http://localhost:5000/checkOldPassword/${email}/${oldPassword}`,
-       {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-           Accept: "application/json",
-         },
-       }
-     )
+     return fetch(`${baseUrl}/checkOldPassword/${email}/${oldPassword}`, {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+         Accept: "application/json",
+       },
+     })
        .then((res) => res.json())
        .then((data) => {
          return data.status;
@@ -111,7 +107,8 @@ useEffect(() => {
        requestBody.newPassword = newPassword;
      }
      console.log(newPassword);
-     fetch(`http://localhost:5000/updateProfile/${id}`, {
+     //localStorage.removeItem("token");
+     fetch(`${baseUrl}/updateProfile/${id}`, {
        /* sending login-user API*/
        method: "POST",
        crossDomain: true,
@@ -123,7 +120,14 @@ useEffect(() => {
        },
        body: JSON.stringify(requestBody),
      })
-       .then((res) => res.json())
+       .then((res) => {
+         const authorizationHeader = res.headers.get("authorization");
+         if (authorizationHeader) {
+           const newToken = authorizationHeader.split(" ")[1];
+           localStorage.setItem("token", newToken);
+         }
+         return res.json();
+       })
        .then((data) => {
          //console.log(data, "userData");
 
@@ -131,14 +135,13 @@ useEffect(() => {
            setAlert("First name exists, try different..");
          }
          if (data.status === "ok") {
-           setAlert("Updated Successfully");
-           localStorage.setItem("token", data.token);
+          //  localStorage.setItem("token", data.token);
            localStorage.setItem(
              "updatedProfileData",
              JSON.stringify(data.data)
            );
-           //console.log(data.data);
 
+           alert("Updated Successfully");
            navigate("/dashboard");
          } else {
            setAlert(data.err);
@@ -332,7 +335,7 @@ useEffect(() => {
                   Passwords do not match. Please retype them correctly.
                 </div>
               )}
-              {alert && <div className="alert alert-danger mt-3">{alert}</div>}
+              {Alert && <div className="alert alert-danger mt-3">{Alert}</div>}
               <div className="mt-5 text-center">
                 <button
                   className="btn btn-primary profile-button"

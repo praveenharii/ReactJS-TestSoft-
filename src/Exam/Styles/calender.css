@@ -1,0 +1,28 @@
+.custom-calendar {
+    font-size: 18px;
+    max-width: 100%;
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.test-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+}
+
+.test-date {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.test-name {
+    margin-top: 8px;
+    text-align: center;
+}

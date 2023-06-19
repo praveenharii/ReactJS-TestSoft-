@@ -7,11 +7,9 @@ import {
   MDBContainer,
   MDBNavbar,
   MDBNavbarBrand,
-  MDBNavbarToggler,
   MDBIcon,
   MDBNavbarNav,
   MDBNavbarItem,
-  MDBNavbarLink,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
@@ -19,11 +17,9 @@ import {
   MDBCollapse,
   MDBRipple,
   MDBBadge,
-  MDBInput,
-  MDBCol,
-  MDBRow,
+  MDBBtn,
 } from "mdb-react-ui-kit";
-import Button from "react-bootstrap/Button";
+const baseUrl = require("../../config");
 
 const TutorSideBar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -32,7 +28,7 @@ const TutorSideBar = ({ userData }) => {
   const toggleShow = () => setShowShow(!showShow);
 
   const logOut = () => {
-    fetch("http://localhost:5000/logout", {
+    fetch(`${baseUrl}/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +38,6 @@ const TutorSideBar = ({ userData }) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.status === "ok") {
-
           console.log("Logout Succesfully");
           window.localStorage.clear();
           window.location.href = "./sign-in";
@@ -84,9 +79,6 @@ const TutorSideBar = ({ userData }) => {
     navigate(`/dashboard/tutorViewStudentResults/${id}`);
   }
 
-  function CreateUser() {
-    navigate("/dashboard/getAllUsers/createUser");
-  }
 
   return (
     <div>
@@ -179,55 +171,6 @@ const TutorSideBar = ({ userData }) => {
                 Student Results
               </MDBListGroupItem>
             </MDBRipple>
-
-            {/* <MDBRipple rippleTag="span">
-                <MDBListGroupItem
-                  tag="a"
-                  href="#"
-                  action
-                  className="border-0 border-bottom rounded"
-                >
-                  <MDBIcon fas icon="building me-3" />
-                  Partners
-                </MDBListGroupItem>
-              </MDBRipple>
-
-              <MDBRipple rippleTag="span">
-                <MDBListGroupItem
-                  tag="a"
-                  href="#"
-                  action
-                  className="border-0 border-bottom rounded"
-                >
-                  <MDBIcon fas icon="calendar me-3" />
-                  Calendar
-                </MDBListGroupItem>
-              </MDBRipple>
-
-              <MDBRipple rippleTag="span">
-                <MDBListGroupItem
-                  tag="a"
-                  href="#"
-                  action
-                  className="border-0 border-bottom rounded"
-                >
-                  <MDBIcon fas icon="users me-3" />
-                  User
-                </MDBListGroupItem>
-              </MDBRipple>
-
-              <MDBRipple rippleTag="span">
-                <MDBListGroupItem
-                  tag="a"
-                  href="#"
-                  action
-                  className="border-0 rounded"
-                  onClick={ViewSubject}
-                >
-                  <MDBIcon fas icon="money-bill me-3" />
-                  Sales
-                </MDBListGroupItem>
-              </MDBRipple> */}
           </MDBListGroup>
         </div>
       </MDBCollapse>
@@ -236,38 +179,20 @@ const TutorSideBar = ({ userData }) => {
 
       <MDBNavbar expand="lg" light style={{ backgroundColor: "#B6C0E5" }}>
         <MDBContainer fluid>
-          <MDBNavbarNav className="d-flex flex-row align-items-center w-auto">
-            <MDBNavbarToggler
-              type="button"
-              aria-label="Toggle navigation"
-              onClick={toggleShow}
-            >
-              <MDBIcon icon="bars" fas />
-            </MDBNavbarToggler>
-            <MDBNavbarBrand href="/">
-              <img
-                src={AppLogo}
-                height="50"
-                width="150"
-                alt=""
-                loading="lazy"
-                style={{ borderRadius: "10px" }}
-              />
-            </MDBNavbarBrand>
-
-            <MDBCollapse navbar>
-              <MDBNavbarItem
-                className="d-flex align-items-center"
-                style={{ border: "1px solid black" }}
-              >
-                <MDBInput
-                  label='Search (ctrl + "/" to focus)'
-                  id="form1"
-                  type="text"
-                />
-                <MDBIcon fas icon="search mx-2" />
-              </MDBNavbarItem>
-            </MDBCollapse>
+          <MDBNavbarBrand href="/">
+            <img
+              src={AppLogo}
+              height="50"
+              width="150"
+              alt=""
+              loading="lazy"
+              style={{ borderRadius: "10px" }}
+            />
+          </MDBNavbarBrand>
+          <MDBNavbarNav className="d-flex justify-content-center align-items-center w-100">
+            <div className="text-center">
+              <h1 className="lobster">Tutor Dashboard</h1>
+            </div>
           </MDBNavbarNav>
           <MDBNavbarNav className="d-flex flex-row justify-content-end w-auto">
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
@@ -285,27 +210,10 @@ const TutorSideBar = ({ userData }) => {
 
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
-                    <div href="#">Some news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Another news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Something else here</div>
+                    <div onClick={ViewUsers}>View Users</div>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-            </MDBNavbarItem>
-
-            <MDBNavbarItem className="me-3 me-lg-0">
-              <MDBNavbarLink href="#">
-                <MDBIcon fas icon="fill-drip" />
-              </MDBNavbarLink>
-            </MDBNavbarItem>
-            <MDBNavbarItem className="me-3 me-lg-0">
-              <MDBNavbarLink href="#">
-                <MDBIcon fab icon="github" />
-              </MDBNavbarLink>
             </MDBNavbarItem>
 
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
@@ -316,9 +224,9 @@ const TutorSideBar = ({ userData }) => {
                   className="hidden-arrow nav-link"
                 >
                   <img
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg"
+                    src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"
                     className="rounded-circle"
-                    height="22"
+                    height="45"
                     alt=""
                     loading="lazy"
                   />
@@ -336,9 +244,13 @@ const TutorSideBar = ({ userData }) => {
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-              <Button onClick={logOut} variant="danger">
+              <MDBBtn
+                onClick={logOut}
+                color="danger"
+                style={{ width: "100px", marginLeft: "10px" }}
+              >
                 Log Out
-              </Button>
+              </MDBBtn>
             </MDBNavbarItem>
           </MDBNavbarNav>
         </MDBContainer>

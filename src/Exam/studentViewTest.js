@@ -4,16 +4,16 @@ import { BsPlay } from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
 import StudentTopNavBar from '../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes'
 import {  Button, Modal, Form } from "react-bootstrap";
-
+const baseUrl = require("../config");
 export default function SubjectTests() {
    const [tests, setTests] = useState([]);
    const [testPassword, settestPassword] = useState('');
    const [show, setShow] = useState(false);
     const location = useLocation();
-    const userData = location.state.userData;
+    // const userData = location.state.userData;
     const  id  = location.state.id;
-    console.log(userData);
-    console.log(id);
+    // console.log(userData,"Userdata");
+    console.log(id,"id");
    const navigate = useNavigate();
    const [currentTest, setCurrentTest] = useState(null);
    
@@ -31,7 +31,7 @@ export default function SubjectTests() {
    //console.log(tests);
    useEffect(() => {
      async function fetchData() {
-       const res = await fetch("http://localhost:5000/subTests");
+       const res = await fetch(`${baseUrl}/subTests`);
        const data = await res.json();
        setTests(data.data);
      }
@@ -42,7 +42,7 @@ export default function SubjectTests() {
    function takeTest(subjectname, taketestid) {
      console.log(subjectname, taketestid, testPassword);
      
-     fetch(`http://localhost:5000/${id}/checkUserTakenTest/${taketestid}`, {
+     fetch(`${baseUrl}/${id}/checkUserTakenTest/${taketestid}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -56,19 +56,21 @@ export default function SubjectTests() {
          console.log(data);
          if (data.message === "You have already taken the test") {
            setShow(false);
+           settestPassword('');
            alert(data.message);
          }
-        if (data.message === "Wrong password") {
-          setShow(false);
-          alert(data.message);
-        }
-        if (data.message === "OK") {
-          navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
-            state: {
-              id,
-            },
-          });
-        }
+         if (data.message === "Wrong password") {
+           setShow(false);
+           settestPassword('');
+           alert(data.message);
+         }
+         if (data.message === "OK") {
+           navigate(`/dashboard/SubjectTests/${subjectname}/${taketestid}`, {
+             state: {
+               id,
+             },
+           });
+         }
        })
        .catch((error) => console.error(error));    
    }
@@ -76,7 +78,7 @@ export default function SubjectTests() {
 
   return (
     <>
-      <StudentTopNavBar userData={userData} />
+      <StudentTopNavBar />
       <br />
       <div className="auth-wrapper" style={{ height: "auto" }}>
         <div className="auth-inner" style={{ width: "auto" }}>

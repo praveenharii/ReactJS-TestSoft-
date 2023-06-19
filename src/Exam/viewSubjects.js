@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Button } from "react-bootstrap";
 import { MDBBtn } from "mdb-react-ui-kit";
 import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
-
+const baseUrl = require("../config");
 export default function ViewSubject() {
   const [data, setData] = useState([]);
   let navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function ViewSubject() {
   }, []);
 
   const getAllSubject = () => {
-    fetch("http://localhost:5000/subjects", {
+    fetch(`${baseUrl}/subjects`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -34,7 +34,7 @@ export default function ViewSubject() {
     if (
       window.confirm(`Please Click Ok if you want to delete subject ${name}`)
     ) {
-      fetch("http://localhost:5000/deleteSubject", {
+      fetch(`${baseUrl}/deleteSubject`, {
         method: "DELETE",
         crossDomain: true,
         headers: {
@@ -51,7 +51,6 @@ export default function ViewSubject() {
           alert(data.message);
           getAllSubject();
           console.log(data);
-          
         });
     } else {
     }

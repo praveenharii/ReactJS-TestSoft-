@@ -10,11 +10,11 @@ import {
   MDBNavbarBrand,
 } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
-
+const baseUrl = require("../../config");
 function NavScrollExample() {
 
   const logOut = () => {
-   fetch("http://localhost:5000/logout", {
+   fetch(`${baseUrl}/logout`, {
      method: "POST",
      headers: {
        "Content-Type": "application/json",
@@ -58,43 +58,24 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            {/* <Nav.Link href="/dashboard/getAllUsers">Manage Users</Nav.Link> */}
+            <Nav.Link href="/dashboard/subjects">View Subjects</Nav.Link>
+            <Nav.Link href="/dashboard/viewResultsTestsLists">
+              View Student Results
+            </Nav.Link>
             <NavDropdown title="Manage Users" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/dashboard/getAllUsers">
                 View Users
               </NavDropdown.Item>
+              <NavDropdown.Item href="/dashboard/adminApproveUser">
+                Pending Users
+              </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="/dashboard/getAllUsers/createUser">
+              <NavDropdown.Item href="/dashboard/createUser">
                 Create Users
               </NavDropdown.Item>
-
-              {/* <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item> */}
-            </NavDropdown>
-            <NavDropdown title="Manage Exam" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="/dashboard/createExam">
-                Create Exam
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/subjects">
-                View Subjects
-              </NavDropdown.Item>
-
-              {/* <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item> */}
             </NavDropdown>
           </Nav>
-          {/* <Form className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            
-          </Form> */}
+
           <Button onClick={logOut} variant="danger">
             LogOut
           </Button>

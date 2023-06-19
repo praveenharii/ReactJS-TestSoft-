@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Table } from "react-bootstrap";
 import StudentTopNavBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes";
-
-export default function StudentViewResults( userData ) {
+const baseUrl = require("../config");
+export default function StudentViewResults() {
     let userId = null;
     const token = window.localStorage.getItem('token');
     const decodedToken = jwt_decode(token);
@@ -23,16 +23,13 @@ export default function StudentViewResults( userData ) {
  
     const fetchStudentResults = async (userId) => {
       try {
-        const response = await fetch(
-          `http://localhost:5000/getStudentResults`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userId }),
-          }
-        );
+        const response = await fetch(`${baseUrl}/getStudentResults`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        });
 
         const data = await response.json();
 
@@ -49,12 +46,12 @@ export default function StudentViewResults( userData ) {
 
   return (
     <>
-      <StudentTopNavBar userData={userData} />
-
-      <div className="auth-wrapper">
+      <StudentTopNavBar />
+      <br />
+      <div className="auth-wrapper" style={{ height: "auto" }}>
         <div className="auth-inner" style={{ width: 800 }}>
           <h1>Taken Test Results</h1>
-          
+
           <div className="text-success" style={{ fontSize: "12px" }}>
             The passing marks is 40%.
           </div>

@@ -28,6 +28,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
     "react-bootstrap-icons": "^1.10.3",
+    "react-calendar": "^4.3.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-paginate": "^8.1.5",
@@ -36,6 +37,7 @@
     "react-sidebar": "^3.0.2",
     "recharts": "^2.6.2",
     "socket.io-client": "^4.6.2",
+    "toastify": "^2.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

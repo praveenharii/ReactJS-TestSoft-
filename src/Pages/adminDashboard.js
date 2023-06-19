@@ -1,118 +1,72 @@
-import React, { Component, useEffect, useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import ViewSubject from './../Exam/viewSubjects';
-import {
-  faCheck,
-  faPersonCircleXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { Table } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState} from "react";
 import AdminSidebar from './Topsidenavbar/Side-N-Topbar.js';
 import "./dashboard.css";
-import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
 import {
-  MDBIcon,
-  MDBCollapse,
-  MDBRipple,
   MDBCol,
   MDBRow,
   MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
 } from "mdb-react-ui-kit";
 import Footer from "../Components/Footer";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend
-} from "recharts";
-
+import LoginLogoutActivity from "../Components/Login-Logout-Activity";
+import UpComingTestCalender from "../Components/upComingTestCalender";
+import Spinner from "../Components/LoaderSpinner"
+const baseUrl = require("../config");
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
-   const navigate = useNavigate();
+   
    const id = userData._id; 
    const [data, setData] = useState([]);
    const [userNum, setUserNum] = useState([]);
+   const [loading, setLoading] = useState(true);
    console.log(userData);
-  const logOut = () => {
-    window.localStorage.clear();
-    window.location.href = "./sign-in";
-  };
 
-    function editProfileCLick() {
-      navigate(`/dashboard/updateProfile/${id}`, {
-        state: {
-          id,
-          userData: userData,
-        },
-      });
-    }
-
-    function ViewSubject(){
-      navigate("../subjects");
-    }
-
-    function ViewUsers(){
-      navigate("/dashboard/getAllUsers");
-    }
-
-    function CreateExam(){
-      navigate("/dashboard/createExam");
-    }
-
-    function ViewStudentResults() {
-      navigate("/dashboard/viewAllStudentResults", {
-        state: {
-          id,
-          userData: userData,
-        },
-      });
-    }
-
+  
     const getNumberOfUsers = () => {
-      fetch("http://localhost:5000/getNumbersOfUsers", {
+      fetch(`${baseUrl}/getNumbersOfUsers`, {
         method: "GET",
       })
         .then((res) => res.json())
         .then((users) => {
           console.log(users, "allUsers");
           setUserNum(users);
-        });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setLoading(false);
+        });;
     };
 
     const getAllPendingUsers = () => {
-      fetch("http://localhost:5000/getAllPendingUsers", {
+      fetch(`${baseUrl}/getAllPendingUsers`, {
         method: "POST",
       })
         .then((res) => res.json())
         .then((data) => {
           console.log(data, "allPendingUsers");
           setData(data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
         });
     };
 
     const verifyUser = async (id,name,email) => {
       if(window.confirm(`Please Click Ok if you want to Verify user ${name}`)){
-        const res = await fetch("http://localhost:5000/verifyUser", {
-        method: "POST",
-           crossDomain: true,
-           headers: {
-             "Content-Type": "application/json",
-             Accept: "application/json",
-             "Access-Control-Allow-Origin": "*",
-           },
-           body: JSON.stringify({
-             userid: id,
-             email: email,
-           }),
-         })
+        const res = await fetch(`${baseUrl}/verifyUser`, {
+          method: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({
+            userid: id,
+            email: email,
+          }),
+        });
         const data = await res.json();
         alert(data.message);
         getAllPendingUsers();
@@ -122,85 +76,16 @@ export default function AdminDashboard({ userData }) {
     }
    
 
-     const rejectUser = (id, name) => {
-       if (
-         window.confirm(`Please Click Ok if you want to reject this user ${name}. This user details will be deleted`)
-       ) {
-         fetch("http://localhost:5000/deleteUser", {
-           method: "DELETE",
-           crossDomain: true,
-           headers: {
-             "Content-Type": "application/json",
-             Accept: "application/json",
-             "Access-Control-Allow-Origin": "*",
-           },
-           body: JSON.stringify({
-             userid: id,
-           }),
-         })
-           .then((res) => res.json())
-           .then((data) => {
-             alert(data.data);
-             getAllPendingUsers();
-           });
-       } else {
-       }
-     };
-
     useEffect(() => {
       getAllPendingUsers();
       getNumberOfUsers();
     }, []);
 
-    const dataa = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100
-  }
-];
+   
 
     return (
       <>
         <AdminSidebar userData={userData} />
-        {/* <DashTopbar /> */}
 
         <div>
           <br />
@@ -211,44 +96,43 @@ export default function AdminDashboard({ userData }) {
                 <div className="App">
                   <div className="auth-wrapper" style={{ height: "auto" }}>
                     <div className="auth-inner" style={{ width: 1024 }}>
-                      <h1 className="lobster">Admin Dashboard</h1>
-                      <h2 className="mogra">Hi {userData.fname}</h2>
-                      <div className="totalUser-wrapper">
-                        <div
-                          className="totalUser-inner"
-                          style={{ width: "auto" }}
-                        >
-                          {userNum.map((user) => (
-                            <UserCountCard
-                              key={user._id}
-                              userType={user._id}
-                              count={user.count}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <h3>Total Users</h3>
-                      <BarChart
-                        width={500}
-                        height={300}
-                        data={dataa}
-                        margin={{
-                          top: 5,
-                          right: 30,
-                          left: 20,
-                          bottom: 5,
-                        }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="pv" fill="#8884d8" />
-                        <Bar dataKey="uv" fill="#82ca9d" />
-                      </BarChart>
+                      <h2>
+                        Hi {userData.fname} {userData.lname}
+                        <span role="img" aria-label="admin-emoji">
+                          👑
+                        </span>
+                      </h2>
                       <br />
-                      <h3>User Approval Status</h3>
+                      <h3>Total Users</h3>
+                      <div className="totalUser-wrapper">
+                        {loading ? (
+                          <Spinner />
+                        ) : (
+                          <div
+                            className="totalUser-inner"
+                            style={{ width: "auto" }}
+                          >
+                            {userNum.map((user) => (
+                              <UserCountCard
+                                key={user._id}
+                                userType={user._id}
+                                count={user.count}
+                              />
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      <br />
+                      <UpComingTestCalender userData={userData} />
+                      <br />
+                      <h3>Login & Logout Activity</h3>
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <LoginLogoutActivity />
+                      </div>
+                      <br />
+                      {/* <h3>User Approval Status</h3>
                       <Table bordered hover>
                         <thead>
                           <tr>
@@ -294,59 +178,16 @@ export default function AdminDashboard({ userData }) {
                             );
                           })}
                         </tbody>
-                      </Table>{" "}
+                      </Table>{" "} */}
                       <br />
                     </div>
                   </div>
                 </div>
                 <Footer />
               </MDBCol>
-              {/* <MDBCol size="auto" className="me-auto">
-                <div className="profileDetails-wrapper">
-                  <div className="profileDetails-inner">
-                    <MDBCard>
-                      <MDBCardBody className="text-center">
-                        <MDBCardImage
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
-                          alt="avatar"
-                          className="rounded-circle"
-                          style={{ width: "150px" }}
-                          fluid
-                        />
-                        {" "}
-                        <p className="text-muted mb-1">{userData.fname}</p>
-                        <p className="text-muted mb-4">
-                          Bay Area, San Francisco, CA
-                        </p>
-                        <div className="d-flex justify-content-center mb-2">
-                          <MDBBtn>Follow</MDBBtn>
-                          <MDBBtn outline className="ms-1">
-                            Message
-                          </MDBBtn>
-                        </div>
-                      </MDBCardBody>
-                    </MDBCard>
-                  </div>
-                </div>
-              </MDBCol> */}
-              {/* <MDBCol size="4">
-                <div className="profileDetails-wrapper">
-                  <div className="profileDetails-inner">HI</div>
-                </div>
-              </MDBCol> */}
             </MDBRow>
           </MDBContainer>
         </div>
-
-        {/* 
-        <MDBRow className="g-5">
-          <MDBCol sm="5" md="12">
-            .col-sm-6 .col-md-8
-          </MDBCol>
-          <MDBCol size="6" md="4">
-            .col-6 .col-md-5
-          </MDBCol>
-        </MDBRow> */}
       </>
     );
 }
@@ -354,10 +195,11 @@ export default function AdminDashboard({ userData }) {
 function UserCountCard({ userType, count }) {
   const cardStyle = {
     padding: "20px",
+
     borderRadius: "20px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     textAlign: "center",
-    width: "calc(33.33% - 10px)",
+    width: "150px",
     background: `linear-gradient(to bottom, ${
       userType === "Admin"
         ? "#f44336"
