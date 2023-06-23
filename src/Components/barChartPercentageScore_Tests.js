@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Bar,
 } from "recharts";
-const baseUrl = require("../config");
+
 export default function BarChartPercentageScoreTests({ userId }) {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [studentResults, setStudentResults] = useState([]);

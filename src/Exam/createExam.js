@@ -9,7 +9,7 @@ import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
 import { useNavigate, useLocation } from "react-router-dom";
-const baseUrl = require("../config");
+
 export default function CreateExamForm() {
   const navigate = useNavigate();
   let userId = null;

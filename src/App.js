@@ -29,7 +29,7 @@ import SubjectTests from './Exam/studentViewTest';
 import Spinner from './Components/LoaderSpinner';
 import { Alert } from 'react-bootstrap';
 const Dashboard = lazy(() => import("./Pages/dashboard"));
-const baseUrl = require("./config");
+
 
 
 function App() {
