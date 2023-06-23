@@ -87,11 +87,11 @@ export default function TutorViewSubjects() {
     const availableUntilDate = new Date(availableUntil);
     return availableUntilDate > currentDate ? (
       <button type="button" class="btn btn-success btn-rounded">
-        Available
+        Test Active
       </button>
     ) : (
       <button type="button" class="btn btn-warning btn-rounded">
-        Unavailable
+        Test is due
       </button>
     );
   };

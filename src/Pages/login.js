@@ -48,7 +48,7 @@ export default function Login()  {
                window.location.href = "./dashboard";
              }, 5000);
           }
-          if (data.error === "User not exists") {
+          if (data.error === "User does not exist") {
             setAlert("User Not Exist");
           }
           if (data.status === "error") {

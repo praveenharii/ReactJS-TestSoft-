@@ -67,7 +67,7 @@ function NavScrollExample() {
             navbarScroll
           >
             <Nav.Link href="/dashboard">Dashboard</Nav.Link>
-            <Nav.Link href="/dashboard/getAllUsers">View Users</Nav.Link>
+            <Nav.Link href="/dashboard/tutorViewUsers">View Users</Nav.Link>
             <NavDropdown title="Manage Exam" id="navbarScrollingDropdown">
               <NavDropdown.Item href="/dashboard/createExam">
                 Create Exam

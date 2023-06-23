@@ -22,6 +22,7 @@ import AdminViewAllStudentResults from './Exam/viewResults-Test-allStudentResult
 import AdminApproveUser from './Pages/adminUserApproval';
 import TutorViewSubjectsAndTests from './Exam/tutorViewSubjects-Test';
 import TutorViewStudentResults from './Exam/tutorViewResults-Subject-Test';
+import TutorViewUsers from './Pages/tutorViewUsers';
 import StudentTakeTest from './Exam/studentTakeTest';
 import StudentViewResults from './Exam/studentViewResults';
 import SubjectTests from './Exam/studentViewTest';
@@ -55,7 +56,7 @@ function App() {
 
   const ProtectedRoutes = () => {
     const { isLoggedIn, userType } = useAuth();
-    const allowedUserTypes = ["Admin", "Tutor"];
+    const allowedUserTypes = ["Admin"];
     return isLoggedIn && allowedUserTypes.includes(userType) ? (
       <Outlet />
     ) : (
@@ -87,6 +88,7 @@ function App() {
           <Route path="/forgot-password" element={<ResetPassword />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
           </Route>
@@ -95,20 +97,14 @@ function App() {
             element={<EditProfile />}
           />
           <Route path="/" element={<ProtectedRoutes />}>
-            <Route
-              path="/dashboard/createUser"
-              element={<CreateUser />}
-            />
+            <Route path="/dashboard/createUser" element={<CreateUser />} />
           </Route>
-
           <Route path="/" element={<TutorProtectedRoutes />}>
             <Route path="/dashboard/createExam" element={<CreateExamForm />} />
           </Route>
-
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="dashboard/subjects" element={<ViewSubject />} />
           </Route>
-
           <Route path="/" element={<TutorProtectedRoutes />}>
             <Route
               path="/subjects/:id"
@@ -133,6 +129,13 @@ function App() {
               element={<TutorEditTestQuestions />}
             />
           </Route>
+          TutorViewUsers
+          <Route path="/" element={<TutorProtectedRoutes />}>
+            <Route
+              path="/dashboard/tutorViewUsers"
+              element={<TutorViewUsers />}
+            />
+          </Route>
           <Route
             path="/dashboard/viewTestResults"
             element={<StudentViewResults />}
@@ -143,7 +146,6 @@ function App() {
               element={<AdminApproveUser />}
             />
           </Route>
-
           <Route path="/" element={<ProtectedRoutes />}>
             <Route
               path="/dashboard/viewResultsTestsLists"

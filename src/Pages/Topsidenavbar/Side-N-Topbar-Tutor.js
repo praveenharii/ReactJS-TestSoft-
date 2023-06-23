@@ -68,7 +68,7 @@ const TutorSideBar = ({ userData }) => {
   }
 
   function ViewUsers() {
-    navigate("/dashboard/getAllUsers");
+    navigate("/dashboard/tutorViewUsers");
   }
 
   function CreateExam() {
