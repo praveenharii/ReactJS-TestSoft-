@@ -1,4 +1,4 @@
 [[redirects]]
-/sign-in /index.html 200
-/dashboard /index.html 200
-/* /public/index.html 200
+  from = "/*"
+  to = "/public/index.html"
+  status = 200
