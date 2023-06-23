@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { Table } from "react-bootstrap";
 import StudentTopNavBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes";
-const baseUrl = require("../config");
+
 export default function StudentViewResults() {
     let userId = null;
     const token = window.localStorage.getItem('token');
@@ -23,7 +23,7 @@ export default function StudentViewResults() {
  
     const fetchStudentResults = async (userId) => {
       try {
-        const response = await fetch(`${baseUrl}/getStudentResults`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/getStudentResults`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

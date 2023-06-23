@@ -13,7 +13,8 @@ import TutorTopNavBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import { Table, Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 import { MDBSpinner } from "mdb-react-ui-kit";
-const baseUrl = require("../config");
+
+
 export default function ViewUsers() {
      let userType =null;
      const token = window.localStorage.getItem("token");
@@ -40,7 +41,7 @@ export default function ViewUsers() {
      
 
     const getAlluser = () =>{
-      fetch(`${baseUrl}/getAllUsers`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/getAllUsers`, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -55,7 +56,7 @@ export default function ViewUsers() {
 
      const deleteUser = (id,name) => {
       if(window.confirm(`Please Click Ok if you want to delete user ${name}`)){
-        fetch(`${baseUrl}/deleteUser`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/deleteUser`, {
           method: "DELETE",
           crossDomain: true,
           headers: {
@@ -81,7 +82,7 @@ export default function ViewUsers() {
         if (
           window.confirm(`Please Click Ok if you want to Request Admin to delete user ${name}, admin will be notified by email.`)
         ) {
-          fetch(`${baseUrl}/deleteUserRequest`, {
+          fetch(`${process.env.REACT_APP_BASE_URL}/deleteUserRequest`, {
             method: "POST",
             crossDomain: true,
             headers: {
@@ -117,7 +118,7 @@ export default function ViewUsers() {
      function getPaginatedUsers(){
       //setLoading(true);
         fetch(
-          `${baseUrl}/paginatedUsers?page=${currentPage.current}&limit=${limit}`,
+          `${process.env.REACT_APP_BASE_URL}/paginatedUsers?page=${currentPage.current}&limit=${limit}`,
           {
             method: "GET",
           }
@@ -132,7 +133,7 @@ export default function ViewUsers() {
      }
 
      const handleSearch = () => {
-       fetch(`${baseUrl}/searchUsers?email=${searchQuery}`)
+       fetch(`${process.env.REACT_APP_BASE_URL}/searchUsers?email=${searchQuery}`)
          .then((res) => res.json())
          .then((data) => {
            setSearchResults(data);

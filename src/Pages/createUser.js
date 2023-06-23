@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TopDashbar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const baseUrl = require("../config");
+
 
 export default function CreateUser() {
   const [fname, setFname] = useState("");
@@ -19,7 +19,7 @@ export default function CreateUser() {
     
 
       console.log(fname, lname, email, password, userType);
-      fetch(`${baseUrl}/createUser`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/createUser`, {
         method: "POST",
         crossDomain: true,
         headers: {

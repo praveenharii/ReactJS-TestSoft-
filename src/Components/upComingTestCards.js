@@ -13,14 +13,14 @@ import {
 } from "mdb-react-ui-kit";
 import { FaCalendarAlt } from "react-icons/fa";
 import "../index.css"
-const baseUrl = require("../config");
+
 
 export default function upComingTestsCards({userId}) {
     const navigate = useNavigate();
     const [upcomingTests, setUpcomingTests] = useState([]);
     console.log(userId, "userId");
     useEffect(() => {
-      fetch(`${baseUrl}/upcomingTests`)
+      fetch(`${process.env.REACT_APP_BASE_URL}/upcomingTests`)
         .then((response) => response.json())
         .then((data) => {
           setUpcomingTests(data.data);

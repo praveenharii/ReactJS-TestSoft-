@@ -15,7 +15,7 @@ import {
   faSquareArrowUpRight,
 } from "@fortawesome/free-solid-svg-icons";
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
-const baseUrl = require("../config");
+
 export default function TutorViewSubjects() {
   const [data, setData] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState('');
@@ -28,7 +28,7 @@ export default function TutorViewSubjects() {
   }, []);
 
   const getAllSubjects = () => {
-    fetch(`${baseUrl}/subjects/${id}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/subjects/${id}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -62,7 +62,7 @@ export default function TutorViewSubjects() {
     if (
       window.confirm(`Please click OK if you want to delete subject ${name}`)
     ) {
-      fetch(`${baseUrl}/deleteTest/${id}`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/deleteTest/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

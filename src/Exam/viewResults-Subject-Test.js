@@ -10,7 +10,7 @@ import {
 import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-const baseUrl = require("../config");
+
 export default function viewResultsSubjectTest() {
   const [data, setData] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -21,7 +21,7 @@ export default function viewResultsSubjectTest() {
   }, []);
 
   const viewTest = async () => {
-    fetch(`${baseUrl}/getSubjectAndTestNames`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/getSubjectAndTestNames`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -46,7 +46,7 @@ const handleDownloadTest = async (subjectName, testName) => {
 
 
     const response = await fetch(
-      `${baseUrl}/downloadResults/${subjectName}/${testName}`,
+      `${process.env.REACT_APP_BASE_URL}/downloadResults/${subjectName}/${testName}`,
       {
         method: "POST",
         headers: {

@@ -11,7 +11,7 @@ import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
-const baseUrl = require("../config");
+
 export default function tutorViewResultsSubjectTest() {
   let userId = null;
   const token = window.localStorage.getItem("token");
@@ -29,7 +29,7 @@ export default function tutorViewResultsSubjectTest() {
   const viewTest = async () => {
     try {
       const response = await fetch(
-        `${baseUrl}/getSubjectAndTestNames/${userId}`,
+        `${process.env.REACT_APP_BASE_URL}/getSubjectAndTestNames/${userId}`,
         {
           method: "GET",
         }
@@ -66,7 +66,7 @@ export default function tutorViewResultsSubjectTest() {
   const handleDownloadTest = async (subjectName, testName) => {
     try {
       const response = await fetch(
-        `${baseUrl}/downloadResults/${subjectName}/${testName}`,
+        `${process.env.REACT_APP_BASE_URL}/downloadResults/${subjectName}/${testName}`,
         {
           method: "POST",
           headers: {

@@ -8,7 +8,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
 import jwt_decode from "jwt-decode";
-const baseUrl = require("../../config");
+
 
 function NavScrollExample() {
   let id = null;
@@ -18,7 +18,7 @@ function NavScrollExample() {
   const navigate = useNavigate();
 
   const logOut = () => {
-  fetch(`${baseUrl}/logout`, {
+  fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

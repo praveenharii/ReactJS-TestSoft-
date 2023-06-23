@@ -19,7 +19,7 @@ import {
   MDBBadge,
   MDBBtn,
 } from "mdb-react-ui-kit";
-const baseUrl = require("../../config");
+
 
 const TutorSideBar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -28,7 +28,7 @@ const TutorSideBar = ({ userData }) => {
   const toggleShow = () => setShowShow(!showShow);
 
   const logOut = () => {
-    fetch(`${baseUrl}/logout`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

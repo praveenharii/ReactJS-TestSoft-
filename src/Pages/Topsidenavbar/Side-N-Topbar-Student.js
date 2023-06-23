@@ -25,7 +25,7 @@ import {
   MDBBtn,
 } from "mdb-react-ui-kit";
 import Button from "react-bootstrap/Button";
-const baseUrl = require("../../config");
+
 
 const StudentSidebar = ({ userData }) => {
   const [showShow, setShowShow] = useState(false);
@@ -34,7 +34,7 @@ const StudentSidebar = ({ userData }) => {
   const toggleShow = () => setShowShow(!showShow);
 
  const logOut = () => {
-   fetch(`${baseUrl}/logout`, {
+   fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
      method: "POST",
      headers: {
        "Content-Type": "application/json",

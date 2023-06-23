@@ -258,7 +258,7 @@ export default function StudentTakeTest() {
 
   useEffect(() => {
     console.log("Fetching test data...");
-    fetch(`${baseUrl}/studentViewTest/${taketestid}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/studentViewTest/${taketestid}`, {
       method: "GET",
     })
       .then((res) => res.json())

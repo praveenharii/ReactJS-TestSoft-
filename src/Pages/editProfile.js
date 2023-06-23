@@ -6,7 +6,7 @@ import TutorTopNavBar  from './Topsidenavbar/dash-basicTop-bar-Tutor-Routes';
 import { MDBCol, MDBRow, MDBBtn } from "mdb-react-ui-kit";  
 import { useEffect } from 'react';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-const baseUrl = require("../config");
+
 
 
 export default function EditProfile() {
@@ -57,7 +57,7 @@ useEffect(() => {
 
   const checkCurrentPassword = (e) => {
     e.preventDefault();
-     return fetch(`${baseUrl}/checkOldPassword/${email}/${oldPassword}`, {
+     return fetch(`${process.env.REACT_APP_BASE_URL}/checkOldPassword/${email}/${oldPassword}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -108,7 +108,7 @@ useEffect(() => {
      }
      console.log(newPassword);
      //localStorage.removeItem("token");
-     fetch(`${baseUrl}/updateProfile/${id}`, {
+     fetch(`${process.env.REACT_APP_BASE_URL}/updateProfile/${id}`, {
        /* sending login-user API*/
        method: "POST",
        crossDomain: true,

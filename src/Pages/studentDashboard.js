@@ -16,7 +16,7 @@ import {
   MDBCardImage,
   MDBBtn,
 } from "mdb-react-ui-kit";
-const baseUrl = require("../config");
+
 
 export default function StudentDashboard({ userData }){
 

@@ -9,7 +9,7 @@ import Spinner from '../Components/SignUpSpinner'
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const baseUrl = require("../config");
+
 export default function SignUp() {
             const navigate = useNavigate();
             const [fname ,setFname] =  useState("");
@@ -155,7 +155,7 @@ const generateRecaptcha = () => {
         autoClose: false,
       });
 
-      fetch(`${baseUrl}/register`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/register`, {
         method: "POST",
         crossDomain: true,
         headers: {

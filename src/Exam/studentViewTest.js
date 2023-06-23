@@ -4,7 +4,7 @@ import { BsPlay } from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
 import StudentTopNavBar from '../Pages/Topsidenavbar/dash-basicTop-bar-Students-Routes'
 import {  Button, Modal, Form } from "react-bootstrap";
-const baseUrl = require("../config");
+
 export default function SubjectTests() {
    const [tests, setTests] = useState([]);
    const [testPassword, settestPassword] = useState('');
@@ -31,7 +31,7 @@ export default function SubjectTests() {
    //console.log(tests);
    useEffect(() => {
      async function fetchData() {
-       const res = await fetch(`${baseUrl}/subTests`);
+       const res = await fetch(`${process.env.REACT_APP_BASE_URL}/subTests`);
        const data = await res.json();
        setTests(data.data);
      }
@@ -42,7 +42,7 @@ export default function SubjectTests() {
    function takeTest(subjectname, taketestid) {
      console.log(subjectname, taketestid, testPassword);
      
-     fetch(`${baseUrl}/${id}/checkUserTakenTest/${taketestid}`, {
+     fetch(`${process.env.REACT_APP_BASE_URL}/${id}/checkUserTakenTest/${taketestid}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
