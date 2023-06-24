@@ -258,7 +258,7 @@ export default function StudentTakeTest() {
 
   useEffect(() => {
     console.log("Fetching test data...");
-    fetch(`${process.env.BASE_URL}/studentViewTest/${taketestid}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/studentViewTest/${taketestid}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -315,7 +315,7 @@ export default function StudentTakeTest() {
     console.log(userAnswers);
     try {
       const response = await fetch(
-        `${process.env.BASE_URL}/${id}/${subjectname}/tests/${taketestid}/submit`,
+        `${process.env.REACT_APP_BASE_URL}/${id}/${subjectname}/tests/${taketestid}/submit`,
         {
           method: "POST",
           headers: {

@@ -36,7 +36,7 @@ export default function ViewQuestions() {
 
 
   useEffect(() => {
-    fetch(`${process.env.BASE_URL}/subjects/${subject}/tests/${testid}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/subjects/${subject}/tests/${testid}`, {
       method: "GET",
     })
       .then((res) => res.json())

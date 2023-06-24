@@ -23,7 +23,7 @@ export default function AdminDashboard({ userData }) {
 
   
     const getNumberOfUsers = () => {
-      fetch(`${process.env.BASE_URL}/getNumbersOfUsers`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/getNumbersOfUsers`, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -39,7 +39,7 @@ export default function AdminDashboard({ userData }) {
     };
 
     const getAllPendingUsers = () => {
-      fetch(`${process.env.BASE_URL}/getAllPendingUsers`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/getAllPendingUsers`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function AdminDashboard({ userData }) {
 
     const verifyUser = async (id,name,email) => {
       if(window.confirm(`Please Click Ok if you want to Verify user ${name}`)){
-        const res = await fetch(`${process.env.BASE_URL}/verifyUser`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/verifyUser`, {
           method: "POST",
           crossDomain: true,
           headers: {

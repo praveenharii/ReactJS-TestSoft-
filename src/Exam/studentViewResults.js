@@ -23,7 +23,7 @@ export default function StudentViewResults() {
  
     const fetchStudentResults = async (userId) => {
       try {
-        const response = await fetch(`${process.env.BASE_URL}/getStudentResults`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/getStudentResults`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

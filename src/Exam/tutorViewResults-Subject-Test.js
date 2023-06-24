@@ -29,7 +29,7 @@ export default function tutorViewResultsSubjectTest() {
   const viewTest = async () => {
     try {
       const response = await fetch(
-        `${process.env.BASE_URL}/getSubjectAndTestNames/${userId}`,
+        `${process.env.REACT_APP_BASE_URL}/getSubjectAndTestNames/${userId}`,
         {
           method: "GET",
         }
@@ -66,7 +66,7 @@ export default function tutorViewResultsSubjectTest() {
   const handleDownloadTest = async (subjectName, testName) => {
     try {
       const response = await fetch(
-        `${process.env.BASE_URL}/downloadResults/${subjectName}/${testName}`,
+        `${process.env.REACT_APP_BASE_URL}/downloadResults/${subjectName}/${testName}`,
         {
           method: "POST",
           headers: {

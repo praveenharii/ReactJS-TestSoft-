@@ -15,7 +15,7 @@ export default function upComingTestCalender({ userData }) {
 
  const fetchTestCalendarData = async () => {
    try {
-     const response = await fetch(`${process.env.BASE_URL}/upComingTestCalender`);
+     const response = await fetch(`${process.env.REACT_APP_BASE_URL}/upComingTestCalender`);
      const data = await response.json();
      setTestData(data.data);
    } catch (error) {

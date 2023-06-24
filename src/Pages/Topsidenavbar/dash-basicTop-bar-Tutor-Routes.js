@@ -18,7 +18,7 @@ function NavScrollExample() {
   const navigate = useNavigate();
 
   const logOut = () => {
-  fetch(`${process.env.BASE_URL}/logout`, {
+  fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

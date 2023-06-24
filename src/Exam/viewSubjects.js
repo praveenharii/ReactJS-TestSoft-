@@ -18,7 +18,7 @@ export default function ViewSubject() {
   }, []);
 
   const getAllSubject = () => {
-    fetch(`${process.env.BASE_URL}/subjects`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/subjects`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -34,7 +34,7 @@ export default function ViewSubject() {
     if (
       window.confirm(`Please Click Ok if you want to delete subject ${name}`)
     ) {
-      fetch(`${process.env.BASE_URL}/deleteSubject`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/deleteSubject`, {
         method: "DELETE",
         crossDomain: true,
         headers: {

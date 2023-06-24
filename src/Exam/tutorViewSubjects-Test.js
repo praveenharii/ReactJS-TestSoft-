@@ -28,7 +28,7 @@ export default function TutorViewSubjects() {
   }, []);
 
   const getAllSubjects = () => {
-    fetch(`${process.env.BASE_URL}/subjects/${id}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/subjects/${id}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -62,7 +62,7 @@ export default function TutorViewSubjects() {
     if (
       window.confirm(`Please click OK if you want to delete subject ${name}`)
     ) {
-      fetch(`${process.env.BASE_URL}/deleteTest/${id}`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/deleteTest/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -21,7 +21,7 @@ export default function BarChartPercentageScoreTests({ userId }) {
   useEffect(() => {
     const fetchStudentResults = async () => {
       try {
-        const response = await fetch(`${process.env.BASE_URL}/getStudentResults`, {
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/getStudentResults`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

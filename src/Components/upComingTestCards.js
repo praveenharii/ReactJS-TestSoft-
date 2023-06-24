@@ -20,7 +20,7 @@ export default function upComingTestsCards({userId}) {
     const [upcomingTests, setUpcomingTests] = useState([]);
     console.log(userId, "userId");
     useEffect(() => {
-      fetch(`${process.env.BASE_URL}/upcomingTests`)
+      fetch(`${process.env.REACT_APP_BASE_URL}/upcomingTests`)
         .then((response) => response.json())
         .then((data) => {
           setUpcomingTests(data.data);

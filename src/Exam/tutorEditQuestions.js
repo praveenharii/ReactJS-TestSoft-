@@ -96,7 +96,7 @@ export default function EditQuestions() {
 
       try {
         const response = await fetch(
-          `${process.env.BASE_URL}/updateQuestions/${testname}/${testid}`,
+          `${process.env.REACT_APP_BASE_URL}/updateQuestions/${testname}/${testid}`,
           {
             method: "POST",
             headers: {

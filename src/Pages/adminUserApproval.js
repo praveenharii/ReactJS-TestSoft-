@@ -39,7 +39,7 @@ export default function adminUserApproval() {
     const [data, setData] = useState([]);
 
     const getAllPendingUsers = () => {
-      fetch(`${process.env.BASE_URL}/getAllPendingUsers`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/getAllPendingUsers`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -53,7 +53,7 @@ export default function adminUserApproval() {
       if (
         window.confirm(`Please Click Ok if you want to Verify user ${name}`)
       ) {
-        const res = await fetch(`${process.env.BASE_URL}/verifyUser`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/verifyUser`, {
           method: "POST",
           crossDomain: true,
           headers: {
@@ -80,7 +80,7 @@ export default function adminUserApproval() {
            `Please Click Ok if you want to reject this user ${name}. This user details will be deleted`
          )
        ) {
-         fetch(`${process.env.BASE_URL}/deleteUser`, {
+         fetch(`${process.env.REACT_APP_BASE_URL}/deleteUser`, {
            method: "DELETE",
            crossDomain: true,
            headers: {

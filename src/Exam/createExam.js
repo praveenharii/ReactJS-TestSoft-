@@ -69,7 +69,7 @@ export default function CreateExamForm() {
     };
 
     try {
-      const response = await fetch(`${process.env.BASE_URL}/createExam/${userId}`, {
+      const response = await fetch(`${process.env.REACT_APP_BASE_URL}/createExam/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -27,7 +27,7 @@ export default function Dashboard() {
                      setUserData(updatedProfileData);
                      localStorage.removeItem("updatedProfileData");
                    } else {     
-                   fetch(`${process.env.BASE_URL}/userData`, {
+                   fetch(`${process.env.REACT_APP_BASE_URL}/userData`, {
                      method: "POST",
                      crossDomain: true,
                      headers: {

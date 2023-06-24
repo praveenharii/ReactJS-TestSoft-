@@ -19,7 +19,7 @@ export default function CreateUser() {
     
 
       console.log(fname, lname, email, password, userType);
-      fetch(`${process.env.BASE_URL}/createUser`, {
+      fetch(`${process.env.REACT_APP_BASE_URL}/createUser`, {
         method: "POST",
         crossDomain: true,
         headers: {

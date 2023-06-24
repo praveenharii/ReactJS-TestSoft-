@@ -57,7 +57,7 @@ useEffect(() => {
 
   const checkCurrentPassword = (e) => {
     e.preventDefault();
-     return fetch(`${process.env.BASE_URL}/checkOldPassword/${email}/${oldPassword}`, {
+     return fetch(`${process.env.REACT_APP_BASE_URL}/checkOldPassword/${email}/${oldPassword}`, {
        method: "POST",
        headers: {
          "Content-Type": "application/json",
@@ -108,7 +108,7 @@ useEffect(() => {
      }
      console.log(newPassword);
      //localStorage.removeItem("token");
-     fetch(`${process.env.BASE_URL}/updateProfile/${id}`, {
+     fetch(`${process.env.REACT_APP_BASE_URL}/updateProfile/${id}`, {
        /* sending login-user API*/
        method: "POST",
        crossDomain: true,

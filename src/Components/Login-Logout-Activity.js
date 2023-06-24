@@ -14,7 +14,7 @@ export default function LoginLogoutActivity() {
   const [activityData, setActivityData] = useState([]);
 
   useEffect(() => {
-    fetch(`${process.env.BASE_URL}/activity-data`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/activity-data`)
       .then((response) => response.json())
       .then((data) => setActivityData(data))
       .catch((error) => console.log(error));

@@ -21,7 +21,7 @@ export default function viewResultsSubjectTest() {
   }, []);
 
   const viewTest = async () => {
-    fetch(`${process.env.BASE_URL}/getSubjectAndTestNames`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/getSubjectAndTestNames`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -46,7 +46,7 @@ const handleDownloadTest = async (subjectName, testName) => {
 
 
     const response = await fetch(
-      `${process.env.BASE_URL}/downloadResults/${subjectName}/${testName}`,
+      `${process.env.REACT_APP_BASE_URL}/downloadResults/${subjectName}/${testName}`,
       {
         method: "POST",
         headers: {
