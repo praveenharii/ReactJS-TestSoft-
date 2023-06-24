@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/praveenharii/ReactJS-TestSoft-/precache-manifest.2d4366f6fdaaa7e9759bc8113808be29.js"
+  "/ReactJS-TestSoft-/precache-manifest.16697bea6d6a44df5b59ed1f8ab96b8f.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/praveenharii/ReactJS-TestSoft-/index.html", {
+workbox.routing.registerNavigationRoute("/ReactJS-TestSoft-/index.html", {
   
   blacklist: [/^\/_/,/\/[^/]+\.[^/]+$/],
 });
