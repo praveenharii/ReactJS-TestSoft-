@@ -31,6 +31,7 @@ import { Alert } from 'react-bootstrap';
 const Dashboard = lazy(() => import("./Pages/dashboard"));
 
 
+
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
   const token = window.localStorage.getItem('token');

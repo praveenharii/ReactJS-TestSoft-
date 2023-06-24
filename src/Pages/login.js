@@ -5,12 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import '../App.css'
 
 
+
 export default function Login()  {
         const [email ,setEmail] =  useState("");
         const [password ,setPassword] =  useState("");
         const [alert, setAlert] = useState(null);
         const [successLogin, setSuccessLogin] = useState(null);
-
+   console.log(process.env.REACT_APP_BASE_URL);
    function handleSubmit(e){
     e.preventDefault();
     
@@ -42,11 +43,11 @@ export default function Login()  {
               "token",
               data.data
             ); /*storing token in nodejs(localStorage)*/
-            window.localStorage.setItem("loggedIn", true); 
+            window.localStorage.setItem("loggedIn", true);
 
-             setTimeout(() => {
-               window.location.href = "./dashboard";
-             }, 5000);
+            setTimeout(() => {
+              window.location.href = "./dashboard";
+            }, 5000);
           }
           if (data.error === "User does not exist") {
             setAlert("User Not Exist");
@@ -61,7 +62,7 @@ export default function Login()  {
             setAlert(
               "You are not a verified, please wait for admin to accept your Sign Up request!!!"
             );
-          }      
+          }
           if (
             data.error ===
             "You are already logged in from another tab or browser."
@@ -73,7 +74,6 @@ export default function Login()  {
         } catch (error) {
           setAlert(error);
         }
-
       });
 }
 
