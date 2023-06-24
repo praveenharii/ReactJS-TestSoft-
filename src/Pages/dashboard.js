@@ -7,7 +7,7 @@ import Spinner from "../Components/LoaderSpinner"
 const AdminDashboard = React.lazy(() => import("./adminDashboard"));
 const TutorDashboard = React.lazy(() => import("./tutorDashboard"));
 const StudentDashboard = React.lazy(() => import("./studentDashboard"));
-const baseUrl = require("../config");
+
 
 
 export default function Dashboard() {
@@ -27,7 +27,7 @@ export default function Dashboard() {
                      setUserData(updatedProfileData);
                      localStorage.removeItem("updatedProfileData");
                    } else {     
-                   fetch(`${baseUrl}/userData`, {
+                   fetch(`${process.env.BASE_URL}/userData`, {
                      method: "POST",
                      crossDomain: true,
                      headers: {

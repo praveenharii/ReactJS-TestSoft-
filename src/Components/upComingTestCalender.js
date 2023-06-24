@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import '../Exam/Styles/calender.css'
-const baseUrl = require("../config");
+
 export default function upComingTestCalender({ userData }) {
     const navigate = useNavigate();
     const userId = userData._id;
@@ -15,7 +15,7 @@ export default function upComingTestCalender({ userData }) {
 
  const fetchTestCalendarData = async () => {
    try {
-     const response = await fetch(`${baseUrl}/upComingTestCalender`);
+     const response = await fetch(`${process.env.BASE_URL}/upComingTestCalender`);
      const data = await response.json();
      setTestData(data.data);
    } catch (error) {

@@ -8,14 +8,14 @@ import {
   MDBContainer,
 } from "mdb-react-ui-kit";
 import Footer from "../Components/Footer";
-const baseUrl = require("../config");
+
 
 export default function tutorDashboard({ userData }) {
   const [userNum, setUserNum] = useState([]);
 
 
   const getNumberOfUsers = () => {
-    fetch(`${baseUrl}/getNumbersOfUsers`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/getNumbersOfUsers`, {
       method: "GET",
     })
       .then((res) => res.json())

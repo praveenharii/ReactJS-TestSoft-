@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MDBBtn } from "mdb-react-ui-kit";
 import Topbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
-const baseUrl = require("../config");
+
 export default function ViewTest() {
   const [data, setData] = useState([]);
   const { subject } = useParams();
@@ -21,7 +21,7 @@ export default function ViewTest() {
 
     
   const getAllTest = () => {
-    fetch(`${baseUrl}/subjects/${subject}/tests`, {
+    fetch(`${process.env.BASE_URL}/subjects/${subject}/tests`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -42,7 +42,7 @@ export default function ViewTest() {
     if (
       window.confirm(`Please click OK if you want to delete subject ${name}`)
     ) {
-      fetch(`${baseUrl}/deleteTest/${id}`, {
+      fetch(`${process.env.BASE_URL}/deleteTest/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -234,7 +234,7 @@ import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import Spinner from "../Components/Spinner";
 import Topbar from "../Pages/Topsidenavbar/takeExamTopbar";
-const baseUrl = require("../config");
+
 
 export default function StudentTakeTest() {
   let id = null;
@@ -258,7 +258,7 @@ export default function StudentTakeTest() {
 
   useEffect(() => {
     console.log("Fetching test data...");
-    fetch(`${baseUrl}/studentViewTest/${taketestid}`, {
+    fetch(`${process.env.BASE_URL}/studentViewTest/${taketestid}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -315,7 +315,7 @@ export default function StudentTakeTest() {
     console.log(userAnswers);
     try {
       const response = await fetch(
-        `${baseUrl}/${id}/${subjectname}/tests/${taketestid}/submit`,
+        `${process.env.BASE_URL}/${id}/${subjectname}/tests/${taketestid}/submit`,
         {
           method: "POST",
           headers: {

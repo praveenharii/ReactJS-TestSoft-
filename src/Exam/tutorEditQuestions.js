@@ -8,7 +8,7 @@ import "./Styles/createExamStyles.css";
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import { MdCenterFocusStrong } from "react-icons/md/index.esm";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
-const baseUrl = require("../config");
+
 
 export default function EditQuestions() {
   const navigate=useNavigate();
@@ -96,7 +96,7 @@ export default function EditQuestions() {
 
       try {
         const response = await fetch(
-          `${baseUrl}/updateQuestions/${testname}/${testid}`,
+          `${process.env.BASE_URL}/updateQuestions/${testname}/${testid}`,
           {
             method: "POST",
             headers: {

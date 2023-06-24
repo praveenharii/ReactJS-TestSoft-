@@ -15,7 +15,7 @@ import AdminTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Ro
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import './Styles/tutorViewQuestions.css'
 import { AlignMiddle } from "react-bootstrap-icons";
-const baseUrl = require("../config");
+
 export default function ViewQuestions() {
   const [data, setData] = useState([]);
   const { subject, testid } = useParams();
@@ -36,7 +36,7 @@ export default function ViewQuestions() {
 
 
   useEffect(() => {
-    fetch(`${baseUrl}/subjects/${subject}/tests/${testid}`, {
+    fetch(`${process.env.BASE_URL}/subjects/${subject}/tests/${testid}`, {
       method: "GET",
     })
       .then((res) => res.json())

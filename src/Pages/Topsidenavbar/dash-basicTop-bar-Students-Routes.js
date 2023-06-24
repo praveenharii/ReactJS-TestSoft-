@@ -9,7 +9,7 @@ import Dashboard from "./../dashboard";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
 import { useNavigate } from "react-router-dom";
-const baseUrl = require("../../config");
+
 function StudentTopbar() {
    const navigate = useNavigate();
   let id = null;
@@ -30,7 +30,7 @@ function StudentTopbar() {
   }
 
   const logOut = () => {
-    fetch(`${baseUrl}/logout`, {
+    fetch(`${process.env.BASE_URL}/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

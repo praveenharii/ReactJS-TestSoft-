@@ -3,7 +3,7 @@ import Loginnavigation from './Topsidenavbar/loginnavbar.js';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import '../App.css'
-const baseUrl = require("../config");
+
 
 export default function Login()  {
         const [email ,setEmail] =  useState("");
@@ -16,7 +16,7 @@ export default function Login()  {
     
     console.log( email, password);
     
-    fetch(`${baseUrl}/login-user`, {
+    fetch(`${process.env.BASE_URL}/login-user`, {
       method: "POST",
       crossDomain: true,
       headers: {

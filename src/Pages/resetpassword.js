@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-const baseUrl = require("../config");
+
 export default class ResetPassword extends Component {
     constructor(props) {
         super(props);
@@ -15,7 +15,7 @@ export default class ResetPassword extends Component {
         console.log(email);
         
         /* sending login-user API*/
-        fetch(`${baseUrl}/forgot-password`, {
+        fetch(`${process.env.REACT_APP_BASE_URL}/forgot-password`, {
           method: "POST",
           crossDomain: true,
           headers: {

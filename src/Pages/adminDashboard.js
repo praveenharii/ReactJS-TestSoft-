@@ -10,7 +10,7 @@ import Footer from "../Components/Footer";
 import LoginLogoutActivity from "../Components/Login-Logout-Activity";
 import UpComingTestCalender from "../Components/upComingTestCalender";
 import Spinner from "../Components/LoaderSpinner"
-const baseUrl = require("../config");
+
 
 export default function AdminDashboard({ userData }) {
   //const {useData} = userData.userData;
@@ -23,7 +23,7 @@ export default function AdminDashboard({ userData }) {
 
   
     const getNumberOfUsers = () => {
-      fetch(`${baseUrl}/getNumbersOfUsers`, {
+      fetch(`${process.env.BASE_URL}/getNumbersOfUsers`, {
         method: "GET",
       })
         .then((res) => res.json())
@@ -39,7 +39,7 @@ export default function AdminDashboard({ userData }) {
     };
 
     const getAllPendingUsers = () => {
-      fetch(`${baseUrl}/getAllPendingUsers`, {
+      fetch(`${process.env.BASE_URL}/getAllPendingUsers`, {
         method: "POST",
       })
         .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function AdminDashboard({ userData }) {
 
     const verifyUser = async (id,name,email) => {
       if(window.confirm(`Please Click Ok if you want to Verify user ${name}`)){
-        const res = await fetch(`${baseUrl}/verifyUser`, {
+        const res = await fetch(`${process.env.BASE_URL}/verifyUser`, {
           method: "POST",
           crossDomain: true,
           headers: {

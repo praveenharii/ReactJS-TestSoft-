@@ -10,11 +10,11 @@ import {
   MDBNavbarBrand,
 } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
-const baseUrl = require("../../config");
+
 function NavScrollExample() {
 
   const logOut = () => {
-   fetch(`${baseUrl}/logout`, {
+   fetch(`${process.env.BASE_URL}/logout`, {
      method: "POST",
      headers: {
        "Content-Type": "application/json",

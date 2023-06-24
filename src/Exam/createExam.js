@@ -9,7 +9,7 @@ import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
 import { useNavigate, useLocation } from "react-router-dom";
-const baseUrl = require("../config");
+
 export default function CreateExamForm() {
   const navigate = useNavigate();
   let userId = null;
@@ -69,7 +69,7 @@ export default function CreateExamForm() {
     };
 
     try {
-      const response = await fetch(`${baseUrl}/createExam/${userId}`, {
+      const response = await fetch(`${process.env.BASE_URL}/createExam/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,13 +8,13 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-const baseUrl = require("../config");
+
 
 export default function LoginLogoutActivity() {
   const [activityData, setActivityData] = useState([]);
 
   useEffect(() => {
-    fetch(`${baseUrl}/activity-data`)
+    fetch(`${process.env.BASE_URL}/activity-data`)
       .then((response) => response.json())
       .then((data) => setActivityData(data))
       .catch((error) => console.log(error));
