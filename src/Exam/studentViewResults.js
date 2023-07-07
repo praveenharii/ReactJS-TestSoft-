@@ -9,9 +9,7 @@ export default function StudentViewResults() {
     const decodedToken = jwt_decode(token);
     userId = decodedToken.userId;
     const [studentResults, setStudentResults] = useState([]);
-
-    console.log(userId);
-
+    console.log(studentResults);
     useEffect(() => {
       const fetchResults = async () => {
         const results = await fetchStudentResults(userId);
@@ -62,7 +60,7 @@ export default function StudentViewResults() {
                 <th>Test Name</th>
                 <th>Subject</th>
                 <th>Date</th>
-                <th>Time</th>
+                <th>Time Taken</th>
                 <th>Score</th>
                 <th>Total Percentage</th>
                 <th>Grade</th>

@@ -233,13 +233,16 @@ export default function EditQuestions() {
                 Delete Question
               </Button>
               <br />
-              <MDBBtn color="primary" type="submit">
-                Update
-              </MDBBtn>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <MDBBtn color="primary" type="submit">
+                  Update
+                </MDBBtn>
+              </div>
             </Form>
           </div>
         </div>
       </div>
+      <br />
     </>
   );
 }

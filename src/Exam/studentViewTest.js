@@ -82,7 +82,15 @@ export default function SubjectTests() {
       <br />
       <div className="auth-wrapper" style={{ height: "auto" }}>
         <div className="auth-inner" style={{ width: "auto" }}>
-          <h2>All Tests:</h2>
+          <h3>Test List</h3>
+          <div className="alert-container">
+            <h2 class="alert-title">Students Take Note:</h2>
+            <p class="alert-message">
+              Once You Take Exam, you are not allowed to navigate to other
+              pages. <br/> Please ensure you submit your answers.
+            </p>
+          </div>
+          <br />
           <Table striped bordered hover responsive>
             <thead>
               <tr>
@@ -118,7 +126,9 @@ export default function SubjectTests() {
                             className="mb-3"
                             controlId="exampleForm.ControlInput1"
                           >
-                            <Form.Label>Key in password for the test</Form.Label>
+                            <Form.Label>
+                              Key in password for the test
+                            </Form.Label>
                             <Form.Control
                               type="password"
                               placeholder="Password"
@@ -153,6 +163,7 @@ export default function SubjectTests() {
           </Table>
         </div>
       </div>
+      <br />
       {/* Modal Popup */}
     </>
   );

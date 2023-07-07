@@ -152,7 +152,7 @@ export default function ViewUsers() {
 
      <br />
      <div className="auth-wrapper" style={{ height: "auto" }}>
-       <div className="auth-inner" style={{ width: "900px" }}>
+       <div className="auth-inner" style={{ width: "1000px" }}>
          <h3>View All Users</h3>
          <div className="input-group mb-3">
            <input

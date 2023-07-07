@@ -368,7 +368,7 @@ export default function StudentTakeTest() {
     <>
       <Topbar />
       <br />
-
+     
       <div className="container-wrapper">
         <div className="container-inner">
           <Container>
@@ -380,9 +380,7 @@ export default function StudentTakeTest() {
                 <Badge bg="success">
                   Submit your test once you have completed.
                 </Badge>
-                <Badge bg="danger">
-                  Do not refresh the page! Or else your test will be submitted!!
-                </Badge>
+               
                 <Badge bg="warning" text="dark">
                   Do not navigate to other pages! Your test will auto submit if
                   you try to navigate.
@@ -420,6 +418,7 @@ export default function StudentTakeTest() {
                 ))}
               </Card.Body>
             </Card>
+            
             <div className="submit-btn">
               <Button variant="success" onClick={handleSubmitTest}>
                 Submit Test

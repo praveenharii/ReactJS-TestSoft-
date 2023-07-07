@@ -65,6 +65,16 @@ function App() {
     );
   };
 
+  const AdminANDTutorProtectedRoutes = () => {
+    const { isLoggedIn, userType } = useAuth();
+    const allowedUserTypes = ["Admin","Tutor"];
+    return isLoggedIn && allowedUserTypes.includes(userType) ? (
+      <Outlet />
+    ) : (
+      <Navigate to="/" />
+    );
+  };
+
   const TutorProtectedRoutes = () => {
     const { isLoggedIn, userType } = useAuth();
     const allowedUserTypes = ["Tutor"];
@@ -89,7 +99,6 @@ function App() {
           <Route path="/forgot-password" element={<ResetPassword />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          
           <Route path="/" element={<ProtectedRoutes />}>
             <Route path="/dashboard/getAllUsers" element={<ViewUsers />} />
           </Route>
@@ -153,7 +162,7 @@ function App() {
               element={<AdminViewTestsList />}
             />
           </Route>
-          <Route path="/" element={<ProtectedRoutes />}>
+          <Route path="/" element={<AdminANDTutorProtectedRoutes />}>
             <Route
               path="/dashboard/viewResultsTestsLists/:subject/:testId"
               element={<AdminViewAllStudentResults />}

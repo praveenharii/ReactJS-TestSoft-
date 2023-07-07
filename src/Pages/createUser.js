@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TopDashbar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import './dashboard.css'
 
 export default function CreateUser() {
   const [fname, setFname] = useState("");
@@ -65,9 +65,38 @@ export default function CreateUser() {
             <div id="recaptcha-container"></div>
 
             <div>
-              Create user As:
+              <div className="Text">Select One User Type:</div>
+              <div className="wrapper">
+                <input
+                  type="radio"
+                  name="select"
+                  id="option-1"
+                  value="Student"
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                />
+                <input
+                  type="radio"
+                  name="select"
+                  id="option-2"
+                  value="Tutor"
+                  onChange={(e) => setUserType(e.target.value)}
+                  required
+                />
+                <input type="radio" name="select" id="option-3" />
+
+                <label htmlFor="option-1" className="option option-1">
+                  <div className="dot"></div>
+                  <span>Student</span>
+                </label>
+
+                <label htmlFor="option-2" className="option option-2">
+                  <div className="dot"></div>
+                  <span>Teacher</span>
+                </label>
+              </div>
               <br />
-              <input
+              {/* <input
                 type="radio"
                 name="UserType"
                 value="Student"
@@ -90,7 +119,7 @@ export default function CreateUser() {
                 onChange={(e) => setUserType(e.target.value)}
                 required
               />{" "}
-              Admin{" "}
+              Admin{" "} */}
             </div>
 
             <br />

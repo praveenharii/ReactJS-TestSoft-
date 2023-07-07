@@ -100,7 +100,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={dashboard}
                 action
-                className="border-0 border-bottom rounded rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="tachometer-alt me-3" />
                 Main Dashboard
@@ -112,7 +112,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={editProfileCLick}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
                 // active
                 aria-current="true"
               >
@@ -126,7 +126,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={ViewUsers}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="users me-3" />
                 View Users
@@ -138,7 +138,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={ViewSubject}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="book-open me-3" />
                 View Subjects
@@ -150,7 +150,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={CreateExam}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="file me-3" />
                 Create Exam
@@ -165,7 +165,7 @@ const TutorSideBar = ({ userData }) => {
                 tag="a"
                 onClick={ViewStudentResults}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="clipboard-list me-3" />
                 Student Results
@@ -220,7 +220,7 @@ const TutorSideBar = ({ userData }) => {
               <MDBDropdown>
                 <MDBDropdownToggle
                   tag="a"
-                  href="#!"
+                  onClick={editProfileCLick}
                   className="hidden-arrow nav-link"
                 >
                   <img

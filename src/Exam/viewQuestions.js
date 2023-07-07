@@ -14,6 +14,7 @@ import jwt_decode from "jwt-decode";
 import AdminTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import TutorTopbar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import './Styles/tutorViewQuestions.css'
+import { MDBBtn } from "mdb-react-ui-kit";
 import { AlignMiddle } from "react-bootstrap-icons";
 
 export default function ViewQuestions() {
@@ -106,15 +107,21 @@ export default function ViewQuestions() {
                   </tr>
                 ))}
               </tbody>
-              {userType !== "Admin" ? (
-                <Button onClick={() => handleNavigate(data)}>
-                  Edit Questions
-                </Button>
-              ) : null}
             </Table>
           ) : (
             <p>No questions found.</p>
           )}
+          {userType !== "Admin" ? (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <MDBBtn
+                color="primary"
+                type="submit"
+                onClick={() => handleNavigate(data)}
+              >
+                Edit Questions
+              </MDBBtn>
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

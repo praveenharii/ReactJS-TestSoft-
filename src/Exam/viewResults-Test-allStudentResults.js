@@ -16,9 +16,28 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from "mdb-react-ui-kit";
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import jwt_decode from "jwt-decode";
 import TutorTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
+import AdminTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
+
+const COLORS = ["#ff0000", "#8884d8", "#82ca9d", "#00ff00"];
 
 export default function AdminViewResultsSubjectAndTest() {
+  let userType = null;
+  const token = window.localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  userType = decodedToken.userType;
   let { subject, testId } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState([]);
@@ -28,16 +47,52 @@ export default function AdminViewResultsSubjectAndTest() {
   const [username, setUsername] = useState(null);
   const [testName, setTestName] = useState("");
   const [alertModal, setAlertModal] = useState(false);
+  const [graphVisible, setGraphVisible] = useState(false);
+  const [totalStudents, setTotalStudents]= useState('');
+  const [totalSubmitted, setTotalSubmitted] = useState("");
+
+   const categorizeData = (data) => {
+     const categories = {
+       "Below 40%": [],
+       "40-75%": [],
+       "75-90%": [],
+       "Above 90%": [],
+     };
+
+     data.forEach((item) => {
+       if (item.percentageScore < 50) {
+         categories["Below 40%"].push(item);
+       } else if (item.percentageScore >= 50 && item.percentageScore < 75) {
+         categories["40-75%"].push(item);
+       } else if (item.percentageScore >= 75 && item.percentageScore < 90) {
+         categories["75-90%"].push(item);
+       } else {
+         categories["Above 90%"].push(item);
+       }
+     });
+
+     return categories;
+   };
+
+   
+
+   const toggleGraphVisibility = () => {
+     setGraphVisible(!graphVisible);
+   };
 
   const viewAllStudentResults = () => {
     fetch(`${process.env.REACT_APP_BASE_URL}/getResults/${subject}/${testId}`)
       .then((res) => res.json())
       .then((data) => {
+        setTotalStudents(data.totalStudents);
+        setTotalSubmitted(data.totalSubmitted);
         if (data.error === "No results found") {
           setAlertModal(true);
         } else {
           setData(data.data);
           setTestName(data.data.testName[0]);
+          setTotalStudents(data);
+       
         }
       })
       .catch((error) => {
@@ -118,9 +173,62 @@ export default function AdminViewResultsSubjectAndTest() {
     }
   };
 
+  const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const dataPoint = payload[0].payload;
+    return (
+      <div className="custom-tooltip">
+        <p>{`Name: ${dataPoint.username}`}</p>
+        <p>{`Score: ${dataPoint.percentageScore}`}</p>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+const PieChartExample = () => {
+  const categorizedData = categorizeData(data);
+
+  const pieData = Object.keys(categorizedData).map((category, index) => ({
+    name: category,
+    value: categorizedData[category].length,
+    dataPoints: categorizedData[category],
+    color: COLORS[index % COLORS.length],
+  }));
+
+  return (
+    <div>
+      <h3>Pie Chart</h3>
+      <PieChart width={400} height={300}>
+        <Pie
+          data={pieData}
+          dataKey="value"
+          cx="50%"
+          cy="50%"
+          outerRadius={80}
+          fill="#8884d8"
+          label
+        >
+          {pieData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={entry.color} />
+          ))}
+        </Pie>
+        <Tooltip />
+      </PieChart>
+    </div>
+  );
+};
+
+
+
   return (
     <>
-      <TutorTopBar />
+      {userType === "Admin" ? (
+        <AdminTopBar />
+      ) : userType === "Tutor" ? (
+        <TutorTopBar />
+      ) : null}
       <br />
       <div>
         <MDBModal
@@ -151,6 +259,46 @@ export default function AdminViewResultsSubjectAndTest() {
               <div className="auth-inner" style={{ width: "auto" }}>
                 <div>
                   <h3>{testName} Results</h3>
+                </div>
+                <div>
+                  <h3>
+                    <MDBBtn color="info" onClick={toggleGraphVisibility}>
+                      Click to view Results Graph
+                    </MDBBtn>
+                    <div className="leftSide">
+                      Submitted : {totalSubmitted}/{totalStudents}
+                    </div>
+                  </h3>
+                  <div
+                    className={`graph-container${
+                      graphVisible ? " graph-visible" : ""
+                    }`}
+                  >
+                    <div className="graph-inner">
+                      <MDBRow>
+                        <MDBCol>
+                          <PieChartExample />
+                        </MDBCol>
+                        <MDBCol>
+                          <h3>Scatter Chart</h3>
+                          <ScatterChart width={400} height={300}>
+                            <CartesianGrid />
+                            <XAxis type="category" dataKey="name" />
+                            <YAxis type="number" dataKey="percentageScore" />
+                            <Tooltip
+                              cursor={{ strokeDasharray: "3 3" }}
+                              content={<CustomTooltip />}
+                            />
+                            <Scatter
+                              name="Test Results"
+                              data={data}
+                              fill="#8884d8"
+                            />
+                          </ScatterChart>
+                        </MDBCol>
+                      </MDBRow>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <MDBTable striped>
