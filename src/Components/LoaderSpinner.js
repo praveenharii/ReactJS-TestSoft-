@@ -11,7 +11,12 @@ export default function App() {
         height: "100vh",
       }}
     >
-      <MDBSpinner grow className="mx-2" color="secondary">
+      <MDBSpinner
+        grow
+        className="mx-2"
+        color="secondary"
+        style={{ width: "4rem", height: "4rem" }}
+      >
         <span className="visually-hidden">Loading...</span>
       </MDBSpinner>
     </div>

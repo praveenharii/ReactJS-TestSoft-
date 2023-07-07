@@ -12,9 +12,8 @@ import UpComingTestCalender from "../Components/upComingTestCalender";
 import Spinner from "../Components/LoaderSpinner"
 
 
+
 export default function AdminDashboard({ userData }) {
-  //const {useData} = userData.userData;
-   
    const id = userData._id; 
    const [data, setData] = useState([]);
    const [userNum, setUserNum] = useState([]);
@@ -23,6 +22,7 @@ export default function AdminDashboard({ userData }) {
 
   
     const getNumberOfUsers = () => {
+      setLoading(true);
       fetch(`${process.env.REACT_APP_BASE_URL}/getNumbersOfUsers`, {
         method: "GET",
       })
@@ -52,29 +52,7 @@ export default function AdminDashboard({ userData }) {
         });
     };
 
-    const verifyUser = async (id,name,email) => {
-      if(window.confirm(`Please Click Ok if you want to Verify user ${name}`)){
-        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/verifyUser`, {
-          method: "POST",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify({
-            userid: id,
-            email: email,
-          }),
-        });
-        const data = await res.json();
-        alert(data.message);
-        getAllPendingUsers();
-      }else{
-        alert("There was error to verify the user.")
-      }
-    }
-   
+
 
     useEffect(() => {
       getAllPendingUsers();
@@ -88,14 +66,14 @@ export default function AdminDashboard({ userData }) {
         <AdminSidebar userData={userData} />
 
         <div>
-          <br />
           <MDBContainer>
             <MDBRow className="g-2">
               <MDBCol size="2"></MDBCol>
               <MDBCol size="10">
+                <br/>
                 <div className="App">
                   <div className="auth-wrapper" style={{ height: "auto" }}>
-                    <div className="auth-inner" style={{ width: 1024 }}>
+                    <div className="auth-inner" style={{ width: "auto" }}>
                       <h2>
                         Hi {userData.fname} {userData.lname}
                         <span role="img" aria-label="admin-emoji">
@@ -132,53 +110,6 @@ export default function AdminDashboard({ userData }) {
                         <LoginLogoutActivity />
                       </div>
                       <br />
-                      {/* <h3>User Approval Status</h3>
-                      <Table bordered hover>
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>User Type</th>
-                            <th>Status</th>
-                            <th>Verify</th>
-                            <th>Reject</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {data.map((i, index) => {
-                            return (
-                              <tr key={i}>
-                                <td>{index + 1}</td>
-                                <td>
-                                  {i.fname} {i.lname}
-                                </td>
-                                <td>{i.email}</td>
-                                <td>{i.userType}</td>
-                                <td>{i.status}</td>
-                                <td>
-                                  <FontAwesomeIcon
-                                    type="button"
-                                    class="btn btn-success common-btn"
-                                    icon={faCheck}
-                                    onClick={() =>
-                                      verifyUser(i._id, i.fname, i.email)
-                                    }
-                                  />
-                                </td>
-                                <td>
-                                  <FontAwesomeIcon
-                                    type="button"
-                                    class="btn btn-danger common-btn"
-                                    icon={faPersonCircleXmark}
-                                    onClick={() => rejectUser(i._id, i.fname)}
-                                  />
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </Table>{" "} */}
                       <br />
                     </div>
                   </div>

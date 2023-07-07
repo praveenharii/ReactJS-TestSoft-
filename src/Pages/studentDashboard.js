@@ -1,31 +1,25 @@
-import React, { Component, useEffect, useState } from "react";
+import React from "react";
 import StudentSideBar from "./Topsidenavbar/Side-N-Topbar-Student";
-import UpcomingTestCards from "../Components/upComingTestCards"
-import BarChartResultsProgress from "../Components/barChartResultsProgress"
 import TestsBarChart from '../Components/barChartPercentageScore_Tests'
 import UpComingTestCalender from "../Components/upComingTestCalender";
+import  CardList  from '../Components/StackUpcomingTestCards';
+import Footer from "../Components/Footer";
 import {
-  MDBIcon,
-  MDBCollapse,
-  MDBRipple,
   MDBCol,
   MDBRow,
   MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
-} from "mdb-react-ui-kit";
 
+} from "mdb-react-ui-kit";
+import './dashboard.css'
 
 export default function StudentDashboard({ userData }){
 
     const id = userData._id;
+
     
     return (
       <>
         <StudentSideBar userData={userData} />
-
         <MDBContainer>
           <MDBRow className="g-2">
             <MDBCol size="2"></MDBCol>
@@ -37,14 +31,22 @@ export default function StudentDashboard({ userData }){
                     <span role="img" aria-label="student-emoji">
                       🎓
                     </span>
-                  </h2>
+                  </h2>            
+                  <CardList userId={id} />
+                  <br />
+                  <br />
+                  <br />
                   <UpComingTestCalender userData={userData} />
                   <br />
                   <TestsBarChart userId={id} />
                   <br />
-                  <UpcomingTestCards userId={id} />
+                  <link
+                    href="https://fonts.googleapis.com/css?family=Open+Sans:300i,400"
+                    rel="stylesheet"
+                  />
                 </div>
               </div>
+              <Footer />
             </MDBCol>
           </MDBRow>
         </MDBContainer>

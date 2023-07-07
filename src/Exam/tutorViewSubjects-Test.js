@@ -105,7 +105,7 @@ export default function TutorViewSubjects() {
         <MDBCol size="2"></MDBCol>
         <MDBCol size="8">
           <div className="auth-wrapper" style={{ height: "auto" }}>
-            <div className="auth-inner" style={{ width: "auto" }}>
+            <div className="auth-inner" style={{ width: "1000px" }}>
               <div>
                 <h3>List Of Subjects and Tests you handle</h3>
                 {error ? (
@@ -135,8 +135,8 @@ export default function TutorViewSubjects() {
                             <th scope="col">#</th>
                             <th scope="col">Test Name</th>
                             <th scope="col">Created By</th>
-                            <th scope="col">Date Created(MM/DD/YY)</th>
-                            <th scope="col">Available Until(MM/DD/YY)</th>
+                            <th scope="col">Date Created(MM/DD/YY),Time</th>
+                            <th scope="col">Available Until(MM/DD/YY),Time</th>
                             <th scope="col">Status</th>
                             <th scope="col">View Questions</th>
                             <th scope="col">Delete Test</th>

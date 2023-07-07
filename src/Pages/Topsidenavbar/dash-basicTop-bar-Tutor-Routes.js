@@ -8,7 +8,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { MDBNavbarBrand } from "mdb-react-ui-kit";
 import AppLogo from "../../images/TestSoftLogo.png";
 import jwt_decode from "jwt-decode";
-
+import "../../index.css"
 
 function NavScrollExample() {
   let id = null;
@@ -47,7 +47,7 @@ function NavScrollExample() {
  }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar style={{ backgroundColor: "#B6C0E5" }} expand="lg">
       <Container fluid>
         <MDBNavbarBrand href="/">
           <img

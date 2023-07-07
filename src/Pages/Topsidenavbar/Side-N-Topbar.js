@@ -1,19 +1,15 @@
-import React, { Component, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-//import AppLogo from "../../images/logo_testSoft.png";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AppLogo from "../../images/TestSoftLogo.png";
 import "../dashboard.css";
-//import "./dashboard.css";
 import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
 import {
   MDBContainer,
   MDBNavbar,
   MDBNavbarBrand,
-  MDBNavbarToggler,
   MDBIcon,
   MDBNavbarNav,
   MDBNavbarItem,
-  MDBNavbarLink,
   MDBDropdown,
   MDBDropdownToggle,
   MDBDropdownMenu,
@@ -21,12 +17,9 @@ import {
   MDBCollapse,
   MDBRipple,
   MDBBadge,
-  MDBInput,
-  MDBCol,
-  MDBRow,
   MDBBtn,
 } from "mdb-react-ui-kit";
-import Button from "react-bootstrap/Button";
+
 
 
 const adminsidebar = ({userData}) => {
@@ -81,9 +74,7 @@ function ViewUsers() {
   navigate("/dashboard/getAllUsers");
 }
 
-// function CreateExam() {
-//   navigate("/dashboard/createExam");
-// }
+
 
 function ViewStudentResults() {
   navigate("/dashboard/viewResultsTestsLists");
@@ -117,7 +108,8 @@ function ApproveUsers() {
                 tag="a"
                 onClick={dashboard}
                 action
-                className="border-0 border-bottom rounded rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
+              
               >
                 <MDBIcon fas icon="tachometer-alt me-3" />
                 Main Dashboard
@@ -129,7 +121,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={editProfileCLick}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
                 // active
                 aria-current="true"
               >
@@ -143,7 +135,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={ViewUsers}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="users me-3" />
                 View Users
@@ -155,7 +147,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={ApproveUsers}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="users me-3" />
                 Pending Users
@@ -167,7 +159,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={CreateUser}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="user-plus me-3" />
                 Create User
@@ -179,7 +171,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={ViewSubject}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="book-open me-3" />
                 View Subjects
@@ -194,7 +186,7 @@ function ApproveUsers() {
                 tag="a"
                 onClick={ViewStudentResults}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-1 shadow-sm button-item"
               >
                 <MDBIcon fas icon="clipboard-list me-3" />
                 Student Results

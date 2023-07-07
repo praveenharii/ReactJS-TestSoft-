@@ -24,7 +24,7 @@ import {
   MDBCol,
   MDBBtn,
 } from "mdb-react-ui-kit";
-import Button from "react-bootstrap/Button";
+
 
 
 const StudentSidebar = ({ userData }) => {
@@ -32,7 +32,7 @@ const StudentSidebar = ({ userData }) => {
   const navigate = useNavigate();
   const id = userData._id;
   const toggleShow = () => setShowShow(!showShow);
-
+  
  const logOut = () => {
    fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
      method: "POST",
@@ -106,7 +106,7 @@ const StudentSidebar = ({ userData }) => {
                 tag="a"
                 onClick={dashboard}
                 action
-                className="border-0 border-bottom rounded rounded"
+                className="rounded-pill p-3 my-2 shadow-sm button-item"
               >
                 <MDBIcon fas icon="tachometer-alt me-3" />
                 Main Dashboard
@@ -118,7 +118,7 @@ const StudentSidebar = ({ userData }) => {
                 tag="a"
                 onClick={editProfileCLick}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-2 shadow-sm button-item"
                 // active
                 aria-current="true"
               >
@@ -132,7 +132,7 @@ const StudentSidebar = ({ userData }) => {
                 tag="a"
                 onClick={ViewAvailableTests}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-2 shadow-sm button-item"
               >
                 <MDBIcon fas icon="fas fa-book me-3" />
                 Available Tests
@@ -144,7 +144,7 @@ const StudentSidebar = ({ userData }) => {
                 tag="a"
                 onClick={ViewTestResults}
                 action
-                className="border-0 border-bottom rounded"
+                className="rounded-pill p-3 my-2 shadow-sm button-item"
               >
                 <MDBIcon fas icon="fas fa-receipt me-3" />
                 View Test Results
@@ -158,6 +158,7 @@ const StudentSidebar = ({ userData }) => {
 
       <MDBNavbar expand="lg" light style={{ backgroundColor: "#B6C0E5" }}>
         <MDBContainer fluid>
+          
           <MDBNavbarBrand href="/">
             <img
               src={AppLogo}
@@ -226,7 +227,7 @@ const StudentSidebar = ({ userData }) => {
               <MDBBtn
                 onClick={logOut}
                 color="danger"
-                style={{ width: "100px", marginLeft:"10px" }}
+                style={{ width: "100px", marginLeft: "10px" }}
               >
                 Log Out
               </MDBBtn>

@@ -102,9 +102,11 @@ export default function CreateExamForm() {
       <TopBar />
       <br />
       <div className="createExam-wrapper" style={{ height: "auto" }}>
-        <div className="createExam-inner">
+        <div className="createExam-inner" style={{ width: 1100 }}>
           <div className="container">
-            <h1>Create Exam</h1>
+            <div style={{ textAlign: "center" }}>
+              <h1>Create Exam</h1>
+            </div>
             <br />
             <Form onSubmit={handleSubmit} className="exam-form">
               <div className="form-group">
@@ -116,14 +118,9 @@ export default function CreateExamForm() {
                 >
                   <option value="">Select a subject</option>
                   <option value="Bahasa Melayu">Bahasa Melayu</option>
-                  <option value="English">English</option>
                   <option value="Math">Math</option>
-                  <option value="Add Maths">Add Maths</option>
                   <option value="Science">Science</option>
                   <option value="Sejarah">Sejarah</option>
-                  <option value="Biology">Biology</option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Physics">Physics</option>
                 </select>
               </div>
               <div className="form-group">
@@ -227,13 +224,16 @@ export default function CreateExamForm() {
                 Delete Question
               </Button>
               <br />
+               <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <MDBBtn color="primary" type="submit">
-                Create Exam
+                Create cExam
               </MDBBtn>
+              </div>
             </Form>
           </div>
         </div>
       </div>
+      <br/>
     </>
   );
 };
