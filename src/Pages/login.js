@@ -5,17 +5,16 @@ import "react-toastify/dist/ReactToastify.css";
 import '../App.css'
 
 
-
 export default function Login()  {
         const [email ,setEmail] =  useState("");
         const [password ,setPassword] =  useState("");
         const [alert, setAlert] = useState(null);
         const [successLogin, setSuccessLogin] = useState(null);
-   console.log(process.env.REACT_APP_BASE_URL);
+   //console.log(process.env.REACT_APP_BASE_URL);
    function handleSubmit(e){
     e.preventDefault();
     
-    console.log( email, password);
+    //console.log( email, password);
     
     fetch(`${process.env.REACT_APP_BASE_URL}/login-user`, {
       method: "POST",
