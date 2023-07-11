@@ -89,29 +89,34 @@ export default function StudentTakeTest() {
   };
 
   const handleSubmitTest = async () => {
-    console.log(userAnswers);
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/${id}/${subjectname}/tests/${taketestid}/submit`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            answers: userAnswers,
-          }),
+    if (
+      window.confirm(
+        "Are you sure you want to submit? Check Before Submitting."
+        )
+        ) {
+          try {
+            const response = await fetch(
+              `${process.env.REACT_APP_BASE_URL}/${id}/${subjectname}/tests/${taketestid}/submit`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  answers: userAnswers,
+                }),
+              }
+            );
+            const data = await response.json();
+            console.log(data);
+            alert(data.message);
+            setSubmitted(true);
+            localStorage.removeItem("initialTimestamp");
+            navigate("/dashboard");
+          } catch (error) {
+            console.error(error);
+          }
         }
-      );
-      const data = await response.json();
-      console.log(data);
-      alert(data.message);
-      setSubmitted(true);
-      localStorage.removeItem("initialTimestamp");
-      navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   useEffect(() => {

@@ -50,7 +50,7 @@ export default function upComingTestCalender({ userData }) {
   };
 
   return (
-    <div>
+    <div className='calendar-container'>
       <h3>Upcoming Test Calendar</h3>
       <Calendar
         tileContent={tileContent}

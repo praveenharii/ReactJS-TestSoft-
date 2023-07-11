@@ -26,7 +26,7 @@ export default function EditProfile() {
   const [Alert, setAlert] = useState(null);
   const { id } = useParams();
   const token = localStorage.getItem("token");
-  const [phoneNumber,setPhoneNumber] = useState("");
+  const [phoneNumber,setPhoneNumber] = useState(null);
   const userType = userData.userType;
   const [showPassword, setShowPassword] = useState(false);
   const [education, setEducation] = useState("");
@@ -312,12 +312,18 @@ useEffect(() => {
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
-                  {phoneNumber.length > 0 &&
-                    (phoneNumber.length < 10 || phoneNumber.length > 11) && (
-                      <div className="text-danger">
-                       Invalid Phone Number.
-                      </div>
-                    )}
+                  {phoneNumber === null ? (
+                    <div className="text-danger">
+                      Please Key in your number.
+                    </div>
+                  ) : (
+                    phoneNumber &&
+                    (phoneNumber.length === 0 ||
+                      phoneNumber.length < 10 ||
+                      phoneNumber.length > 11) && (
+                      <div className="text-danger">Invalid Phone Number.</div>
+                    )
+                  )}
                 </div>
               </div>
 
