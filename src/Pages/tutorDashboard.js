@@ -14,7 +14,7 @@ import Spinner from "../Components/LoaderSpinner";
 export default function tutorDashboard({ userData }) {
   const [userNum, setUserNum] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [dataCount, setDataCount] = useState("");
   const getNumberOfUsers = () => {
     setLoading(true);
     fetch(`${process.env.REACT_APP_BASE_URL}/getNumbersOfUsers`, {
@@ -32,13 +32,28 @@ export default function tutorDashboard({ userData }) {
       });
   };
 
+  const getAllPendingUsers = () => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/getAllPendingUsers`, {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const dataLength = data.data.length; // Get the length of the data
+        setDataCount(dataLength);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   useEffect(() => {
+    getAllPendingUsers();
     getNumberOfUsers();
   }, []);
 
   return (
     <>
-      <TutorSideBar userData={userData} />
+      <TutorSideBar userData={userData} dataLength={dataCount} />
       <div>
         <MDBContainer>
           <MDBRow className="g-2">
@@ -63,15 +78,13 @@ export default function tutorDashboard({ userData }) {
                         className="totalUser-inner"
                         style={{ width: "auto" }}
                       >
-                        
-                          {userNum.map((user) => (
-                            <UserCountCard
-                              key={user._id}
-                              userType={user._id}
-                              count={user.count}
-                            />
-                          ))}
-                        
+                        {userNum.map((user) => (
+                          <UserCountCard
+                            key={user._id}
+                            userType={user._id}
+                            count={user.count}
+                          />
+                        ))}
                       </div>
                     )}
                   </div>

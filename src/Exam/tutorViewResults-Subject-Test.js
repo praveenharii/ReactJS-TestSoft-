@@ -19,6 +19,8 @@ import {
   Scatter,
   Tooltip,
 } from "recharts";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function TutorViewResultsSubjectTest() {
   let userId = null;
@@ -126,13 +128,31 @@ export default function TutorViewResultsSubjectTest() {
         link.click();
         link.remove();
 
-        alert("Result downloaded successfully");
+        toast.success("Results Downloaded Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       } else {
         throw new Error("Failed to download the results");
       }
     } catch (error) {
-      console.error(error);
-      alert("Error occurred while downloading the results");
+      console.error(error);     
+      toast.error("Error occurred while downloading the results", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -143,6 +163,7 @@ export default function TutorViewResultsSubjectTest() {
   return (
     <>
       <TutorTopbar />
+      <ToastContainer />
       <br />
       <div>
         <MDBRow className="g-2">
@@ -166,10 +187,12 @@ export default function TutorViewResultsSubjectTest() {
                       <MDBRow>
                         <MDBCol>
                           <h3>Scatter Graph for Student Marks</h3>
-                      <ScatterGraph /></MDBCol></MDBRow>
+                          <ScatterGraph />
+                        </MDBCol>
+                      </MDBRow>
                     </div>
                   </div>
-                  
+
                   {error ? (
                     <div className="alert alert-danger mt-3">
                       No students have taken the test yet.

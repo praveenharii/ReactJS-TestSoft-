@@ -175,7 +175,7 @@ const StudentSidebar = ({ userData }) => {
             </div>
           </MDBNavbarNav>
           <MDBNavbarNav className="d-flex flex-row justify-content-end w-auto">
-            <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
+            {/* <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
               <MDBDropdown>
                 <MDBDropdownToggle
                   tag="a"
@@ -194,7 +194,7 @@ const StudentSidebar = ({ userData }) => {
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
-            </MDBNavbarItem>
+            </MDBNavbarItem> */}
 
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
               <MDBDropdown>

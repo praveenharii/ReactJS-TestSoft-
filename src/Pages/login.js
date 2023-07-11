@@ -1,6 +1,7 @@
 import React, {  useState  } from 'react'
 import Loginnavigation from './Topsidenavbar/loginnavbar.js';
 import { ToastContainer, toast } from "react-toastify";
+import Spinner from "../Components/SignUpSpinner";
 import "react-toastify/dist/ReactToastify.css";
 import '../App.css'
 
@@ -15,6 +16,9 @@ export default function Login()  {
     e.preventDefault();
     
     //console.log( email, password);
+     const loadingToastId = toast.info(<Spinner />, {
+       autoClose: false,
+     });
     
     fetch(`${process.env.REACT_APP_BASE_URL}/login-user`, {
       method: "POST",
@@ -44,34 +48,70 @@ export default function Login()  {
             ); /*storing token in nodejs(localStorage)*/
             window.localStorage.setItem("loggedIn", true);
 
+            toast.dismiss(loadingToastId);
             setTimeout(() => {
               window.location.href = "./dashboard";
             }, 5000);
           }
-          if (data.error === "User does not exist") {
-            setAlert("User Not Exist");
-          }
-          if (data.status === "error") {
-            setAlert("Wrong Password, please try again..");
-          }
           if (
             data.error ===
-            "You are not a verified, please wait for admin to accept your Sign Up request!!!"
+            "You are not verified yet. Please wait for the admin to accept your sign-up request!"
           ) {
-            setAlert(
-              "You are not a verified, please wait for admin to accept your Sign Up request!!!"
-            );
+            toast.error(
+              "You are not a verified, please wait for admin to accept your Sign Up request!"
+            );       
+            setTimeout(() => {
+              toast.dismiss(loadingToastId);
+            }, 1000);
+          }
+           
+          if (data.error === "User does not exist") {
+            toast.error("User does not Exist", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setTimeout(() => {
+              toast.dismiss(loadingToastId);
+            }, 1000);
+             
+          }
+          if (data.status === "error") {
+             toast.error("Wrong Password, please try again!", {
+               position: "top-right",
+               autoClose: 5000,
+               hideProgressBar: false,
+               closeOnClick: true,
+               pauseOnHover: true,
+               draggable: true,
+               progress: undefined,
+               theme: "light",
+             });
+              setTimeout(() => {
+                toast.dismiss(loadingToastId);
+              }, 1000);
           }
           if (
             data.error ===
             "You are already logged in from another tab or browser."
           ) {
             setAlert("You are already logged in from another tab or browser.");
+              setTimeout(() => {
+                toast.dismiss(loadingToastId);
+              }, 1000);
           } else {
             //alert(data.error);
           }
         } catch (error) {
           setAlert(error);
+          setTimeout(() => {
+            toast.dismiss(loadingToastId);
+          }, 1000);
         }
       });
 }
@@ -106,7 +146,7 @@ export default function Login()  {
                     />
                   </div>
 
-                  <div className="form-group form-check">
+                  {/* <div className="form-group form-check">
                     <input
                       type="checkbox"
                       id="newsletter"
@@ -115,7 +155,7 @@ export default function Login()  {
                     <label htmlFor="newsletter" className="form-check-label">
                       Remember Me
                     </label>
-                  </div>
+                  </div> */}
                   <button type="submit" className="btn btn-primary btn-block">
                     Sign In
                   </button>
@@ -134,7 +174,7 @@ export default function Login()  {
                     </div>
                   )}
                   <p className="forgot-password text-right">
-                    Click here to <a href="/forgot-password">Forgot Password</a>
+                    Click here if <a href="/forgot-password">Forgot Password</a>
                   </p>
                   <p className="forgot-password text-right">
                     Click here to <a href="/sign-up">Sign Up</a>

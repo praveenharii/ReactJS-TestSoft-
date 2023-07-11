@@ -6,8 +6,9 @@ import TutorTopNavBar  from './Topsidenavbar/dash-basicTop-bar-Tutor-Routes';
 import { MDBBtn } from "mdb-react-ui-kit";  
 import { useEffect } from 'react';
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-
-
+import Spinner from "../Components/SignUpSpinner";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function EditProfile() {
   const location = useLocation();
@@ -77,6 +78,7 @@ useEffect(() => {
   const handleUpdateProfile = (e) => {
     e.preventDefault();
 
+     
      if (newPassword !== retypeNewPassword) {
        setPasswordMatchError(true);
        return;
@@ -91,23 +93,56 @@ useEffect(() => {
         phoneNumber,
       };
 
+      
+
+
       if (changePassword && !newPassword) {
-        setAlert("Password should not be empty!");
+        toast.error("Password should not be empty!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        setTimeout(() => {
+          toast.dismiss(loadingToastId);
+        }, 3000);
         return;
       }
+        
 
      if (changePassword && newPassword) {
        
        if (!regularExpression.test(newPassword)) {
-         setAlert(
-           "Password should be between 6 to 16 characters and contain at least one digit and one special character."
+         toast.error(
+           "Password should be between 6 to 16 characters and contain at least one digit and one special character.",
+           {
+             position: "top-right",
+             autoClose: 5000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: "light",
+           }
          );
+         setTimeout(() => {
+           toast.dismiss(loadingToastId);
+         }, 5000);
          return;
        }      
        requestBody.newPassword = newPassword;
      }
      console.log(newPassword);
-     //localStorage.removeItem("token");
+
+    const loadingToastId = toast.info(<Spinner />, {
+      autoClose: false,
+    });
+     
      fetch(`${process.env.REACT_APP_BASE_URL}/updateProfile/${id}`, {
        /* sending login-user API*/
        method: "POST",
@@ -132,7 +167,19 @@ useEffect(() => {
          //console.log(data, "userData");
 
          if (data.data === "User Exists") {
-           setAlert("First name exists, try different..");
+           toast.error("First name exists, try different..", {
+             position: "top-right",
+             autoClose: 5000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: "light",
+           });
+           setTimeout(() => {
+             toast.dismiss(loadingToastId);
+           }, 1000);
          }
          if (data.status === "ok") {
           //  localStorage.setItem("token", data.token);
@@ -140,9 +187,21 @@ useEffect(() => {
              "updatedProfileData",
              JSON.stringify(data.data)
            );
+           toast.success("Updated Successfully", {
+             position: "top-right",
+             autoClose: 3000,
+             hideProgressBar: false,
+             closeOnClick: true,
+             pauseOnHover: true,
+             draggable: true,
+             progress: undefined,
+             theme: "light",
+           });
+           setTimeout(() => {
+             toast.dismiss(loadingToastId);
+               navigate("/dashboard"); // Navigate to login page
+             }, 3000);
 
-           alert("Updated Successfully");
-           navigate("/dashboard");
          } else {
            setAlert(data.err);
          }
@@ -154,13 +213,29 @@ useEffect(() => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+     const loadingToastId = toast.info(<Spinner />, {
+       autoClose: false,
+     });
+
     if (changePassword) {
       checkCurrentPassword(e)
         .then((status) => {
           if (status === "ok") {
             handleUpdateProfile(e);
           } else {
-            setAlert("Current password is incorrect.");
+            toast.error("Current password is incorrect.", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            setTimeout(() => {
+              toast.dismiss(loadingToastId);
+            }, 1000);
           }
         })
         .catch((error) => {
@@ -181,6 +256,7 @@ useEffect(() => {
       ) : userData.userType === "Tutor" ? (
         <TutorTopNavBar />
       ) : null}
+      <ToastContainer />
       <div className="container rounded bg-white mt-5 mb-5">
         <div className="row">
           <div className="col-md-3 border-right">
@@ -232,28 +308,17 @@ useEffect(() => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Enter Phone Number"
+                    placeholder="Enter Phone Number Ex:01..."
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
+                  {phoneNumber.length > 0 &&
+                    (phoneNumber.length < 10 || phoneNumber.length > 11) && (
+                      <div className="text-danger">
+                       Invalid Phone Number.
+                      </div>
+                    )}
                 </div>
-                {/* {userData.userType === "Student" && (
-                  <div className="col-md-12">
-                    <label className="labels">Education</label>
-                    <select
-                      className="form-control"
-                      value={education}
-                      onChange={(e) => setEducation(e.target.value)}
-                    >
-                      <option value="">Select educational level</option>
-                      <option value="Form 1">Form 1</option>
-                      <option value="Form 2">Form 2</option>
-                      <option value="Form 3">Form 3</option>
-                      <option value="Form 4">Form 4</option>
-                      <option value="Form 5">Form 5</option>
-                    </select>
-                  </div>
-                )} */}
               </div>
 
               {changePassword && (

@@ -15,11 +15,7 @@ export default function EditQuestions() {
   const location = useLocation();
   const data = location.state.data;
   const { testname , testid }= useParams();
-  console.log(testname, testid)
-  console.log(data.id); 
 
-  console.log(data.questions[0].question); 
-  console.log(data.questions[1].answer); 
 
     const [testName, setTestName] = useState("");
     const [date, setDate] = useState("");

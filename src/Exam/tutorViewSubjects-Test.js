@@ -151,10 +151,30 @@ export default function TutorViewSubjects() {
                                   <td>{test.name}</td>
                                   <td>{test.createdBy}</td>
                                   <td>
-                                    {new Date(test.createdAt).toLocaleString()}
+                                    {new Date(test.createdAt).toLocaleString(
+                                      "en-US",
+                                      {
+                                        month: "numeric",
+                                        day: "numeric",
+                                        year: "numeric",
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        hour12: true,
+                                      }
+                                    )}
                                   </td>
                                   <td>
-                                    {new Date(test.date).toLocaleString()}
+                                    {new Date(test.date).toLocaleString(
+                                      "en-US",
+                                      {
+                                        month: "numeric",
+                                        day: "numeric",
+                                        year: "numeric",
+                                        hour: "numeric",
+                                        minute: "numeric",
+                                        hour12: true,
+                                      }
+                                    )}
                                   </td>
                                   <td>{isTestAvailable(test.date)}</td>
                                   <td>

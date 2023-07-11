@@ -30,6 +30,8 @@ import {
 import jwt_decode from "jwt-decode";
 import TutorTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes";
 import AdminTopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes"
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const COLORS = ["#ff0000", "#8884d8", "#82ca9d", "#00ff00"];
 
@@ -50,24 +52,39 @@ export default function AdminViewResultsSubjectAndTest() {
   const [graphVisible, setGraphVisible] = useState(false);
   const [totalStudents, setTotalStudents]= useState('');
   const [totalSubmitted, setTotalSubmitted] = useState("");
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedResultID, setSelectedResultID] = useState(null);
+  console.log(deleteModal);
+ 
+  const toggleDeleteModal = () => {
+    setDeleteModal(true);
+  };
+  const toggleCloseDeleteModal = () => {
+    setDeleteModal(false);
+  };
+
+  const handleDeleteResult = () => {
+    deleteResult(selectedResultID);
+    setDeleteModal(false);
+  };
 
    const categorizeData = (data) => {
      const categories = {
-       "Below 40%": [],
-       "40-75%": [],
-       "75-90%": [],
-       "Above 90%": [],
+       "Fail": [],
+       "Grade C": [],
+       "Grade B": [],
+       "Grade A": [],
      };
 
      data.forEach((item) => {
-       if (item.percentageScore < 50) {
-         categories["Below 40%"].push(item);
-       } else if (item.percentageScore >= 50 && item.percentageScore < 75) {
-         categories["40-75%"].push(item);
-       } else if (item.percentageScore >= 75 && item.percentageScore < 90) {
-         categories["75-90%"].push(item);
+       if (item.percentageScore < 40) {
+         categories["Fail"].push(item);
+       } else if (item.percentageScore >= 40 && item.percentageScore < 60) {
+         categories["Grade C"].push(item);
+       } else if (item.percentageScore >= 60 && item.percentageScore < 80) {
+         categories["Grade B"].push(item);
        } else {
-         categories["Above 90%"].push(item);
+         categories["Grade A"].push(item);
        }
      });
 
@@ -152,6 +169,7 @@ export default function AdminViewResultsSubjectAndTest() {
       });
   };
 
+  
   const deleteResult = async (selectedResultID) => {
     try {
       const response = await fetch(
@@ -166,10 +184,30 @@ export default function AdminViewResultsSubjectAndTest() {
       const data = await response.text();
       console.log(data);
       viewAllStudentResults();
-      alert("Result deleted successfully");
+   
+       toast.success("Result deleted successfully", {
+         position: "top-right",
+         autoClose: 3000,
+         hideProgressBar: false,
+         closeOnClick: true,
+         pauseOnHover: true,
+         draggable: true,
+         progress: undefined,
+         theme: "light",
+       });
     } catch (error) {
       console.error(error);
-      alert("An error occurred while deleting the result.");
+      
+      toast.error("An error occurred while deleting the result.", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -230,6 +268,7 @@ const PieChartExample = () => {
         <TutorTopBar />
       ) : null}
       <br />
+      <ToastContainer />
       <div>
         <MDBModal
           animation
@@ -253,6 +292,28 @@ const PieChartExample = () => {
             </MDBModalContent>
           </MDBModalDialog>
         </MDBModal>
+
+        <MDBModal animation show={deleteModal} onHide={toggleCloseDeleteModal}>
+          <MDBModalDialog position="top-right" side>
+            <MDBModalContent>
+              <MDBModalHeader className="bg-danger text-white">
+                <MDBModalTitle>Confirm Deletion</MDBModalTitle>
+              </MDBModalHeader>
+              <MDBModalBody>
+                <p>Are you sure you want to delete this item?</p>
+              </MDBModalBody>
+              <MDBModalFooter>
+                <MDBBtn color="secondary" onClick={toggleCloseDeleteModal}>
+                  Cancel
+                </MDBBtn>
+                <MDBBtn color="danger" onClick={handleDeleteResult}>
+                  Delete
+                </MDBBtn>
+              </MDBModalFooter>
+            </MDBModalContent>
+          </MDBModalDialog>
+        </MDBModal>
+
         <MDBRow className="g-2">
           <MDBCol md="12" lg="12">
             <div className="auth-wrapper" style={{ height: "auto" }}>
@@ -322,7 +383,12 @@ const PieChartExample = () => {
                           <td>{result.percentageScore.toFixed(2)}%</td>
                           <td>
                             {new Date(result.date).toLocaleDateString()}
-                            <br /> {new Date(result.date).toLocaleTimeString()}
+                            <br />{" "}
+                            {new Date(result.date).toLocaleTimeString([], {
+                              hour: "numeric",
+                              minute: "numeric",
+                              hour12: true,
+                            })}
                           </td>
                           <td>
                             {result.percentageScore >= 40 ? (
@@ -395,7 +461,10 @@ const PieChartExample = () => {
                             <MDBBtn
                               style={{ width: "80px" }}
                               color="danger"
-                              onClick={() => deleteResult(result._id)}
+                              onClick={() => {
+                                setSelectedResultID(result._id);
+                                toggleDeleteModal();
+                              }}
                             >
                               Delete
                             </MDBBtn>{" "}

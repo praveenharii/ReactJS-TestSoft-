@@ -27,7 +27,7 @@ export default function ViewUsers() {
      const [searchQuery, setSearchQuery] = useState("");
      const [searchResults, setSearchResults] = useState([]);
      
-    //  const [userType, setUserType] = useState("");
+
   
      useEffect(() => {
       currentPage.current=1;
@@ -225,7 +225,7 @@ export default function ViewUsers() {
                        <div>
                          <FontAwesomeIcon
                            icon={faUserShield}
-                           style={{ color: "yellow" }}
+                           style={{ color: "#D9512C" }}
                          />
                          <span style={{ marginLeft: "5px" }}>Pending</span>
                        </div>
@@ -284,7 +284,7 @@ export default function ViewUsers() {
            )}
          </Table>
          <br />
-         <div className="input-group mb-3">
+         {/* <div className="input-group mb-3">
            <input
              type="text"
              className="form-control"
@@ -301,7 +301,7 @@ export default function ViewUsers() {
            >
              Set Limit
            </button>
-         </div>
+         </div> */}
          <br />
 
          <ReactPaginate

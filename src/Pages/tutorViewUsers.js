@@ -218,7 +218,7 @@ export default function TutorViewUsers() {
                         <div>
                           <FontAwesomeIcon
                             icon={faUserShield}
-                            style={{ color: "yellow" }}
+                            style={{ color: "#D9512C" }}
                           />
                           <span style={{ marginLeft: "5px" }}>Pending</span>
                         </div>
@@ -277,7 +277,7 @@ export default function TutorViewUsers() {
             )}
           </Table>
           <br />
-          <div className="input-group mb-3">
+          {/* <div className="input-group mb-3">
             <input
               type="text"
               className="form-control"
@@ -294,7 +294,7 @@ export default function TutorViewUsers() {
             >
               Set Limit
             </button>
-          </div>
+          </div> */}
           <br />
 
           <ReactPaginate

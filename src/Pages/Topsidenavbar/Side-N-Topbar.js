@@ -22,71 +22,72 @@ import {
 
 
 
-const adminsidebar = ({userData}) => {
-    const [showShow, setShowShow] = useState(false);
-     const navigate = useNavigate();
-    const id = userData._id; 
-    const toggleShow = () => setShowShow(!showShow);
+const adminsidebar = ({ userData, dataLength }) => {
+  const [showShow, setShowShow] = useState(false);
+  const navigate = useNavigate();
+  const id = userData._id;
+  const toggleShow = () => setShowShow(!showShow);
 
-
-const logOut = () => {
-  fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      token: localStorage.getItem("token"), // Send the token in the "token" header
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.status === "ok") {
-        // Clear local storage and redirect to sign-in page
-        console.log("Logout Succesfully");
-        window.localStorage.clear();
-        window.location.href = "./sign-in";
-      } else {
-        console.log("Logout error:", data.error);
-      }
+  const logOut = () => {
+    fetch(`${process.env.REACT_APP_BASE_URL}/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: localStorage.getItem("token"), // Send the token in the "token" header
+      },
     })
-    .catch((error) => {
-      console.log("Logout error:", error);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          // Clear local storage and redirect to sign-in page
+          console.log("Logout Succesfully");
+          window.localStorage.clear();
+          window.location.href = "./sign-in";
+        } else {
+          console.log("Logout error:", data.error);
+        }
+      })
+      .catch((error) => {
+        console.log("Logout error:", error);
+      });
+  };
+
+  const dashboard = () => {
+    navigate("/dashboard");
+  };
+
+  function editProfileCLick() {
+    navigate(`/dashboard/updateProfile/${id}`, {
+      state: {
+        id,
+        userData: userData,
+      },
     });
-};
+  }
 
-const dashboard = () => { 
-  navigate("/dashboard");
-};
+  function ViewSubject() {
+    navigate("/dashboard/subjects");
+  }
 
-function editProfileCLick() {
-  navigate(`/dashboard/updateProfile/${id}`, {
-    state: {
-      id,
-      userData: userData,
-    },
-  });
-}
+  function ViewUsers() {
+    navigate("/dashboard/getAllUsers");
+  }
 
-function ViewSubject() {
-  navigate("/dashboard/subjects");
-}
+  function navToPendingUsers() {
+    navigate("/dashboard/adminApproveUser");
+  }
 
-function ViewUsers() {
-  navigate("/dashboard/getAllUsers");
-}
+  function ViewStudentResults() {
+    navigate("/dashboard/viewResultsTestsLists");
+  }
 
+  function CreateUser() {
+    navigate("/dashboard/createUser");
+  }
 
-
-function ViewStudentResults() {
-  navigate("/dashboard/viewResultsTestsLists");
-}
-
-function CreateUser(){
-  navigate("/dashboard/createUser");
-}
-
-function ApproveUsers() {
-  navigate("/dashboard/adminApproveUser");
-}
+  function ApproveUsers() {
+    navigate("/dashboard/adminApproveUser");
+  }
 
   return (
     <div>
@@ -109,7 +110,6 @@ function ApproveUsers() {
                 onClick={dashboard}
                 action
                 className="rounded-pill p-3 my-1 shadow-sm button-item"
-              
               >
                 <MDBIcon fas icon="tachometer-alt me-3" />
                 Main Dashboard
@@ -218,26 +218,16 @@ function ApproveUsers() {
           <MDBNavbarNav className="d-flex flex-row justify-content-end w-auto">
             <MDBNavbarItem className="me-3 me-lg-0 d-flex align-items-center">
               <MDBDropdown>
-                <MDBDropdownToggle
-                  tag="a"
-                  href="#!"
-                  className="hidden-arrow nav-link"
-                >
+                <MDBDropdownToggle tag="a" className="hidden-arrow nav-link">
                   <MDBIcon fas icon="bell" />
                   <MDBBadge color="danger" notification pill>
-                    1
+                    {dataLength}
                   </MDBBadge>
                 </MDBDropdownToggle>
 
                 <MDBDropdownMenu>
                   <MDBDropdownItem>
-                    <div href="#">Some news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Another news</div>
-                  </MDBDropdownItem>
-                  <MDBDropdownItem>
-                    <div href="#">Something else here</div>
+                    <div onClick={navToPendingUsers}>Pending Approval</div>
                   </MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>

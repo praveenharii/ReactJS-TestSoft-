@@ -21,7 +21,7 @@ import {
 } from "mdb-react-ui-kit";
 
 
-const TutorSideBar = ({ userData }) => {
+const TutorSideBar = ({ userData, dataLength }) => {
   const [showShow, setShowShow] = useState(false);
   const navigate = useNavigate();
   const id = userData._id;
@@ -78,7 +78,6 @@ const TutorSideBar = ({ userData }) => {
   function ViewStudentResults() {
     navigate(`/dashboard/tutorViewStudentResults/${id}`);
   }
-
 
   return (
     <div>
@@ -204,7 +203,7 @@ const TutorSideBar = ({ userData }) => {
                 >
                   <MDBIcon fas icon="bell" />
                   <MDBBadge color="danger" notification pill>
-                    1
+                    {dataLength}
                   </MDBBadge>
                 </MDBDropdownToggle>
 

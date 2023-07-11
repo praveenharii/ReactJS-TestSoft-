@@ -7,6 +7,7 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import './Styles/createExamStyles.css';
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -16,6 +17,7 @@ export default function CreateExamForm() {
   const token = window.localStorage.getItem("token");
   const decodedToken = jwt_decode(token);
   userId = decodedToken.userId;
+   const [showPassword, setShowPassword] = useState(false);
   const [subjectName, setSubjectName] = useState('');
   const [testName, setTestName] = useState('');
   const [date, setDate] = useState('');
@@ -23,6 +25,10 @@ export default function CreateExamForm() {
   const [testPassword, settestPassword] = useState('');
   const [questions, setQuestions] = useState([{ question: '', options: ['', '', '', ''], answer: '' }]);
   console.log(userId);
+
+  const toggleShowPassword = () => {
+    setShowPassword((prevState) => !prevState);
+  };
 
   const handleInputChange = (event, index) => {
     const { name, value } = event.target;
@@ -121,6 +127,7 @@ export default function CreateExamForm() {
                   <option value="Math">Math</option>
                   <option value="Science">Science</option>
                   <option value="Sejarah">Sejarah</option>
+                  <option value="English">English</option>
                 </select>
               </div>
               <div className="form-group">
@@ -150,11 +157,22 @@ export default function CreateExamForm() {
                 </div>
                 <div className="form-group">
                   <label>Test Password</label>
-                  <MDBInput
-                    type="password"
-                    value={testPassword}
-                    onChange={(event) => settestPassword(event.target.value)}
-                  />
+                  <div className="input-group">
+                    <MDBInput
+                      type={showPassword ? "text" : "password"}
+                      value={testPassword}
+                      onChange={(event) => settestPassword(event.target.value)}
+                    />
+                    <div className="input-group-append">
+                      <button
+                        className="btn btn-tertiary"
+                        type="button"
+                        onClick={toggleShowPassword}
+                      >
+                        {showPassword ? <BsEyeSlash /> : <BsEye />}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               {questions.map((question, index) => (
@@ -224,16 +242,16 @@ export default function CreateExamForm() {
                 Delete Question
               </Button>
               <br />
-               <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <MDBBtn color="primary" type="submit">
-                Create cExam
-              </MDBBtn>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <MDBBtn color="primary" type="submit">
+                  Create Exam
+                </MDBBtn>
               </div>
             </Form>
           </div>
         </div>
       </div>
-      <br/>
+      <br />
     </>
   );
 };

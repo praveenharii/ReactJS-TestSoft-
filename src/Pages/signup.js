@@ -65,62 +65,14 @@ const generateRecaptcha = () => {
              setVerified(true);
            })
            .catch((error) => {
+            toast.error("Invalid OTP");
              console.log(error);
            });
+       }else{
+        toast.error("Invalid OTP");
        }
     }       
   
-
-    // const handleSubmit = (e) => {
-      
-    //    if (userType === "Tutor" && secretKey !== "Secret") {
-    //         e.preventDefault();
-    //         alert("Invalid Tutor");
-    //       }
-    //       else{
-
-    //         e.preventDefault();
-    //         if (verified !== false){ 
-    //            const loadingToastId = toast.info(<Spinner />, {
-    //              autoClose: false,
-    //            });
-                    
-            
-    //         fetch(`${baseUrl}/register`, {
-    //           method: "POST",
-    //           crossDomain: true,
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //             Accept: "application/json",
-    //             "Access-Control-Allow-Origin": "*",
-    //           },
-    //           body: JSON.stringify({
-    //             fname,
-    //             lname,
-    //             email,
-    //             phoneNumber,
-    //             password,
-    //             userType,
-    //           }),
-    //         })
-    //           .then((res) => res.json())
-    //           .then((data) => {
-    //             if (data.error !== "User Exists") {
-    //               console.log(data, "userRegister");
-    //              toast.success("Sign up successful");
-    //              setTimeout(() => {
-    //                 toast.dismiss(loadingToastId);
-    //                 navigate("/sign-in"); // Navigate to login page
-    //               }, 5000);
-    //             } else {
-    //               alert(data.error);
-    //             }
-    //           });
-    //           }else{
-    //         alert("Please Verify Phone Number");
-    //           }
-    //   } 
-    // };
     const handleSubmit = (e) => {
       e.preventDefault();
 
@@ -182,7 +134,10 @@ const generateRecaptcha = () => {
               navigate("/sign-in"); // Navigate to login page
             }, 5000);
           } else {
-            alert(data.error);
+            toast.error(data.error);
+             setTimeout(() => {
+               toast.dismiss(loadingToastId);
+             }, 1000);
           }
         });
     };

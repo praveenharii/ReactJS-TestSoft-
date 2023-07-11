@@ -63,8 +63,10 @@ export default function ViewQuestions() {
           <h3 className="align-middle">All Questions:</h3>
           <br />
           <h4>Test Name: {data.name}</h4>
-          <h4>Date: {data.date && data.date.substring(0, 10)} </h4>
-          <h4>Time: {data.date && data.date.substring(11, 16)} Hrs</h4>
+          <h4>
+            Available Until: {data.date && data.date.substring(0, 10)} at{" "}
+            {data.date && data.date.substring(11, 16)} Hours
+          </h4>
           <h4>Time Limit: {data.timeLimit} Minutes</h4>
           <br />
           {data.questions ? (
@@ -124,6 +126,7 @@ export default function ViewQuestions() {
           ) : null}
         </div>
       </div>
+      <br />
     </div>
   );
 }

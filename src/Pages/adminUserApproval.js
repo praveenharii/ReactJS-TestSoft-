@@ -1,6 +1,7 @@
-import React, { Component, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import ViewSubject from "./../Exam/viewSubjects";
+import React, {useEffect, useState } from "react";
+import {
+  MDBBtn,
+} from "mdb-react-ui-kit";
 import {
   faCheck,
   faPersonCircleXmark,
@@ -9,31 +10,7 @@ import { Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AdminTopBar from "./Topsidenavbar/dash-basicTop-bar-Tutor-admin-Routes";
 import "./dashboard.css";
-import { MDBListGroup, MDBListGroupItem } from "mdb-react-ui-kit";
-import {
-  MDBIcon,
-  MDBCollapse,
-  MDBRipple,
-  MDBCol,
-  MDBRow,
-  MDBContainer,
-  MDBCard,
-  MDBCardBody,
-  MDBCardImage,
-  MDBBtn,
-} from "mdb-react-ui-kit";
-import Footer from "../Components/Footer";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
-import LoginLogoutActivity from "../Components/Login-Logout-Activity";
-import UpComingTestCalender from "../Components/upComingTestCalender";
+import DeleteUserModal from "../Components/deleteModal";
 
 export default function adminUserApproval() {
     const [data, setData] = useState([]);
@@ -74,10 +51,10 @@ export default function adminUserApproval() {
       }
     };
 
-     const rejectUser = (id, name) => {
+     const rejectUser = (id, email, reason) => {
        if (
          window.confirm(
-           `Please Click Ok if you want to reject this user ${name}. This user details will be deleted`
+           `Please Click Ok if you want to reject this user ${email}. This user details will be deleted`
          )
        ) {
          fetch(`${process.env.REACT_APP_BASE_URL}/deleteUser`, {
@@ -90,6 +67,8 @@ export default function adminUserApproval() {
            },
            body: JSON.stringify({
              userid: id,
+             email: email,
+             reason: reason,
            }),
          })
            .then((res) => res.json())
@@ -141,19 +120,29 @@ export default function adminUserApproval() {
                       <td>{i.userType}</td>
                       <td>{i.status}</td>
                       <td>
-                        <FontAwesomeIcon
+                        {/* <FontAwesomeIcon
                           type="button"
                           class="btn btn-success common-btn"
                           icon={faCheck}
                           onClick={() => verifyUser(i._id, i.fname, i.email)}
-                        />
+                        /> */}
+                        <MDBBtn
+                          color="success"
+                          onClick={() => verifyUser(i._id, i.fname, i.email)}
+                        >
+                          Verify User
+                        </MDBBtn>
                       </td>
                       <td>
-                        <FontAwesomeIcon
+                        {/* <FontAwesomeIcon
                           type="button"
                           class="btn btn-danger common-btn"
                           icon={faPersonCircleXmark}
-                          onClick={() => rejectUser(i._id, i.fname)}
+                          onClick={() => rejectUser(i._id, i.fname, i.email)}
+                        /> */}
+                        <DeleteUserModal
+                          deleteUser={rejectUser}
+                          user={{ id: i._id, email: i.email }}
                         />
                       </td>
                     </tr>

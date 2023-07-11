@@ -18,7 +18,8 @@ export default function AdminDashboard({ userData }) {
    const [data, setData] = useState([]);
    const [userNum, setUserNum] = useState([]);
    const [loading, setLoading] = useState(true);
-   console.log(userData);
+   const [dataCount, setDataCount] = useState('')
+  // console.log(dataLength);
 
   
     const getNumberOfUsers = () => {
@@ -45,6 +46,9 @@ export default function AdminDashboard({ userData }) {
         .then((res) => res.json())
         .then((data) => {
           console.log(data, "allPendingUsers");
+         const dataLength = data.data.length; // Get the length of the data
+         setDataCount(dataLength);
+         console.log("Data length:", dataLength);
           setData(data.data);
         })
         .catch((error) => {
@@ -63,14 +67,14 @@ export default function AdminDashboard({ userData }) {
 
     return (
       <>
-        <AdminSidebar userData={userData} />
+        <AdminSidebar userData={userData} dataLength={dataCount} />
 
         <div>
           <MDBContainer>
             <MDBRow className="g-2">
               <MDBCol size="2"></MDBCol>
               <MDBCol size="10">
-                <br/>
+                <br />
                 <div className="App">
                   <div className="auth-wrapper" style={{ height: "auto" }}>
                     <div className="auth-inner" style={{ width: "auto" }}>
