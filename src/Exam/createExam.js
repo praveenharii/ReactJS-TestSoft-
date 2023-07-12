@@ -8,8 +8,10 @@ import './Styles/createExamStyles.css';
 import TopBar from "../Pages/Topsidenavbar/dash-basicTop-bar-Tutor-Routes"
 import jwt_decode from "jwt-decode";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import { MdCenterFocusStrong } from './../../node_modules/react-icons/md/index.esm';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Spinner from "../Components/SignUpSpinner";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CreateExamForm() {
   const navigate = useNavigate();
@@ -57,6 +59,10 @@ export default function CreateExamForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const loadingToastId = toast.info(<Spinner />, {
+      autoClose: false,
+    });
+
     if (
       !testName ||
       !date ||
@@ -65,7 +71,10 @@ export default function CreateExamForm() {
         (q) => !q.question || !q.answer || q.options.some((o) => !o)
       )
     ) {
-      alert("Please fill in all required fields.");
+       toast.error("Please fill in all required fields.");
+       setTimeout(() => {
+         toast.dismiss(loadingToastId);
+       }, 1000);
       return;
     }
 
@@ -91,15 +100,20 @@ export default function CreateExamForm() {
        json.status === "New Test Created" ||
        json.status === "New Test and Subject Created"
      ) {
-       alert(json.status);
-       navigate("/dashboard");
+       toast(json.status, {
+         type: "success",
+         autoClose: 3000,
+       });
+       setTimeout(() => {
+         toast.dismiss(loadingToastId);
+         navigate("/dashboard");
+       }, 3000);
      } else {
        throw new Error(json.message);
      }
     } catch (error) {
       console.error(error);
-      alert(error);
-      // Handle error case here
+      toast.error(error);
     }
   };
 
@@ -107,6 +121,7 @@ export default function CreateExamForm() {
     <>
       <TopBar />
       <br />
+      <ToastContainer />
       <div className="createExam-wrapper" style={{ height: "auto" }}>
         <div className="createExam-inner" style={{ width: 1100 }}>
           <div className="container">
